@@ -1,0 +1,42 @@
+{
+  "name": "@achmadk/auto-bind",
+  "version": "0.0.0",
+  "source": "./src/index.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.js",
+  "react-native": "./dist/index.modern.mjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "rimraf dist dist-react && microbundle && microbundle -i ./src/react.js -o dist-react",
+    "build:vite": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-native": "^0.73.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "react": "^18.2.0",
+    "react-native": "^0.73.4",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0"
+  },
+  "files": [
+    "dist",
+    "dist-react",
+    "./index.d.ts",
+    "./react.d.ts",
+    "./package.json"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "achmadk-open-source-projects",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "build": "lerna exec pnpm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Achmad Kurnianto",
+  "license": "ISC",
+  "packageManager": "pnpm@8.15.1",
+  "dependencies": {
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "microbundle": "^0.15.1",
+    "vite": "^5.1.0",
+    "auto-bind": "4.0.0",
+    "hoist-non-react-statics": "1.2.0",
+    "lerna": "8.0.2",
+    "lodash": "4.17.21",
+    "tinycolor2": "1.4.2"
+  }
+}
