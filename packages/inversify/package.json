@@ -1,15 +1,15 @@
 {
-	"version": "2.0.2",
+	"version": "1.0.0",
 	"license": "MIT",
 	"type": "module",
-	"main": "dist/index.js",
-	"typings": "dist/index.d.ts",
+	"main": "./dist/index.umd.cjs",
+	"typings": "./dist/index.d.ts",
 	"sideEffects": false,
 	"exports": {
 		".": {
-			"node": "./dist/inversify-esm.esm.js",
-			"import": "./dist/inversify-esm.esm.js",
-			"require": "./dist/index.js",
+			"node": "./dist/index.js",
+			"import": "./dist/index.js",
+			"require": "./dist/index.umd.cjs",
 			"types": "./dist/index.d.ts"
 		}
 	},
@@ -19,22 +19,16 @@
 	},
 	"scripts": {
 		"start": "dts watch",
-		"build": "dts build",
-		"pretest": "npm run lint",
+		"build": "vite build",
+		"pretest": "pnpm run lint",
 		"test": "dts test",
-		"lint": "dts lint --fix",
-		"prepare": "dts build",
-		"prepublishOnly": "dts build",
+		"lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
+		"prepublishOnly": "pnpm run build",
 		"size": "size-limit",
 		"analyze": "size-limit --why"
 	},
 	"peerDependencies": {
-		"@abraham/reflection": "0.10.0"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "dts lint --fix"
-		}
+		"@abraham/reflection": "0.12.0"
 	},
 	"prettier": {
 		"printWidth": 80,
@@ -44,20 +38,21 @@
 	},
 	"name": "@achmadk/inversify",
 	"author": "Achmad Kurnianto",
-	"module": "dist/inversify-esm.esm.js",
+	"module": "./dist/index.js",
 	"size-limit": [
 		{
-			"path": "dist/inversify-esm.cjs.production.min.js",
+			"path": "dist/index.js",
 			"limit": "14 KB"
 		},
 		{
-			"path": "dist/inversify-esm.esm.js",
+			"path": "dist/index.umd.cjs",
 			"limit": "70 B"
 		}
 	],
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/achmadk/inversify-esm.git"
+		"url": "https://github.com/achmadk/open-source-project.git",
+		"directory": "packages/inversify"
 	},
 	"devDependencies": {
 		"@abraham/reflection": "0.12.0",
