@@ -1,0 +1,16 @@
+{
+    "include": [
+        "./**/*.ts",
+        "../src/**/*.ts"
+    ],
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "types": [
+            "node",
+            "jest"
+        ],
+        "strictPropertyInitialization": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    }
+}

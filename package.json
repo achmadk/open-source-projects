@@ -1,25 +1,39 @@
 {
-  "name": "achmadk-open-source-projects",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "private": true,
-  "scripts": {
-    "build": "lerna exec pnpm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Achmad Kurnianto",
-  "license": "ISC",
-  "packageManager": "pnpm@8.15.1",
-  "dependencies": {
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "microbundle": "^0.15.1",
-    "vite": "^5.1.0",
-    "auto-bind": "4.0.0",
-    "hoist-non-react-statics": "1.2.0",
-    "lerna": "8.0.2",
-    "lodash": "4.17.21",
-    "tinycolor2": "1.4.2"
-  }
+	"name": "achmadk-open-source-projects",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "lerna exec pnpm run build",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepare": "husky"
+	},
+	"keywords": [],
+	"author": "Achmad Kurnianto",
+	"license": "ISC",
+	"dependencies": {
+		"@biomejs/biome": "^1.8.3",
+		"@vitejs/plugin-react-swc": "^3.7.0",
+		"husky": "^9.0.11",
+		"lerna": "8.1.5",
+		"lint-staged": "^15.2.7",
+		"microbundle": "^0.15.1",
+		"react-native": "^0.74.3",
+		"typescript": "^5.5.3",
+		"vite": "^5.3.2",
+		"vite-plugin-dts": "^3.9.1",
+		"vite-plugin-externalize-deps": "^0.8.0",
+		"vite-tsconfig-paths": "^4.3.2"
+	},
+	"lint-staged": {
+		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+			"biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe"
+		],
+		"*": [
+			"biome check --no-errors-on-unmatched --files-ignore-unknown=true --write --unsafe"
+		]
+	},
+	"devDependencies": {
+		"@types/node": "^20.14.9"
+	}
 }
