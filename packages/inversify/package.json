@@ -41,12 +41,12 @@
 	"module": "./dist/index.js",
 	"size-limit": [
 		{
-			"path": "dist/index.js",
-			"limit": "14 KB"
+			"path": "./dist/index.js",
+			"limit": "900 B"
 		},
 		{
-			"path": "dist/index.umd.cjs",
-			"limit": "70 B"
+			"path": "./dist/index.umd.cjs",
+			"limit": "10 kB"
 		}
 	],
 	"repository": {
@@ -56,6 +56,8 @@
 	},
 	"devDependencies": {
 		"@abraham/reflection": "0.12.0",
+		"@size-limit/esbuild": "^11.1.4",
+		"@size-limit/esbuild-why": "^11.1.4",
 		"@size-limit/preset-small-lib": "^11.1.4",
 		"@size-limit/webpack": "11.1.4",
 		"@size-limit/webpack-why": "11.1.4",
