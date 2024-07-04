@@ -1,0 +1,100 @@
+{
+	"version": "1.0.0",
+	"license": "MIT",
+	"type": "module",
+	"main": "dist/index.js",
+	"typings": "dist/index.d.ts",
+	"exports": {
+		".": {
+			"require": "./dist/index.js",
+			"import": "./dist/inversify-props-esm.esm.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"sideEffects": false,
+	"files": ["dist"],
+	"engines": {
+		"node": ">=12"
+	},
+	"scripts": {
+		"start": "tsdx watch",
+		"build": "tsdx build",
+		"test": "tsdx test --coverage",
+		"lint": "tsdx lint --fix",
+		"prepare": "tsdx build",
+		"prepublishOnly": "tsdx build",
+		"size": "size-limit",
+		"analyze": "size-limit --why"
+	},
+	"peerDependencies": {
+		"@abraham/reflection": "0.12.0",
+		"@achmadk/inversify": "workspace:../inversify"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "tsdx lint"
+		}
+	},
+	"prettier": {
+		"printWidth": 80,
+		"semi": true,
+		"singleQuote": true,
+		"trailingComma": "es5"
+	},
+	"name": "@achmadk/inversify-props",
+	"author": "Achmad Kurnianto",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/achmadk/open-source-projects.git",
+		"directory": "./packages/inversify-props"
+	},
+	"module": "dist/inversify-props-esm.esm.js",
+	"size-limit": [
+		{
+			"path": "dist/inversify-props-esm.cjs.production.min.js",
+			"limit": "2 KB"
+		},
+		{
+			"path": "dist/inversify-props-esm.esm.js",
+			"limit": "2 KB"
+		}
+	],
+	"devDependencies": {
+		"@abraham/reflection": "0.8.0",
+		"@achmadk/inversify": "workspace:../inversify",
+		"@size-limit/preset-small-lib": "^5.0.3",
+		"@skypack/package-check": "0.2.2",
+		"@typescript-eslint/eslint-plugin": "4.29.3",
+		"@typescript-eslint/parser": "4.29.3",
+		"babel-eslint": "10.1.0",
+		"eslint": "7.32.0",
+		"eslint-config-prettier": "7.2.0",
+		"eslint-config-react-app": "6.0.0",
+		"eslint-plugin-flowtype": "5.9.1",
+		"eslint-plugin-import": "2.24.2",
+		"eslint-plugin-jsx-a11y": "6.4.1",
+		"eslint-plugin-prettier": "3.4.1",
+		"eslint-plugin-react": "7.24.0",
+		"eslint-plugin-react-hooks": "4.2.0",
+		"husky": "^5.0.9",
+		"inversify-esm": "1.0.0",
+		"prettier": "2.3.2",
+		"size-limit": "^5.0.3",
+		"tsdx": "^0.14.1",
+		"tslib": "^2.3.1",
+		"typescript": "^4.4.2"
+	},
+	"keywords": [
+		"inversify",
+		"typescript",
+		"typescript inject",
+		"typescript di",
+		"react di",
+		"vue di",
+		"vue inject",
+		"react inject",
+		"litelement",
+		"polymer",
+		"support ES Module"
+	]
+}

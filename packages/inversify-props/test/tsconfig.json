@@ -1,0 +1,11 @@
+{
+    "extends": ["./tsconfig.json"],
+    "compilerOptions": {
+        "types": [
+            "node",
+            "jest"
+        ],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    }
+}
