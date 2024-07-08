@@ -6,3 +6,5 @@ dist
 .yarn
 .yarnrc.yml
 yarn.lock
+
+esbuild*.html

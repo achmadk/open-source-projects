@@ -14,5 +14,9 @@ export default defineConfig({
 		},
 		sourcemap: true,
 	},
-	plugins: [dts({ rollupTypes: true }), tsconfig(), externalizeDeps()],
+	plugins: [
+		dts({ rollupTypes: true }),
+		tsconfig({ ignoreConfigErrors: true }),
+		externalizeDeps(),
+	],
 });

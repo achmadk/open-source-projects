@@ -1,4 +1,7 @@
-import { inject as __inject, injectable as __injectable } from "inversify-esm";
+import {
+	inject as __inject,
+	injectable as __injectable,
+} from "@achmadk/inversify";
 import { getContainer } from "./container";
 import { generateIdName, getOrSetIdFromCache, idsCache } from "./id.helper";
 import type { Constructor, Id } from "./inversify.types";

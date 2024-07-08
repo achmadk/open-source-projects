@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "✨ achmadk",
+			"path": "."
+		},
+		{
+			"name": "📦 @achmadk/inversify",
+			"path": "packages/inversify"
+		},
+		{
+			"name": "📦 @achmadk/inversify-props",
+			"path": "packages/inversify-props"
+		}
+	],
+	"settings": {}
+}

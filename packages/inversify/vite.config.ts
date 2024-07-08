@@ -14,5 +14,5 @@ export default defineConfig({
 		},
 		sourcemap: true,
 	},
-	plugins: [dts(), tsconfig(), externalizeDeps()],
+	plugins: [dts(), tsconfig({ ignoreConfigErrors: true }), externalizeDeps()],
 });

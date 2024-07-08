@@ -2,27 +2,27 @@
 	"version": "1.0.0",
 	"license": "MIT",
 	"type": "module",
-	"main": "dist/index.js",
+	"main": "dist/index.umd.cjs",
 	"typings": "dist/index.d.ts",
 	"exports": {
 		".": {
-			"require": "./dist/index.js",
-			"import": "./dist/inversify-props-esm.esm.js",
+			"require": "./dist/index.umd.cjs",
+			"import": "./dist/index.js",
 			"types": "./dist/index.d.ts"
 		}
 	},
 	"sideEffects": false,
 	"files": ["dist"],
 	"engines": {
-		"node": ">=12"
+		"node": ">=18"
 	},
 	"scripts": {
-		"start": "tsdx watch",
-		"build": "tsdx build",
-		"test": "tsdx test --coverage",
-		"lint": "tsdx lint --fix",
-		"prepare": "tsdx build",
-		"prepublishOnly": "tsdx build",
+		"start": "dts watch",
+		"build": "vite build",
+		"test": "vitest run",
+		"lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
+		"prepare": "pnpm run build",
+		"prepublishOnly": "pnpm run build",
 		"size": "size-limit",
 		"analyze": "size-limit --why"
 	},
@@ -48,21 +48,25 @@
 		"url": "git+https://github.com/achmadk/open-source-projects.git",
 		"directory": "./packages/inversify-props"
 	},
-	"module": "dist/inversify-props-esm.esm.js",
+	"module": "./dist/index.js",
 	"size-limit": [
 		{
-			"path": "dist/inversify-props-esm.cjs.production.min.js",
-			"limit": "2 KB"
+			"path": "./dist/index.js",
+			"limit": "400 B"
 		},
 		{
-			"path": "dist/inversify-props-esm.esm.js",
+			"path": "./dist/index.umd.cjs",
 			"limit": "2 KB"
 		}
 	],
 	"devDependencies": {
 		"@abraham/reflection": "0.8.0",
 		"@achmadk/inversify": "workspace:../inversify",
-		"@size-limit/preset-small-lib": "^5.0.3",
+		"@size-limit/esbuild": "^11.1.4",
+		"@size-limit/esbuild-why": "^11.1.4",
+		"@size-limit/preset-small-lib": "^11.1.4",
+		"@size-limit/webpack": "11.1.4",
+		"@size-limit/webpack-why": "11.1.4",
 		"@skypack/package-check": "0.2.2",
 		"@typescript-eslint/eslint-plugin": "4.29.3",
 		"@typescript-eslint/parser": "4.29.3",
@@ -77,12 +81,12 @@
 		"eslint-plugin-react": "7.24.0",
 		"eslint-plugin-react-hooks": "4.2.0",
 		"husky": "^5.0.9",
-		"inversify-esm": "1.0.0",
 		"prettier": "2.3.2",
-		"size-limit": "^5.0.3",
+		"size-limit": "^11.1.4",
 		"tsdx": "^0.14.1",
 		"tslib": "^2.3.1",
-		"typescript": "^4.4.2"
+		"typescript": "^4.4.2",
+		"vitest": "^1.6.0"
 	},
 	"keywords": [
 		"inversify",

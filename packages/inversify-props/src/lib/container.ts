@@ -84,15 +84,16 @@ export class Container extends InversifyContainer {
 	}
 }
 
-let container: Container;
+export const container: Container = new Container({
+	skipBaseClassChecks: true,
+});
 
 export function getContainer(): Container {
 	return container;
 }
 
 export function setContainer(options?: ContainerOptions): Container {
-	container = new Container(options);
-	return container;
+	return new Container(options);
 }
 
 export function resetContainer() {

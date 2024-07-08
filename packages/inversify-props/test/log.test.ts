@@ -1,9 +1,11 @@
+import { describe, test, expect, vi } from 'vitest'
+
 import { log } from '../src/lib/log.helper';
 
 describe('Log Helper', () => {
   describe('When log is NOT in debug mode', () => {
     test('should not log anything', () => {
-      const spy = jest.spyOn(console, 'log');
+      const spy = vi.spyOn(console, 'log');
 
       log(false, 'test log');
 
@@ -15,7 +17,7 @@ describe('Log Helper', () => {
 
   describe('When log is debug mode', () => {
     test('should log the message', () => {
-      const spy = jest.spyOn(console, 'log');
+      const spy = vi.spyOn(console, 'log');
 
       log(true, 'test log');
 
@@ -25,7 +27,7 @@ describe('Log Helper', () => {
     });
 
     test('if has more than one message should log the messages', () => {
-      const spy = jest.spyOn(console, 'log');
+      const spy = vi.spyOn(console, 'log');
 
       log(true, 'test log', 'test log 2');
 
