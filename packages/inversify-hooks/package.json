@@ -23,7 +23,6 @@
 		"build": "vite build",
 		"test": "vitest run",
 		"lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
-		"prepare": "pnpm run build",
 		"prepublishOnly": "pnpm run build",
 		"size": "size-limit",
 		"analyze": "size-limit --why"
