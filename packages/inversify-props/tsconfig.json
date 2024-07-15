@@ -33,6 +33,7 @@
 		"emitDecoratorMetadata": true,
 		"baseUrl": ".",
 		"outDir": "./dist",
+		"composite": true,
 		"paths": {
 			"@achmadk/inversify": ["../inversify"]
 		}

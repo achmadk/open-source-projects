@@ -33,6 +33,16 @@
 		"noEmit": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"types": ["node", "jest"]
-	}
+		"types": ["node", "jest"],
+		"baseUrl": ".",
+		"outDir": "./dist",
+		"paths": {
+			"@achmadk/inversify-props": ["../inversify-props"]
+		}
+	},
+	"references": [
+		{
+			"path": "../inversify-props"
+		}
+	]
 }
