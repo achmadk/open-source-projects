@@ -4,7 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "lerna exec pnpm run build",
+		"build:inversify": "lerna exec pnpm run build --scope \"@achmadk/inversify\"",
+		"build:inversify-props": "lerna exec pnpm run build --scope \"@achmadk/inversify-props\"",
+		"build:inversify-hooks": "lerna exec pnpm run build --scope \"@achmadk/inversify-hooks\"",
+		"build": "pnpm run build:inversify && pnpm run build:inversify-props && pnpm run build:inversify-hooks",
 		"lint": "lerna exec pnpm run lint",
 		"test:unit:inversify": "lerna exec pnpm run test --scope \"@achmadk/inversify\"",
 		"test:unit:inversify-props": "lerna exec pnpm run test --scope \"@achmadk/inversify-props\"",
