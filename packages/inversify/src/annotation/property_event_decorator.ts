@@ -1,4 +1,4 @@
-import { hasOwnMetadata, defineMetadata } from "@abraham/reflection";
+import { defineMetadata, hasOwnMetadata } from "@abraham/reflection";
 
 import { Metadata } from "../planning/metadata";
 

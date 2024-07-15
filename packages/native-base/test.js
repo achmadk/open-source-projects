@@ -1,3 +1,3 @@
-import modules from './dist/index.js'
+import modules from "./dist/index.js";
 
-console.log(modules)
+console.log(modules);

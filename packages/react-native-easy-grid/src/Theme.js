@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-import mergeComponentAndThemeStyles from './mergeComponentAndThemeStyles';
-import resolveIncludes from './resolveIncludes';
-import normalizeStyle from './StyleNormalizer/normalizeStyle';
+import _ from "lodash";
+import PropTypes from "prop-types";
+import normalizeStyle from "./StyleNormalizer/normalizeStyle";
+import mergeComponentAndThemeStyles from "./mergeComponentAndThemeStyles";
+import resolveIncludes from "./resolveIncludes";
 
 // Privates, ideally those should be symbols
-const THEME_STYLE = '@@shoutem.theme/themeStyle';
-const THEME_STYLE_CACHE = '@@shoutem.theme/themeCachedStyle';
+const THEME_STYLE = "@@shoutem.theme/themeStyle";
+const THEME_STYLE_CACHE = "@@shoutem.theme/themeCachedStyle";
 
 let defaultTheme;
 
 const resolveStyle = (style, baseStyle) =>
-  normalizeStyle(resolveIncludes(style, baseStyle));
+	normalizeStyle(resolveIncludes(style, baseStyle));
 
 /**
  * The theme defines the application style, and provides methods to
@@ -38,88 +38,95 @@ const resolveStyle = (style, baseStyle) =>
  * }
  */
 export default class Theme {
-  constructor(themeStyle) {
-    this.subscriptions = [];
-    this[THEME_STYLE] = resolveStyle(themeStyle);
-    this[THEME_STYLE_CACHE] = {};
-  }
+	constructor(themeStyle) {
+		this.subscriptions = [];
+		this[THEME_STYLE] = resolveStyle(themeStyle);
+		this[THEME_STYLE_CACHE] = {};
+	}
 
-  /**
-   * Sets the given style as a default theme style.
-   */
-  static setDefaultThemeStyle(style) {
-    defaultTheme = new Theme(style);
-  }
+	/**
+	 * Sets the given style as a default theme style.
+	 */
+	static setDefaultThemeStyle(style) {
+		defaultTheme = new Theme(style);
+	}
 
-  /**
-   * Returns the default theme that will be used as fallback
-   * if the StyleProvider is not configured in the app.
-   */
-  static getDefaultTheme() {
-    if (!defaultTheme) {
-      defaultTheme = new Theme({});
-    }
+	/**
+	 * Returns the default theme that will be used as fallback
+	 * if the StyleProvider is not configured in the app.
+	 */
+	static getDefaultTheme() {
+		if (!defaultTheme) {
+			defaultTheme = new Theme({});
+		}
 
-    return defaultTheme;
-  }
+		return defaultTheme;
+	}
 
-  setTheme(themeStyle) {
-    this[THEME_STYLE] = resolveStyle(themeStyle);
-    this[THEME_STYLE_CACHE] = {};
+	setTheme(themeStyle) {
+		this[THEME_STYLE] = resolveStyle(themeStyle);
+		this[THEME_STYLE_CACHE] = {};
 
-    _.forEach(this.subscriptions, subscription => subscription.callback(this));
-  }
+		_.forEach(this.subscriptions, (subscription) =>
+			subscription.callback(this),
+		);
+	}
 
-  subscribe({ componentName, callback }) {
-    if (!componentName || !callback) {
-      throw new Error('Invalid call to theme subscribe. Please provide valid componentName and callback properties');
-    }
+	subscribe({ componentName, callback }) {
+		if (!componentName || !callback) {
+			throw new Error(
+				"Invalid call to theme subscribe. Please provide valid componentName and callback properties",
+			);
+		}
 
-    this.subscriptions.push({ componentName, callback });
-  }
+		this.subscriptions.push({ componentName, callback });
+	}
 
-  unsubscribe(componentName) {
-    _.remove(this.subscriptions, subscription => subscription.componentName === componentName);
-  }
+	unsubscribe(componentName) {
+		_.remove(
+			this.subscriptions,
+			(subscription) => subscription.componentName === componentName,
+		);
+	}
 
-  /**
-   * Creates a component style by merging the theme style on top of the
-   * provided default component style. Any rules in the theme style will
-   * override the rules from the base component style.
-   *
-   * This method will also resolve any INCLUDE keywords in the theme or
-   * component styles before returning the final style.
-   *
-   * @param componentName fully qualified component name.
-   * @param defaultStyle - default component style that will be used as base style.
-   */
-  createComponentStyle(componentName, defaultStyle) {
-    if (this[THEME_STYLE_CACHE][componentName]) {
-      return this[THEME_STYLE_CACHE][componentName];
-    }
+	/**
+	 * Creates a component style by merging the theme style on top of the
+	 * provided default component style. Any rules in the theme style will
+	 * override the rules from the base component style.
+	 *
+	 * This method will also resolve any INCLUDE keywords in the theme or
+	 * component styles before returning the final style.
+	 *
+	 * @param componentName fully qualified component name.
+	 * @param defaultStyle - default component style that will be used as base style.
+	 */
+	createComponentStyle(componentName, defaultStyle) {
+		if (this[THEME_STYLE_CACHE][componentName]) {
+			return this[THEME_STYLE_CACHE][componentName];
+		}
 
-    const componentIncludedStyle = resolveStyle(
-      defaultStyle,
-      this[THEME_STYLE],
-    );
+		const componentIncludedStyle = resolveStyle(
+			defaultStyle,
+			this[THEME_STYLE],
+		);
 
-    /**
-     * This is static component style (static per componentName). This style can only
-     * change if the theme changes during runtime, so it is safe to reuse it within a
-     * scope of a theme once it is resolved for the first time.
-     */
-    this[THEME_STYLE_CACHE][componentName] = mergeComponentAndThemeStyles(
-      componentIncludedStyle,
-      this[THEME_STYLE][componentName],
-      this[THEME_STYLE],
-    );
+		/**
+		 * This is static component style (static per componentName). This style can only
+		 * change if the theme changes during runtime, so it is safe to reuse it within a
+		 * scope of a theme once it is resolved for the first time.
+		 */
+		this[THEME_STYLE_CACHE][componentName] = mergeComponentAndThemeStyles(
+			componentIncludedStyle,
+			this[THEME_STYLE][componentName],
+			this[THEME_STYLE],
+		);
 
-    return this[THEME_STYLE_CACHE][componentName];
-  }
+		return this[THEME_STYLE_CACHE][componentName];
+	}
 }
 
 export const ThemeShape = PropTypes.shape({
-  createComponentStyle: PropTypes.func.isRequired,
-  [THEME_STYLE]: PropTypes.object,
-  [THEME_STYLE_CACHE]: PropTypes.object,
+	createComponentStyle: PropTypes.func.isRequired,
+	[THEME_STYLE]: PropTypes.object,
+	[THEME_STYLE_CACHE]: PropTypes.object,
 });

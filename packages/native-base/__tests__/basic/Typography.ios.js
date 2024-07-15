@@ -10,21 +10,21 @@ import { Text } from "./../../src/basic/Text";
 // Note: test renderer must be required after react-native.
 
 jest.mock("Platform", () => {
-  const Platform = require.requireActual("Platform");
-  Platform.OS = "ios";
-  return Platform;
+	const Platform = require.requireActual("Platform");
+	Platform.OS = "ios";
+	return Platform;
 });
 
 it("renders Typography", () => {
-  const tree = renderer
-    .create(
-      <Content>
-        <H1>Header One</H1>
-        <H2>Header Two</H2>
-        <H3>Header Three</H3>
-        <Text>Default</Text>
-      </Content>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+	const tree = renderer
+		.create(
+			<Content>
+				<H1>Header One</H1>
+				<H2>Header Two</H2>
+				<H3>Header Three</H3>
+				<Text>Default</Text>
+			</Content>,
+		)
+		.toJSON();
+	expect(tree).toMatchSnapshot();
 });

@@ -1,16 +1,16 @@
-import _ from 'lodash';
+import _ from "lodash";
 
 const mapPropsToStyleNames = (styleNames, props) => {
-  const keys = _.keys(props);
-  const values = _.values(props);
+	const keys = _.keys(props);
+	const values = _.values(props);
 
-  _.forEach(keys, (key, index) => {
-    if (values[index]) {
-      styleNames.push(key);
-    }
-  });
+	_.forEach(keys, (key, index) => {
+		if (values[index]) {
+			styleNames.push(key);
+		}
+	});
 
-  return styleNames;
+	return styleNames;
 };
 
 export default mapPropsToStyleNames;

@@ -8,33 +8,33 @@ import { Thumbnail } from "./../../src/basic/Thumbnail";
 const cover = require("../assets/drawer-cover.png");
 
 jest.mock("Platform", () => {
-  const Platform = require.requireActual("Platform");
-  Platform.OS = "ios";
-  return Platform;
+	const Platform = require.requireActual("Platform");
+	Platform.OS = "ios";
+	return Platform;
 });
 
 it("renders default shape thumbnail", () => {
-  const tree = renderer
-    .create(
-      <Content>
-        <Thumbnail small source={cover} />
-        <Thumbnail source={cover} />
-        <Thumbnail large source={cover} />
-      </Content>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+	const tree = renderer
+		.create(
+			<Content>
+				<Thumbnail small source={cover} />
+				<Thumbnail source={cover} />
+				<Thumbnail large source={cover} />
+			</Content>,
+		)
+		.toJSON();
+	expect(tree).toMatchSnapshot();
 });
 
 it("renders square shape thumbnail", () => {
-  const tree = renderer
-    .create(
-      <Content>
-        <Thumbnail square small source={cover} />
-        <Thumbnail square source={cover} />
-        <Thumbnail square large source={cover} />
-      </Content>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+	const tree = renderer
+		.create(
+			<Content>
+				<Thumbnail square small source={cover} />
+				<Thumbnail square source={cover} />
+				<Thumbnail square large source={cover} />
+			</Content>,
+		)
+		.toJSON();
+	expect(tree).toMatchSnapshot();
 });

@@ -1,5 +1,5 @@
 module.exports = {
-  dependency: {
-    assets: ['Fonts']
-  }
+	dependency: {
+		assets: ["Fonts"],
+	},
 };

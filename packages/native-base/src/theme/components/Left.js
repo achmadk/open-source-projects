@@ -1,11 +1,11 @@
 // @flow
 
 export default () => {
-  const leftTheme = {
-    flex: 1,
-    alignSelf: 'center',
-    alignItems: 'flex-start'
-  };
+	const leftTheme = {
+		flex: 1,
+		alignSelf: "center",
+		alignItems: "flex-start",
+	};
 
-  return leftTheme;
+	return leftTheme;
 };

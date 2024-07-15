@@ -1,3 +1,3 @@
-const modules =  require('./dist/index.cjs')
+const modules = require("./dist/index.cjs");
 
-console.log(modules)
+console.log(modules);

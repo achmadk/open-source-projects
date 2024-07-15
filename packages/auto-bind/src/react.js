@@ -1,28 +1,25 @@
-import autoBind from './index';
+import autoBind from "./index";
 
 const excludedReactMethods = [
-	'componentWillMount',
-	'UNSAFE_componentWillMount',
-	'render',
-	'getSnapshotBeforeUpdate',
-	'componentDidMount',
-	'componentWillReceiveProps',
-	'UNSAFE_componentWillReceiveProps',
-	'shouldComponentUpdate',
-	'componentWillUpdate',
-	'UNSAFE_componentWillUpdate',
-	'componentDidUpdate',
-	'componentWillUnmount',
-	'componentDidCatch',
-	'setState',
-	'forceUpdate',
+	"componentWillMount",
+	"UNSAFE_componentWillMount",
+	"render",
+	"getSnapshotBeforeUpdate",
+	"componentDidMount",
+	"componentWillReceiveProps",
+	"UNSAFE_componentWillReceiveProps",
+	"shouldComponentUpdate",
+	"componentWillUpdate",
+	"UNSAFE_componentWillUpdate",
+	"componentDidUpdate",
+	"componentWillUnmount",
+	"componentDidCatch",
+	"setState",
+	"forceUpdate",
 ];
 
-export default function autoBindReact(self, {exclude = [], ...options} = {}) {
-	options.exclude = [
-		...exclude,
-		...excludedReactMethods,
-	];
+export default function autoBindReact(self, { exclude = [], ...options } = {}) {
+	options.exclude = [...exclude, ...excludedReactMethods];
 
 	return autoBind(self, options);
 }

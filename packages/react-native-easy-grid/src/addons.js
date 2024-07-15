@@ -1,8 +1,8 @@
-import tinyColor from 'tinycolor2';
-import _ from 'lodash';
+import _ from "lodash";
+import tinyColor from "tinycolor2";
 
 function capitalizeFirstLetter(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
+	return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 /**
@@ -37,21 +37,21 @@ function capitalizeFirstLetter(value) {
  * @returns {object} An object with the generated style variants.
  */
 export function createVariations(baseName, nameSuffixes, key, value) {
-  return _.reduce(
-    nameSuffixes,
-    (result, variant) => {
-      const variantName = variant ? `${baseName}-${variant}` : baseName;
-      const keyName = variant ? `${key}${capitalizeFirstLetter(variant)}` : key;
+	return _.reduce(
+		nameSuffixes,
+		(result, variant) => {
+			const variantName = variant ? `${baseName}-${variant}` : baseName;
+			const keyName = variant ? `${key}${capitalizeFirstLetter(variant)}` : key;
 
-      // eslint-disable-next-line no-param-reassign
-      result[variantName] = {
-        [keyName]: value,
-      };
+			// eslint-disable-next-line no-param-reassign
+			result[variantName] = {
+				[keyName]: value,
+			};
 
-      return result;
-    },
-    {},
-  );
+			return result;
+		},
+		{},
+	);
 }
 
 /**
@@ -86,23 +86,23 @@ export function createVariations(baseName, nameSuffixes, key, value) {
  * @returns {object} An object with the generated styles.
  */
 export function createSharedStyle(
-  componentNames,
-  sharedStyle = {},
-  customStyles = {},
+	componentNames,
+	sharedStyle = {},
+	customStyles = {},
 ) {
-  return _.reduce(
-    componentNames,
-    (result, componentName) => {
-      // eslint-disable-next-line no-param-reassign
-      result[componentName] = {
-        ...sharedStyle,
-        ...customStyles[componentName],
-      };
+	return _.reduce(
+		componentNames,
+		(result, componentName) => {
+			// eslint-disable-next-line no-param-reassign
+			result[componentName] = {
+				...sharedStyle,
+				...customStyles[componentName],
+			};
 
-      return result;
-    },
-    {},
-  );
+			return result;
+		},
+		{},
+	);
 }
 
 /**
@@ -112,9 +112,7 @@ export function createSharedStyle(
  * @returns {*}
  */
 export function changeColorAlpha(color, newAlpha) {
-  return tinyColor(color)
-    .setAlpha(newAlpha)
-    .toRgbString();
+	return tinyColor(color).setAlpha(newAlpha).toRgbString();
 }
 
 /**
@@ -124,11 +122,11 @@ export function changeColorAlpha(color, newAlpha) {
  * @returns {string}
  */
 export function inverseColorBrightnessForAmount(colorValue, amount) {
-  const color = tinyColor(colorValue);
-  if (color.isLight()) {
-    return color.darken(amount).toString();
-  }
-  return color.lighten(amount).toString();
+	const color = tinyColor(colorValue);
+	if (color.isLight()) {
+		return color.darken(amount).toString();
+	}
+	return color.lighten(amount).toString();
 }
 
 /**
@@ -141,9 +139,9 @@ export function inverseColorBrightnessForAmount(colorValue, amount) {
  * @returns {number}
  */
 export function getSizeRelativeToReference(
-  dimension,
-  originalRefVal,
-  actualRefVal,
+	dimension,
+	originalRefVal,
+	actualRefVal,
 ) {
-  return (dimension / originalRefVal) * actualRefVal;
+	return (dimension / originalRefVal) * actualRefVal;
 }

@@ -9,6 +9,10 @@
 			"path": "packages/inversify"
 		},
 		{
+			"name": "📦 @achmadk/inversify-hooks",
+			"path": "packages/inversify-hooks"
+		},
+		{
 			"name": "📦 @achmadk/inversify-props",
 			"path": "packages/inversify-props"
 		}

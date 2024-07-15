@@ -44,7 +44,8 @@ message();
 //=> Error: Cannot read property 'name' of undefined
 ```
 */
-export default function autoBind<SelfType extends Record<string, any>>( // This has to use `any` to be compatible with classes.
+export default function autoBind<SelfType extends Record<string, any>>(
+	// This has to use `any` to be compatible with classes.
 	self: SelfType,
-	options?: Options
+	options?: Options,
 ): SelfType;

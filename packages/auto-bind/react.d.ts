@@ -1,5 +1,5 @@
-import {Component as ReactComponent} from 'react';
-import autoBind, {Options} from './index.js';
+import type { Component as ReactComponent } from "react";
+import autoBind, { type Options } from "./index.js";
 
 /**
 Same as `autoBind` but excludes the default [React component methods](https://reactjs.org/docs/react-component.html).
@@ -22,5 +22,5 @@ class Foo extends React.Component {
 */
 export default function autoBindReact<SelfType extends ReactComponent>(
 	self: SelfType,
-	options?: Options
+	options?: Options,
 ): SelfType;

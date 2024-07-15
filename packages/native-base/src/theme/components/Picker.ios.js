@@ -1,7 +1,7 @@
 // @flow
 
 export default () => {
-  const pickerTheme = {};
+	const pickerTheme = {};
 
-  return pickerTheme;
+	return pickerTheme;
 };

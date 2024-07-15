@@ -105,7 +105,11 @@ describe('Inject Helper', () => {
       }
 
       class OtherDummy implements IOtherDummy {
-        constructor(@inject() private _dummy: IDummy) {}
+        _dummy: IDummy
+
+        constructor(dummy: IDummy) {
+          this._dummy = dummy
+        }
 
         public test(): string {
           return this._dummy.example();

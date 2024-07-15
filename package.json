@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "lerna exec pnpm run build",
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "lerna exec pnpm run lint",
+		"test": "lerna exec pnpm run test",
+		"test:ci": "lerna exec pnpm run test -- --maxWorkers 2",
 		"prepare": "husky"
 	},
 	"keywords": [],
@@ -40,7 +42,7 @@
 		"@size-limit/esbuild-why": "^11.1.4",
 		"@types/jest": "29.5.12",
 		"@types/node": "^20.14.10",
-		"vitest": "^1.6.0"
+		"vitest": "^2.0.2"
 	},
 	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
 }
