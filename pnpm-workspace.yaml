@@ -1,2 +1,5 @@
 packages:
- - "packages/inversify**"
+ - "packages/inversify"
+ - "packages/inversify-props"
+ - "packages/inversify-hooks"
+ - "packages/react-firebase"

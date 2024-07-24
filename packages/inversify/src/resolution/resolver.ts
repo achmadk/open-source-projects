@@ -1,16 +1,16 @@
 import { CIRCULAR_DEPENDENCY_IN_FACTORY } from "../constants/error_msgs";
 import { BindingTypeEnum } from "../constants/literal_types";
 import type {
-	Binding,
-	BindingActivation,
-	ContainerInterface,
-	Context,
-	FactoryTypeFunction,
-	Lookup,
-	Newable,
-	Request,
-	RequestScope,
-	ServiceIdentifier,
+  Binding,
+  BindingActivation,
+  ContainerInterface,
+  Context,
+  FactoryTypeFunction,
+  Lookup,
+  Newable,
+  Request,
+  RequestScope,
+  ServiceIdentifier,
 } from "../interfaces/interfaces";
 import { getBindingDictionary } from "../planning/planner";
 import { saveToScope, tryGetFromScope } from "../scope";
@@ -19,277 +19,277 @@ import { tryAndThrowErrorIfStackOverflow } from "../utils/exceptions";
 import { resolveInstance } from "./instantiation";
 
 const _resolveRequest =
-	<T>(requestScope: RequestScope) =>
-	(request: Request): undefined | T | Promise<T> | (T | Promise<T>)[] => {
-		request.parentContext.setCurrentRequest(request);
+  <T>(requestScope: RequestScope) =>
+  (request: Request): undefined | T | Promise<T> | (T | Promise<T>)[] => {
+    request.parentContext.setCurrentRequest(request);
 
-		const bindings = request.bindings;
-		const childRequests = request.childRequests;
+    const bindings = request.bindings;
+    const childRequests = request.childRequests;
 
-		const targetIsAnArray = request.target?.isArray();
+    const targetIsAnArray = request.target?.isArray();
 
-		const targetParentIsNotAnArray =
-			!request.parentRequest ||
-			!request.parentRequest.target ||
-			!request.target ||
-			!request.parentRequest.target.matchesArray(
-				request.target.serviceIdentifier,
-			);
+    const targetParentIsNotAnArray =
+      !request.parentRequest ||
+      !request.parentRequest.target ||
+      !request.target ||
+      !request.parentRequest.target.matchesArray(
+        request.target.serviceIdentifier,
+      );
 
-		if (targetIsAnArray && targetParentIsNotAnArray) {
-			// Create an array instead of creating an instance
-			return childRequests.map((childRequest: Request) => {
-				const _f = _resolveRequest(requestScope);
-				return _f(childRequest) as T | Promise<T>;
-			});
-		}
-		if (request.target.isOptional() && bindings.length === 0) {
-			return undefined;
-		}
+    if (targetIsAnArray && targetParentIsNotAnArray) {
+      // Create an array instead of creating an instance
+      return childRequests.map((childRequest: Request) => {
+        const _f = _resolveRequest(requestScope);
+        return _f(childRequest) as T | Promise<T>;
+      });
+    }
+    if (request.target.isOptional() && bindings.length === 0) {
+      return undefined;
+    }
 
-		const binding = bindings[0];
+    const binding = bindings[0];
 
-		return _resolveBinding<T>(
-			requestScope,
-			request,
-			binding as unknown as Binding<T>,
-		);
-	};
+    return _resolveBinding<T>(
+      requestScope,
+      request,
+      binding as unknown as Binding<T>,
+    );
+  };
 
 const _resolveFactoryFromBinding = <T>(
-	binding: Binding<T>,
-	context: Context,
+  binding: Binding<T>,
+  context: Context,
 ): T | Promise<T> => {
-	const factoryDetails = getFactoryDetails(binding);
-	return tryAndThrowErrorIfStackOverflow(
-		() =>
-			(factoryDetails.factory as FactoryTypeFunction<T>).bind(binding)(context),
-		() =>
-			new Error(
-				CIRCULAR_DEPENDENCY_IN_FACTORY(
-					factoryDetails.factoryType,
-					context.currentRequest.serviceIdentifier.toString(),
-				),
-			),
-	);
+  const factoryDetails = getFactoryDetails(binding);
+  return tryAndThrowErrorIfStackOverflow(
+    () =>
+      (factoryDetails.factory as FactoryTypeFunction<T>).bind(binding)(context),
+    () =>
+      new Error(
+        CIRCULAR_DEPENDENCY_IN_FACTORY(
+          factoryDetails.factoryType,
+          context.currentRequest.serviceIdentifier.toString(),
+        ),
+      ),
+  );
 };
 
 const _getResolvedFromBinding = <T = unknown>(
-	requestScope: RequestScope,
-	request: Request,
-	binding: Binding<T>,
+  requestScope: RequestScope,
+  request: Request,
+  binding: Binding<T>,
 ): T | Promise<T> => {
-	let result: T | Promise<T> | undefined;
-	const childRequests = request.childRequests;
+  let result: T | Promise<T> | undefined;
+  const childRequests = request.childRequests;
 
-	ensureFullyBound(binding);
+  ensureFullyBound(binding);
 
-	switch (binding.type) {
-		case BindingTypeEnum.ConstantValue:
-		case BindingTypeEnum.Function:
-			result = binding.cache as T | Promise<T>;
-			break;
-		case BindingTypeEnum.Constructor:
-			result = binding.implementationType as T;
-			break;
-		case BindingTypeEnum.Instance:
-			result = resolveInstance<T>(
-				binding,
-				binding.implementationType as Newable<T>,
-				childRequests,
-				_resolveRequest<T>(requestScope),
-			);
-			break;
-		default:
-			result = _resolveFactoryFromBinding(binding, request.parentContext);
-	}
+  switch (binding.type) {
+    case BindingTypeEnum.ConstantValue:
+    case BindingTypeEnum.Function:
+      result = binding.cache as T | Promise<T>;
+      break;
+    case BindingTypeEnum.Constructor:
+      result = binding.implementationType as T;
+      break;
+    case BindingTypeEnum.Instance:
+      result = resolveInstance<T>(
+        binding,
+        binding.implementationType as Newable<T>,
+        childRequests,
+        _resolveRequest<T>(requestScope),
+      );
+      break;
+    default:
+      result = _resolveFactoryFromBinding(binding, request.parentContext);
+  }
 
-	return result as T | Promise<T>;
+  return result as T | Promise<T>;
 };
 
 const _resolveInScope = <T>(
-	requestScope: RequestScope,
-	binding: Binding<T>,
-	resolveFromBinding: () => T | Promise<T>,
+  requestScope: RequestScope,
+  binding: Binding<T>,
+  resolveFromBinding: () => T | Promise<T>,
 ): T | Promise<T> => {
-	let result = tryGetFromScope<T>(requestScope, binding);
-	if (result !== null) {
-		return result;
-	}
-	result = resolveFromBinding();
-	saveToScope(requestScope, binding, result);
-	return result;
+  let result = tryGetFromScope<T>(requestScope, binding);
+  if (result !== null) {
+    return result;
+  }
+  result = resolveFromBinding();
+  saveToScope(requestScope, binding, result);
+  return result;
 };
 
 const _resolveBinding = <T>(
-	requestScope: RequestScope,
-	request: Request,
-	binding: Binding<T>,
+  requestScope: RequestScope,
+  request: Request,
+  binding: Binding<T>,
 ): T | Promise<T> => {
-	return _resolveInScope<T>(requestScope, binding, () => {
-		let result = _getResolvedFromBinding(requestScope, request, binding);
-		if (isPromise(result)) {
-			result = result.then((resolved) =>
-				_onActivation(request, binding, resolved),
-			);
-		} else {
-			result = _onActivation<T>(request, binding, result);
-		}
-		return result;
-	});
+  return _resolveInScope<T>(requestScope, binding, () => {
+    let result = _getResolvedFromBinding(requestScope, request, binding);
+    if (isPromise(result)) {
+      result = result.then((resolved) =>
+        _onActivation(request, binding, resolved),
+      );
+    } else {
+      result = _onActivation<T>(request, binding, result);
+    }
+    return result;
+  });
 };
 
 function _onActivation<T>(
-	request: Request,
-	binding: Binding<T>,
-	resolved: T,
+  request: Request,
+  binding: Binding<T>,
+  resolved: T,
 ): T | Promise<T> {
-	let result = _bindingActivation(request.parentContext, binding, resolved);
+  let result = _bindingActivation(request.parentContext, binding, resolved);
 
-	const containersIterator = _getContainersIterator(
-		request.parentContext.container,
-	);
+  const containersIterator = _getContainersIterator(
+    request.parentContext.container,
+  );
 
-	let container: ContainerInterface;
-	let containersIteratorResult = containersIterator.next();
+  let container: ContainerInterface;
+  let containersIteratorResult = containersIterator.next();
 
-	do {
-		container = containersIteratorResult.value;
-		const context = request.parentContext;
-		const serviceIdentifier = request.serviceIdentifier;
-		const activationsIterator = _getContainerActivationsForService(
-			container,
-			serviceIdentifier,
-		);
+  do {
+    container = containersIteratorResult.value;
+    const context = request.parentContext;
+    const serviceIdentifier = request.serviceIdentifier;
+    const activationsIterator = _getContainerActivationsForService(
+      container,
+      serviceIdentifier,
+    );
 
-		if (isPromise(result)) {
-			result = _activateContainerAsync<T>(
-				activationsIterator as Iterator<BindingActivation<T>>,
-				context,
-				result,
-			);
-		} else {
-			result = _activateContainer<T>(
-				activationsIterator as Iterator<BindingActivation<T>>,
-				context,
-				result,
-			);
-		}
+    if (isPromise(result)) {
+      result = _activateContainerAsync<T>(
+        activationsIterator as Iterator<BindingActivation<T>>,
+        context,
+        result,
+      );
+    } else {
+      result = _activateContainer<T>(
+        activationsIterator as Iterator<BindingActivation<T>>,
+        context,
+        result,
+      );
+    }
 
-		containersIteratorResult = containersIterator.next();
+    containersIteratorResult = containersIterator.next();
 
-		// make sure if we are currently on the container that owns the binding, not to keep looping down to child containers
-	} while (
-		containersIteratorResult.done !== true &&
-		!getBindingDictionary(container).hasKey(request.serviceIdentifier)
-	);
+    // make sure if we are currently on the container that owns the binding, not to keep looping down to child containers
+  } while (
+    containersIteratorResult.done !== true &&
+    !getBindingDictionary(container).hasKey(request.serviceIdentifier)
+  );
 
-	return result;
+  return result;
 }
 
 const _bindingActivation = <T>(
-	context: Context,
-	binding: Binding<T>,
-	previousResult: T,
+  context: Context,
+  binding: Binding<T>,
+  previousResult: T,
 ): T | Promise<T> => {
-	let result: T | Promise<T>;
+  let result: T | Promise<T>;
 
-	// use activation handler if available
-	if (typeof binding.onActivation === "function") {
-		result = binding.onActivation(context, previousResult);
-	} else {
-		result = previousResult;
-	}
+  // use activation handler if available
+  if (typeof binding.onActivation === "function") {
+    result = binding.onActivation(context, previousResult);
+  } else {
+    result = previousResult;
+  }
 
-	return result;
+  return result;
 };
 
 const _activateContainer = <T>(
-	activationsIterator: Iterator<BindingActivation<T>>,
-	context: Context,
-	initialResult: T,
+  activationsIterator: Iterator<BindingActivation<T>>,
+  context: Context,
+  initialResult: T,
 ): T | Promise<T> => {
-	let activation = activationsIterator.next();
-	let result = initialResult;
+  let activation = activationsIterator.next();
+  let result = initialResult;
 
-	while (!activation.done) {
-		result = activation.value(context, result) as T;
+  while (!activation.done) {
+    result = activation.value(context, result) as T;
 
-		if (isPromise<T>(result)) {
-			return _activateContainerAsync(activationsIterator, context, result);
-		}
+    if (isPromise<T>(result)) {
+      return _activateContainerAsync(activationsIterator, context, result);
+    }
 
-		activation = activationsIterator.next();
-	}
+    activation = activationsIterator.next();
+  }
 
-	return result;
+  return result;
 };
 
 const _activateContainerAsync = async <T>(
-	activationsIterator: Iterator<BindingActivation<T>>,
-	context: Context,
-	resultPromise: Promise<T>,
+  activationsIterator: Iterator<BindingActivation<T>>,
+  context: Context,
+  resultPromise: Promise<T>,
 ): Promise<T> => {
-	let result = await resultPromise;
-	let activation = activationsIterator.next();
+  let result = await resultPromise;
+  let activation = activationsIterator.next();
 
-	while (!activation.done) {
-		result = await activation.value(context, result);
+  while (!activation.done) {
+    result = await activation.value(context, result);
 
-		activation = activationsIterator.next();
-	}
+    activation = activationsIterator.next();
+  }
 
-	return result;
+  return result;
 };
 
 const _getContainerActivationsForService = <T>(
-	container: ContainerInterface,
-	serviceIdentifier: ServiceIdentifier<T>,
+  container: ContainerInterface,
+  serviceIdentifier: ServiceIdentifier<T>,
 ) => {
-	// smell accessing _activations, but similar pattern is done in planner.getBindingDictionary()
-	const activations = (
-		container as unknown as { _activations: Lookup<BindingActivation<unknown>> }
-	)._activations;
+  // smell accessing _activations, but similar pattern is done in planner.getBindingDictionary()
+  const activations = (
+    container as unknown as { _activations: Lookup<BindingActivation<unknown>> }
+  )._activations;
 
-	return activations.hasKey(serviceIdentifier)
-		? activations.get(serviceIdentifier).values()
-		: [].values();
+  return activations.hasKey(serviceIdentifier)
+    ? activations.get(serviceIdentifier).values()
+    : [].values();
 };
 
 const _getContainersIterator = (
-	container: ContainerInterface,
+  container: ContainerInterface,
 ): Iterator<ContainerInterface> => {
-	const containersStack: ContainerInterface[] = [container];
+  const containersStack: ContainerInterface[] = [container];
 
-	let parent = container.parent;
+  let parent = container.parent;
 
-	while (parent !== null) {
-		containersStack.push(parent);
+  while (parent !== null) {
+    containersStack.push(parent);
 
-		parent = parent.parent;
-	}
+    parent = parent.parent;
+  }
 
-	const getNextContainer: () => IteratorResult<ContainerInterface> = () => {
-		const nextContainer = containersStack.pop();
+  const getNextContainer: () => IteratorResult<ContainerInterface> = () => {
+    const nextContainer = containersStack.pop();
 
-		if (nextContainer !== undefined) {
-			return { done: false, value: nextContainer };
-		}
-		return { done: true, value: undefined };
-	};
+    if (nextContainer !== undefined) {
+      return { done: false, value: nextContainer };
+    }
+    return { done: true, value: undefined };
+  };
 
-	const containersIterator: Iterator<ContainerInterface> = {
-		next: getNextContainer,
-	};
+  const containersIterator: Iterator<ContainerInterface> = {
+    next: getNextContainer,
+  };
 
-	return containersIterator;
+  return containersIterator;
 };
 
 export function resolve<T>(
-	context: Context,
+  context: Context,
 ): T | Promise<T> | (T | Promise<T>)[] {
-	const _f = _resolveRequest<T>(
-		context.plan.rootRequest.requestScope as RequestScope,
-	);
-	return _f(context.plan.rootRequest) as T | Promise<T> | (T | Promise<T>)[];
+  const _f = _resolveRequest<T>(
+    context.plan.rootRequest.requestScope as RequestScope,
+  );
+  return _f(context.plan.rootRequest) as T | Promise<T> | (T | Promise<T>)[];
 }

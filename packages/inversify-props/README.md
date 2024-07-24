@@ -1,16 +1,16 @@
-# Inversify Props
+# Inversify Props (`@achmadk/inversify-props`)
 
 This package is a wrapper of [Inversify (ES Module Support)](https://github.com/achmadk/inversify-esm) to simplify how inject your dependencies with property decorators in the components, made with TypeScript and compatible with Vue, React and other component libraries.
 
-Do you use Hooks? You can try the experimental package [inversify-hooks-esm] with ES Module support (https://github.com/achmadk/inversify-hooks-esm)
+Do you use Hooks? You can try the experimental package [@achmadk/inversify-hooks] with ES Module support (https://github.com/achmadk/inversify-hooks-esm)
 
 ![logo](https://i.imgur.com/syVbzU6.gif)
 
 ## Installation
 
-Install peer dependencies of this package, `inversify-esm` and `reflect-metadata`
+Install peer dependencies of this package, `@achmadk/inversify` and `@abraham/reflection`
 ```bash
-$ npm install inversify-props-esm inversify-esm reflect-metadata --save
+$ npm install @achmadk/inversify-props @achmadk/inversify @abraham/reflection --save
 ```
 
 The inversify-props has built-in typescript definitions without install @types/*.
@@ -18,8 +18,7 @@ The inversify-props has built-in typescript definitions without install @types/*
 ## How to use
 
 ```ts
-import 'reflect-metadata'; // Import only once
-import { container, inject } from 'inversify-props';
+import { container, inject } from '@achmadk/inversify-props';
 
 container.addSingleton<IService1>(Service1);
 container.addSingleton<IService2>(Service2);
@@ -35,8 +34,7 @@ export default class extends Component {
 ## How to use this library outside of a component
 
 ```ts
-import 'reflect-metadata'; // Import only once
-import { cid, container, inject } from 'inversify-props';
+import { cid, container, inject } from '@achmadk/inversify-props';
 
 container.addSingleton<IService1>(Service1, 'MyService1');
 
@@ -80,8 +78,7 @@ export default class extends Component {
 ## This library provides a container to make your experience easier, but you can create your own container.
 
 ```ts
-import 'reflect-metadata'; // Import only once
-import { Container, inject, setContainer } from 'inversify-props';
+import { Container, inject, setContainer } from '@achmadk/inversify-props';
 
 setContainer(new Container());
 container.addSingleton<IService1>(Service1, 'MyService1');
@@ -91,17 +88,12 @@ export default class extends Component {
 }
 ```
 
-> :warning: **Important!** inversify-props requires TypeScript >= 2.0 and the `experimentalDecorators`, `emitDecoratorMetadata`, `types` and `lib`
+> :warning: **Important!** inversify-props requires TypeScript >= 2.0 and the `experimentalDecorators`, `emitDecoratorMetadata`
 > compilation options in your `tsconfig.json` file.
 
 ```json
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es6"],
-    "types": ["reflect-metadata"],
-    "module": "commonjs",
-    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }

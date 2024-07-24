@@ -4,10 +4,10 @@
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export function log(debug = false, ...messages: any[]): void {
-	if (!debug) {
-		return;
-	}
+  if (!debug) {
+    return;
+  }
 
-	// @ts-ignore
-	console.log(...messages);
+  // @ts-ignore
+  console.log(...messages);
 }

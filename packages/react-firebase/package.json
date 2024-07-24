@@ -1,0 +1,165 @@
+{
+  "name": "@achmadk/react-firebase",
+  "version": "1.0.0-rc.0",
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./analytics": {
+      "import": "./dist/analytics.js",
+      "require": "./dist/analytics.cjs",
+      "types": "./dist/analytics.d.ts"
+    },
+    "./app": {
+      "import": "./dist/app.js",
+      "require": "./dist/app.cjs",
+      "types": "./dist/app.d.ts"
+    },
+    "./app-check": {
+      "import": "./dist/appCheck.js",
+      "require": "./dist/appCheck.cjs",
+      "types": "./dist/app-check.d.ts"
+    },
+    "./auth": {
+      "import": "./dist/auth.js",
+      "require": "./dist/auth.cjs",
+      "types": "./dist/auth.d.ts"
+    },
+    "./database": {
+      "import": "./dist/database.js",
+      "require": "./dist/database.cjs",
+      "types": "./dist/database.d.ts"
+    },
+    "./firestore": {
+      "import": "./dist/firestore.js",
+      "require": "./dist/firestore.cjs",
+      "types": "./dist/firestore.d.ts"
+    },
+    "./functions": {
+      "import": "./dist/functions.js",
+      "require": "./dist/functions.cjs",
+      "types": "./dist/functions.d.ts"
+    },
+    "./installations": {
+      "import": "./dist/installations.js",
+      "require": "./dist/installations.cjs",
+      "types": "./dist/installations.d.ts"
+    },
+    "./messaging": {
+      "import": "./dist/messaging.js",
+      "require": "./dist/messaging.cjs",
+      "types": "./dist/messaging.d.ts"
+    },
+    "./performance": {
+      "import": "./dist/performance.js",
+      "require": "./dist/performance.cjs",
+      "types": "./dist/performance.d.ts"
+    },
+    "./vertex-ai": {
+      "import": "./dist/vertexAI.js",
+      "require": "./dist/vertexAI.cjs",
+      "types": "./dist/vertex-ai.d.ts"
+    },
+    "./server": {
+      "import": "./dist/serverIndex.js",
+      "require": "./dist/serverIndex.cjs",
+      "types": "./dist/server.d.ts"
+    },
+    "./server/analytics": {
+      "import": "./dist/serverAnalytics.js",
+      "require": "./dist/serverAnalytics.cjs",
+      "types": "./dist/analytics-server.d.ts"
+    },
+    "./server/app": {
+      "import": "./dist/serverApp.js",
+      "require": "./dist/serverApp.cjs",
+      "types": "./dist/app-server.d.ts"
+    },
+    "./server/app-check": {
+      "import": "./dist/serverAppCheck.js",
+      "require": "./dist/serverAppCheck.cjs",
+      "types": "./dist/app-check-server.d.ts"
+    },
+    "./server/auth": {
+      "import": "./dist/serverAuth.js",
+      "require": "./dist/serverAuth.cjs",
+      "types": "./dist/auth-server.d.ts"
+    },
+    "./server/database": {
+      "import": "./dist/serverDatabase.js",
+      "require": "./dist/serverDatabase.cjs",
+      "types": "./dist/database-server.d.ts"
+    },
+    "./server/firestore": {
+      "import": "./dist/serverFirestore.js",
+      "require": "./dist/serverFirestore.cjs",
+      "types": "./dist/firestore-server.d.ts"
+    },
+    "./server/functions": {
+      "import": "./dist/serverFunctions.js",
+      "require": "./dist/serverFunctions.cjs",
+      "types": "./dist/functions-server.d.ts"
+    },
+    "./server/installations": {
+      "import": "./dist/serverInstallations.js",
+      "require": "./dist/serverInstallations.cjs",
+      "types": "./dist/installations-server.d.ts"
+    },
+    "./server/messaging": {
+      "import": "./dist/serverMessaging.js",
+      "require": "./dist/serverMessaging.cjs",
+      "types": "./dist/messaging-server.d.ts"
+    },
+    "./server/performance": {
+      "import": "./dist/serverPerformance.js",
+      "require": "./dist/serverPerformance.cjs",
+      "types": "./dist/performance-server.d.ts"
+    },
+    "./server/vertex-ai": {
+      "import": "./dist/serverVertexAI.js",
+      "require": "./dist/serverVertexAI.cjs",
+      "types": "./dist/vertex-ai-server.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "test": "vitest run --coverage",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "firebase": "^10.12.4",
+    "react": "^18.3.1"
+  },
+  "size-limit": [
+    {
+      "path": "./dist/index.js",
+      "limit": "2.1 kB"
+    },
+    {
+      "path": "./dist/index.cjs",
+      "limit": "3 kB"
+    },
+    {
+      "path": "./dist/serverIndex.js",
+      "limit": "1.8 kB"
+    },
+    {
+      "path": "./dist/serverIndex.cjs",
+      "limit": "3 kB"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/achmadk/open-source-projects.git",
+    "directory": "./packages/react-firebase"
+  }
+}

@@ -1,21 +1,25 @@
 {
-	"folders": [
-		{
-			"name": "✨ achmadk",
-			"path": "."
-		},
-		{
-			"name": "📦 @achmadk/inversify",
-			"path": "packages/inversify"
-		},
-		{
-			"name": "📦 @achmadk/inversify-hooks",
-			"path": "packages/inversify-hooks"
-		},
-		{
-			"name": "📦 @achmadk/inversify-props",
-			"path": "packages/inversify-props"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "name": "✨ achmadk",
+      "path": "."
+    },
+    {
+      "name": "📦 @achmadk/inversify",
+      "path": "packages/inversify"
+    },
+    {
+      "name": "📦 @achmadk/inversify-hooks",
+      "path": "packages/inversify-hooks"
+    },
+    {
+      "name": "📦 @achmadk/inversify-props",
+      "path": "packages/inversify-props"
+    },
+    {
+      "name": "📦 @achmadk/react-firebase",
+      "path": "packages/react-firebase"
+    }
+  ],
+  "settings": {}
 }

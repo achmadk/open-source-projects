@@ -3,6 +3,6 @@ import { POST_CONSTRUCT } from "../constants/metadata_keys";
 import { propertyEventDecorator } from "./property_event_decorator";
 
 export const postConstruct = propertyEventDecorator(
-	POST_CONSTRUCT,
-	MULTIPLE_POST_CONSTRUCT_METHODS,
+  POST_CONSTRUCT,
+  MULTIPLE_POST_CONSTRUCT_METHODS,
 );

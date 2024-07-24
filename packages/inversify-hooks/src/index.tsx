@@ -1,23 +1,29 @@
 import {
-	type Container,
-	container,
-	getContainer,
+  type Container,
+  container,
+  getContainer,
 } from "@achmadk/inversify-props";
-import { type Context, type ReactNode, createContext, useContext } from "react";
+import {
+  type Context,
+  type ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+} from "react";
 
 export {
-	Inject,
-	inject,
-	injectable,
-	Container,
-	cid,
-	resetContainer,
-	mockRequest,
-	mockSingleton,
-	mockTransient,
-	container,
-	setContainer,
-	getContainer,
+  Inject,
+  inject,
+  injectable,
+  Container,
+  cid,
+  resetContainer,
+  mockRequest,
+  mockSingleton,
+  mockTransient,
+  container,
+  setContainer,
+  getContainer,
 } from "@achmadk/inversify-props";
 
 /**
@@ -43,35 +49,43 @@ export {
  *
  */
 export function useInject<T>(id: string | symbol): T[] {
-	return [getContainer().get<T>(id)];
+  return [getContainer().get<T>(id)];
 }
 
 export const ContainerContext = createContext(container);
 
 export interface ContainerProviderProps {
-	children: ReactNode;
-	value: Container;
-	context?: Context<Container>;
+  children: ReactNode;
+  value: Container;
+  context?: Context<Container>;
 }
 
 export const ContainerProvider = <
-	PropType extends ContainerProviderProps = ContainerProviderProps,
+  PropType extends ContainerProviderProps = ContainerProviderProps,
 >({
-	children,
-	value,
-	context: Context = ContainerContext,
-}: PropType) => <Context.Provider value={value}>{children}</Context.Provider>;
+  children,
+  value,
+  context: Context = ContainerContext,
+}: PropType) => {
+  useEffect(() => {
+    return () => {
+      value.unbindAll();
+    };
+  }, [value.unbindAll]);
+
+  return <Context.Provider value={value}>{children}</Context.Provider>;
+};
 
 export function useContainer<C extends Container = Container>(
-	context = ContainerContext,
+  context = ContainerContext,
 ) {
-	return useContext<C>(context as unknown as Context<C>);
+  return useContext<C>(context as unknown as Context<C>);
 }
 
 export function useContainerGet<T = unknown, C extends Container = Container>(
-	id: string | symbol,
-	context = ContainerContext,
+  id: string | symbol,
+  context = ContainerContext,
 ) {
-	const container = useContainer<C>(context);
-	return container.get<T>(id);
+  const container = useContainer<C>(context);
+  return container.get<T>(id);
 }

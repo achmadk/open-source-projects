@@ -1,52 +1,68 @@
 {
-	"name": "achmadk",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"build:inversify": "lerna exec pnpm run build --scope \"@achmadk/inversify\"",
-		"build:inversify-props": "lerna exec pnpm run build --scope \"@achmadk/inversify-props\"",
-		"build:inversify-hooks": "lerna exec pnpm run build --scope \"@achmadk/inversify-hooks\"",
-		"build": "pnpm run build:inversify && pnpm run build:inversify-props && pnpm run build:inversify-hooks",
-		"lint": "lerna exec pnpm run lint",
-		"test:unit:inversify": "lerna exec pnpm run test --scope \"@achmadk/inversify\"",
-		"test:unit:inversify-props": "lerna exec pnpm run test --scope \"@achmadk/inversify-props\"",
-		"test:unit:inversify-hooks": "lerna exec pnpm run test --scope \"@achmadk/inversify-hooks\"",
-		"test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks",
-		"prepare": "husky"
-	},
-	"keywords": [],
-	"author": "Achmad Kurnianto",
-	"license": "ISC",
-	"dependencies": {
-		"@abraham/reflection": "0.12.0",
-		"@biomejs/biome": "^1.8.3",
-		"@vitejs/plugin-react-swc": "^3.7.0",
-		"dts-cli": "2.0.5",
-		"husky": "^9.0.11",
-		"lerna": "8.1.6",
-		"lint-staged": "^15.2.7",
-		"microbundle": "^0.15.1",
-		"react-native": "^0.74.3",
-		"typescript": "^5.5.3",
-		"vite": "^5.3.3",
-		"vite-plugin-dts": "^3.9.1",
-		"vite-plugin-externalize-deps": "^0.8.0",
-		"vite-tsconfig-paths": "^4.3.2"
-	},
-	"lint-staged": {
-		"*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
-			"biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe"
-		],
-		"*": [
-			"biome check --no-errors-on-unmatched --files-ignore-unknown=true --write --unsafe"
-		]
-	},
-	"devDependencies": {
-		"@size-limit/esbuild": "^11.1.4",
-		"@size-limit/esbuild-why": "^11.1.4",
-		"@types/jest": "29.5.12",
-		"@types/node": "^20.14.10",
-		"vitest": "^2.0.2"
-	}
+  "name": "achmadk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:inversify": "lerna exec pnpm run build --scope \"@achmadk/inversify\"",
+    "build:inversify-props": "lerna exec pnpm run build --scope \"@achmadk/inversify-props\"",
+    "build:inversify-hooks": "lerna exec pnpm run build --scope \"@achmadk/inversify-hooks\"",
+    "build:others": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks}\" pnpm run build",
+    "build": "pnpm run build:inversify && pnpm run build:inversify-props && pnpm run build:inversify-hooks && pnpm run build:others",
+    "lint": "lerna exec pnpm run lint",
+    "test:unit:inversify": "lerna exec pnpm run test --scope \"@achmadk/inversify\"",
+    "test:unit:inversify-props": "lerna exec pnpm run test --scope \"@achmadk/inversify-props\"",
+    "test:unit:inversify-hooks": "lerna exec pnpm run test --scope \"@achmadk/inversify-hooks\"",
+    "test:unit:others": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks}\" pnpm run test",
+    "test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "Achmad Kurnianto",
+  "license": "ISC",
+  "dependencies": {
+    "@abraham/reflection": "0.12.0",
+    "@biomejs/biome": "^1.8.3",
+    "@vitejs/plugin-react-swc": "^3.7.0",
+    "dotenv": "^16.4.5",
+    "dts-cli": "2.0.5",
+    "firebase": "^10.12.4",
+    "husky": "^9.1.1",
+    "lerna": "8.1.7",
+    "lint-staged": "^15.2.7",
+    "microbundle": "^0.15.1",
+    "react-native": "^0.74.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.4",
+    "vite-plugin-dts": "^3.9.1",
+    "vite-plugin-externalize-deps": "^0.8.0",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "lint-staged": {
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
+      "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe"
+    ],
+    "*": [
+      "biome check --no-errors-on-unmatched --files-ignore-unknown=true --write --unsafe"
+    ]
+  },
+  "devDependencies": {
+    "@size-limit/esbuild": "^11.1.4",
+    "@size-limit/esbuild-why": "^11.1.4",
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/jest": "29.5.12",
+    "@types/jsdom": "^21.1.7",
+    "@types/node": "^20.14.12",
+    "@types/react": "18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^2.0.4",
+    "fake-indexeddb": "^6.0.0",
+    "jsdom": "^24.1.1",
+    "react-dom": "18.3.1",
+    "size-limit": "^11.1.4",
+    "vitest": "^2.0.4"
+  },
+  "packageManager": "pnpm@9.5.0+sha512.140036830124618d624a2187b50d04289d5a087f326c9edfc0ccd733d76c4f52c3a313d4fc148794a2a9d81553016004e6742e8cf850670268a7387fc220c903"
 }

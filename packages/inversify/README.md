@@ -32,7 +32,7 @@ InversifyJS has been developed with 4 main goals:
 
 **[Nate Kohari](https://twitter.com/nkohari)** - Author of [Ninject](https://github.com/ninject/Ninject)
 
-> *"Nice work! I've taken a couple shots at creating DI frameworks for JavaScript and TypeScript, but the lack of RTTI really hinders things.* 
+> *"Nice work! I've taken a couple shots at creating DI frameworks for JavaScript and TypeScript, but the lack of RTTI really hinders things.*
 > *The ES7 metadata gets us part of the way there (as you've discovered). Keep up the great work!"*
 
 **[Michel Weststrate](https://twitter.com/mweststrate)** - Author of [MobX](https://github.com/mobxjs/mobx)
@@ -47,38 +47,22 @@ InversifyJS has been developed with 4 main goals:
 You can get the latest release and the type definitions using npm:
 
 ```
-$ npm install inversify reflect-metadata --save
+$ npm install @achmadk/inversify @abraham/reflection --save
 ```
 
-The InversifyJS type definitions are included in the inversify npm package. 
+The InversifyJS type definitions are included in the inversify npm package.
 
-> :warning: **Important!** InversifyJS requires TypeScript >= 2.0 and the `experimentalDecorators`, `emitDecoratorMetadata`, `types` and `lib` 
+> :warning: **Important!** InversifyJS requires TypeScript >= 2.0 and the `experimentalDecorators` and `emitDecoratorMetadata`
 compilation options in your `tsconfig.json` file.
 
 ```js
 {
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["es6"],
-        "types": ["reflect-metadata"],
-        "module": "commonjs",
-        "moduleResolution": "node",
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     }
 }
 ```
-
-InversifyJS requires a modern JavaScript engine with support for:
-
-- [Reflect metadata](https://rbuckton.github.io/reflect-metadata/)
-- [Map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map)
-- [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (Only required if using [provider injection](https://github.com/inversify/InversifyJS/blob/master/wiki/provider_injection.md))
-- [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) (Only required if using [activation handlers](https://github.com/inversify/InversifyJS/blob/master/wiki/activation_handler.md))
-
-If your environment doesn't support one of these you will need to import a shim or polyfill.
-
-> :warning: **The `reflect-metadata` polyfill should be imported only once in your entire application** because the Reflect object is meant to be a global singleton. More details about this can be found [here](https://github.com/inversify/InversifyJS/issues/262#issuecomment-227593844).
 
 Check out the [Environment support and polyfills](https://github.com/inversify/InversifyJS/blob/master/wiki/environment.md)
 page in the wiki and the [Basic example](https://github.com/inversify/inversify-basic-example) to learn more.
@@ -88,8 +72,8 @@ Let’s take a look at the basic usage and APIs of InversifyJS with TypeScript:
 
 ### Step 1: Declare your interfaces and types
 
-Our goal is to write code that adheres to the [dependency inversion principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle). 
-This means that we should "depend upon Abstractions and do not depend upon concretions". 
+Our goal is to write code that adheres to the [dependency inversion principle](https://en.wikipedia.org/wiki/Dependency_inversion_principle).
+This means that we should "depend upon Abstractions and do not depend upon concretions".
 Let's start by declaring some interfaces (abstractions).
 
 ```ts
@@ -110,7 +94,7 @@ export interface ThrowableWeapon {
 ```
 
 InversifyJS needs to use the type as identifiers at runtime. We use symbols as identifiers but you can also use classes and or string literals.
- 
+
 ```ts
 // file types.ts
 
@@ -127,7 +111,7 @@ export { TYPES };
 > **Note**: It is recommended to use Symbols but InversifyJS also support the usage of Classes and string literals (please refer to the features section to learn more).
 
 ### Step 2: Declare dependencies using the `@injectable` & `@inject` decorators
-Let's continue by declaring some classes (concretions). The classes are implementations of the interfaces that we just declared. All the classes must be annotated with the `@injectable` decorator. 
+Let's continue by declaring some classes (concretions). The classes are implementations of the interfaces that we just declared. All the classes must be annotated with the `@injectable` decorator.
 
 When a class has a  dependency on an interface we also need to use the `@inject` decorator to define an identifier for the interface that will be available at runtime. In this case we will use the Symbols `Symbol.for("Weapon")` and `Symbol.for("ThrowableWeapon")` as runtime identifiers.
 
@@ -135,7 +119,6 @@ When a class has a  dependency on an interface we also need to use the `@inject`
 // file entities.ts
 
 import { injectable, inject } from "inversify";
-import "reflect-metadata";
 import { Weapon, ThrowableWeapon, Warrior } from "./interfaces";
 import { TYPES } from "./types";
 
@@ -287,6 +270,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

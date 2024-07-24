@@ -1,1 +1,5 @@
 node_modules/
+packages/**/dist/
+packages/**/coverage/
+.env*
+!.env.example

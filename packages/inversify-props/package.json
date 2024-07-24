@@ -1,103 +1,102 @@
 {
-	"version": "1.0.0",
-	"license": "MIT",
-	"type": "module",
-	"main": "dist/index.umd.cjs",
-	"typings": "dist/index.d.ts",
-	"exports": {
-		".": {
-			"require": "./dist/index.umd.cjs",
-			"import": "./dist/index.js",
-			"types": "./dist/index.d.ts"
-		}
-	},
-	"sideEffects": false,
-	"files": ["dist"],
-	"engines": {
-		"node": ">=18"
-	},
-	"scripts": {
-		"start": "dts watch",
-		"build": "vite build",
-		"test": "vitest run",
-		"lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
-		"prepublishOnly": "pnpm run build",
-		"size": "size-limit",
-		"analyze": "size-limit --why"
-	},
-	"peerDependencies": {
-		"@abraham/reflection": "0.12.0",
-		"@achmadk/inversify": "workspace:../inversify"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "tsdx lint"
-		}
-	},
-	"prettier": {
-		"printWidth": 80,
-		"semi": true,
-		"singleQuote": true,
-		"trailingComma": "es5"
-	},
-	"name": "@achmadk/inversify-props",
-	"author": "Achmad Kurnianto",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/achmadk/open-source-projects.git",
-		"directory": "./packages/inversify-props"
-	},
-	"module": "./dist/index.js",
-	"size-limit": [
-		{
-			"path": "./dist/index.js",
-			"limit": "400 B"
-		},
-		{
-			"path": "./dist/index.umd.cjs",
-			"limit": "2 KB"
-		}
-	],
-	"devDependencies": {
-		"@abraham/reflection": "0.8.0",
-		"@achmadk/inversify": "workspace:../inversify",
-		"@size-limit/esbuild": "^11.1.4",
-		"@size-limit/esbuild-why": "^11.1.4",
-		"@size-limit/preset-small-lib": "^11.1.4",
-		"@size-limit/webpack": "11.1.4",
-		"@size-limit/webpack-why": "11.1.4",
-		"@skypack/package-check": "0.2.2",
-		"@typescript-eslint/eslint-plugin": "4.29.3",
-		"@typescript-eslint/parser": "4.29.3",
-		"babel-eslint": "10.1.0",
-		"eslint": "7.32.0",
-		"eslint-config-prettier": "7.2.0",
-		"eslint-config-react-app": "6.0.0",
-		"eslint-plugin-flowtype": "5.9.1",
-		"eslint-plugin-import": "2.24.2",
-		"eslint-plugin-jsx-a11y": "6.4.1",
-		"eslint-plugin-prettier": "3.4.1",
-		"eslint-plugin-react": "7.24.0",
-		"eslint-plugin-react-hooks": "4.2.0",
-		"husky": "^5.0.9",
-		"prettier": "2.3.2",
-		"size-limit": "^11.1.4",
-		"tsdx": "^0.14.1",
-		"tslib": "^2.3.1",
-		"typescript": "^4.4.2",
-		"vitest": "^2.0.2"
-	},
-	"keywords": [
-		"inversify",
-		"typescript",
-		"typescript inject",
-		"typescript di",
-		"react di",
-		"vue di",
-		"vue inject",
-		"react inject",
-		"litelement",
-		"polymer",
-		"support ES Module"
-	]
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.umd.cjs",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.umd.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist"],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "dts watch",
+    "build": "vite build",
+    "test": "vitest run",
+    "lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
+    "prepublishOnly": "pnpm run build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {
+    "@abraham/reflection": "0.12.0",
+    "@achmadk/inversify": "workspace:../inversify"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "@achmadk/inversify-props",
+  "author": "Achmad Kurnianto",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/achmadk/open-source-projects.git",
+    "directory": "./packages/inversify-props"
+  },
+  "module": "./dist/index.js",
+  "size-limit": [
+    {
+      "path": "./dist/index.js",
+      "limit": "400 B"
+    },
+    {
+      "path": "./dist/index.umd.cjs",
+      "limit": "2 KB"
+    }
+  ],
+  "devDependencies": {
+    "@abraham/reflection": "0.8.0",
+    "@achmadk/inversify": "workspace:../inversify",
+    "@size-limit/esbuild": "^11.1.4",
+    "@size-limit/esbuild-why": "^11.1.4",
+    "@size-limit/preset-small-lib": "^11.1.4",
+    "@size-limit/webpack": "11.1.4",
+    "@size-limit/webpack-why": "11.1.4",
+    "@skypack/package-check": "0.2.2",
+    "@typescript-eslint/eslint-plugin": "4.29.3",
+    "@typescript-eslint/parser": "4.29.3",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "7.2.0",
+    "eslint-config-react-app": "6.0.0",
+    "eslint-plugin-flowtype": "5.9.1",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "3.4.1",
+    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "husky": "^5.0.9",
+    "prettier": "2.3.2",
+    "size-limit": "^11.1.4",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.2"
+  },
+  "keywords": [
+    "inversify",
+    "typescript",
+    "typescript inject",
+    "typescript di",
+    "react di",
+    "vue di",
+    "vue inject",
+    "react inject",
+    "litelement",
+    "polymer",
+    "support ES Module"
+  ]
 }

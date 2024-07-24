@@ -3,5 +3,5 @@ import { Metadata } from "../planning/metadata";
 import { createTaggedDecorator } from "./decorator_utils";
 
 export function optional() {
-	return createTaggedDecorator(new Metadata(OPTIONAL_TAG, true));
+  return createTaggedDecorator(new Metadata(OPTIONAL_TAG, true));
 }

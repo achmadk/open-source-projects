@@ -10,5 +10,5 @@ import { createTaggedDecorator } from "./decorator_utils";
  * @return {*}
  */
 export function named(name: string | number | symbol) {
-	return createTaggedDecorator(new Metadata(NAMED_TAG, name));
+  return createTaggedDecorator(new Metadata(NAMED_TAG, name));
 }
