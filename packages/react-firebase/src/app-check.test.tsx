@@ -149,7 +149,6 @@ describe("test app-check.ts file", () => {
         );
 
       const token = await result.current.getLimitedUseToken();
-      console.log(token);
       expect(spy).toHaveBeenCalled();
       expect(token).not.toBeUndefined();
     });
@@ -170,7 +169,6 @@ describe("test app-check.ts file", () => {
         );
 
       const token = await result.current.getToken();
-      console.log(token);
       expect(spy).toHaveBeenCalled();
       expect(token).not.toBeUndefined();
     });

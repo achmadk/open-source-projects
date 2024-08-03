@@ -8,8 +8,8 @@ import { UnitTestProvider } from "./UnitTestProvider";
 import {
   useFirebaseFirestore,
   useFirebaseFirestoreMethods,
-  useFirebaseFirestoreOnSnapshotInSync,
   useInitializeFirestore,
+  useOnSnapshotInSync,
 } from "./firestore";
 
 describe("test firestore.ts file", () => {
@@ -40,15 +40,13 @@ describe("test firestore.ts file", () => {
     });
   });
 
-  describe("test useFirebaseFirestoreOnSnapshotInSync", () => {
+  describe("test useOnSnapshotInSync", () => {
     test("rendered successfully", () => {
       const { result } = renderHook(
         () =>
-          useFirebaseFirestoreOnSnapshotInSync({
-            observer: {
-              next(value) {
-                console.log(value);
-              },
+          useOnSnapshotInSync({
+            next(value) {
+              console.log(value);
             },
           }),
         {
@@ -65,14 +63,16 @@ describe("test firestore.ts file", () => {
       const CustomContext = createContext<FirebaseApp>(undefined!);
       const { result } = renderHook(
         () =>
-          useFirebaseFirestoreOnSnapshotInSync({
-            context: CustomContext,
-            observer: {
+          useOnSnapshotInSync(
+            {
               next(value) {
                 console.log(value);
               },
             },
-          }),
+            {
+              context: CustomContext,
+            },
+          ),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider context={CustomContext}>

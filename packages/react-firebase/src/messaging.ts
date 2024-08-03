@@ -2,48 +2,70 @@ import {
   type GetTokenOptions,
   type MessagePayload,
   type Messaging,
-  type NextFn,
-  type Observer,
   deleteToken as firebaseDeleteToken,
   getToken as firebaseGetToken,
   getMessaging,
   onMessage,
 } from "firebase/messaging";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   type DefaultReactFirebaseHooksOptions,
   useFirebaseApp,
 } from "./Context";
+import type { DefaultNextOrObserver } from "./types";
 
+/**
+ * @description get firebase messaging instance for your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}  {Messaging}
+ */
 export function useFirebaseMessaging<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,
 >(options?: Options): Messaging {
   const app = useFirebaseApp(options?.context);
-  return getMessaging(app);
+  return useMemo(() => getMessaging(app), [app]);
 }
 
-export interface DefaultUseFirebaseMessagingOnMessageOptions
-  extends DefaultReactFirebaseHooksOptions {
-  nextOrObserver: NextFn<MessagePayload> | Observer<MessagePayload>;
-}
-
-export function useFirebaseMessagingOnMessage<
+/**
+ * @description implement {@link onMessage} method easily into your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Payload
+ * @template Options
+ * @param {DefaultNextOrObserver<Payload>} nextOrObserver second parameter of {@link onMessage} method.
+ * @param {Options} [options]
+ */
+export function useOnMessage<
+  Payload extends MessagePayload = MessagePayload,
   Options extends
-    DefaultUseFirebaseMessagingOnMessageOptions = DefaultUseFirebaseMessagingOnMessageOptions,
->(options: Options) {
-  const { nextOrObserver, ...firebaseMessagingOptions } = options;
-
-  const messaging = useFirebaseMessaging(firebaseMessagingOptions);
+    DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,
+>(nextOrObserver: DefaultNextOrObserver<Payload>, options?: Options) {
+  const messaging = useFirebaseMessaging(options);
 
   useEffect(() => {
     if (messaging) {
-      return onMessage(messaging, nextOrObserver);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      return onMessage(messaging, nextOrObserver as any);
     }
   }, [messaging, nextOrObserver]);
 }
 
+/**
+ * @description get methods which depends on firebase messaging installation instance to your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseMessagingMethods<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,

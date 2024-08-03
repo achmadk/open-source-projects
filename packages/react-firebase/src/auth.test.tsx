@@ -82,8 +82,7 @@ describe("test auth.ts file", () => {
   describe("test useBeforeAuthStateChanged", () => {
     test("rendered successfully", () => {
       const { result } = renderHook(
-        () =>
-          useBeforeAuthStateChanged({ callback: (user) => console.log(user) }),
+        () => useBeforeAuthStateChanged((user) => console.log(user)),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider>{children}</UnitTestProvider>
@@ -98,12 +97,14 @@ describe("test auth.ts file", () => {
       const OtherContext = createContext<FirebaseApp>(undefined!);
       const { result } = renderHook(
         () =>
-          useBeforeAuthStateChanged({
-            callback: (user) => {
+          useBeforeAuthStateChanged(
+            (user) => {
               console.log(user);
             },
-            context: OtherContext,
-          }),
+            {
+              context: OtherContext,
+            },
+          ),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider context={OtherContext}>
@@ -119,8 +120,7 @@ describe("test auth.ts file", () => {
   describe("test useOnAuthStateChanged", () => {
     test("rendered successfully", () => {
       const { result } = renderHook(
-        () =>
-          useOnAuthStateChanged({ userObserver: (user) => console.log(user) }),
+        () => useOnAuthStateChanged((user) => console.log(user)),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider>{children}</UnitTestProvider>
@@ -135,12 +135,14 @@ describe("test auth.ts file", () => {
       const OtherContext = createContext<FirebaseApp>(undefined!);
       const { result } = renderHook(
         () =>
-          useOnAuthStateChanged({
-            userObserver: (user) => {
+          useOnAuthStateChanged(
+            (user) => {
               console.log(user);
             },
-            context: OtherContext,
-          }),
+            {
+              context: OtherContext,
+            },
+          ),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider context={OtherContext}>
@@ -156,8 +158,7 @@ describe("test auth.ts file", () => {
   describe("test useOnIdTokenChanged", () => {
     test("rendered successfully", () => {
       const { result } = renderHook(
-        () =>
-          useOnIdTokenChanged({ userObserver: (user) => console.log(user) }),
+        () => useOnIdTokenChanged((user) => console.log(user)),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider>{children}</UnitTestProvider>
@@ -172,12 +173,14 @@ describe("test auth.ts file", () => {
       const OtherContext = createContext<FirebaseApp>(undefined!);
       const { result } = renderHook(
         () =>
-          useOnIdTokenChanged({
-            userObserver: (user) => {
+          useOnIdTokenChanged(
+            (user) => {
               console.log(user);
             },
-            context: OtherContext,
-          }),
+            {
+              context: OtherContext,
+            },
+          ),
         {
           wrapper: ({ children }) => (
             <UnitTestProvider context={OtherContext}>

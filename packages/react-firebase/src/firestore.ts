@@ -1,6 +1,5 @@
 import {
   type Firestore,
-  type FirestoreError,
   type FirestoreSettings,
   clearIndexedDbPersistence as firebaseClearIDBPersistence,
   disableNetwork as firebaseDisableNetwork,
@@ -30,28 +29,71 @@ import type {
   DefaultCollectionOptions,
   DefaultConnectFirestoreEmulatorOptions,
   DefaultDocOptions,
+  DefaultObserverType,
+  DefaultOptionsOnlyFirestore,
   DefaultRunTransactionOptions,
 } from "./types";
 
+/**
+ * @description get your firebase firestore instance easily in your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}  {Firestore}
+ */
 export function useFirebaseFirestore<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,
 >(options?: Options): Firestore {
   const app = useFirebaseApp(options?.context);
-  return getFirestore(app);
+  return useMemo(() => getFirestore(app), [app]);
 }
 
+/**
+ * @description data type options for {@link useInitializeFirestore} method
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseInitializeFirestoreOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ */
 export interface DefaultUseInitializeFirestoreOptions
   extends DefaultReactFirebaseHooksOptions {
+  /**
+   * @description second parameter of {@link initializeFirestore} method
+   * @author Achmad Kurnianto
+   * @date 02/08/2024
+   * @type {FirestoreSettings}
+   * @memberof DefaultUseInitializeFirestoreOptions
+   */
   settings?: FirestoreSettings;
+
+  /**
+   * @description third parameter of {@link initializeFirestore} method
+   * @author Achmad Kurnianto
+   * @date 02/08/2024
+   * @type {string}
+   * @memberof DefaultUseInitializeFirestoreOptions
+   */
   databaseId?: string;
 }
 
+/**
+ * @description create your own firebase firestore instance with {@link initializeFirestore} method under the hood.
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [opts]
+ * @returns {*}  {Firestore}
+ */
 export function useInitializeFirestore<
   Options extends
     DefaultUseInitializeFirestoreOptions = DefaultUseInitializeFirestoreOptions,
 >(opts?: Options): Firestore {
-  const settings = opts?.settings ?? ({} as FirestoreSettings);
+  const settings = opts?.settings ?? {};
   const app = useFirebaseApp(opts?.context);
   return useMemo(
     () => initializeFirestore(app, settings, opts?.databaseId),
@@ -59,26 +101,33 @@ export function useInitializeFirestore<
   );
 }
 
-export interface DefaultUseFirebaseFirestoreOnSnapShotInSyncOptions
-  extends DefaultReactFirebaseHooksOptions {
-  observer:
-    | (() => void)
-    | {
-        // biome-ignore lint/suspicious/noConfusingVoidType: <explanation>
-        next?: (value: void) => void;
-        error?: (error: FirestoreError) => void;
-        complete?: () => void;
-      };
-  firestore?: Firestore;
-}
+/**
+ * @description data type options for {@link useOnSnapshotInSync} hooks.
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseOnSnapshotInSyncOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ * @extends {DefaultOptionsOnlyFirestore}
+ */
+export interface DefaultUseOnSnapshotInSyncOptions
+  extends DefaultReactFirebaseHooksOptions,
+    DefaultOptionsOnlyFirestore {}
 
-export function useFirebaseFirestoreOnSnapshotInSync<
+/**
+ * @description use {@link onSnapshotsInSync} method easily in your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {DefaultObserverType} observer second parameter of {@link onSnapshotsInSync} method
+ * @param {Options} options
+ */
+export function useOnSnapshotInSync<
   Options extends
-    DefaultUseFirebaseFirestoreOnSnapShotInSyncOptions = DefaultUseFirebaseFirestoreOnSnapShotInSyncOptions,
->(options: Options) {
-  const { observer, ...firebaseFirestoreOptions } = options;
-
-  const firestoreFallback = useFirebaseFirestore(firebaseFirestoreOptions);
+    DefaultUseOnSnapshotInSyncOptions = DefaultUseOnSnapshotInSyncOptions,
+>(observer: DefaultObserverType, options?: Options) {
+  const firestoreFallback = useFirebaseFirestore(options);
   const firestore = options?.firestore ?? firestoreFallback;
 
   useEffect(() => {
@@ -89,11 +138,28 @@ export function useFirebaseFirestoreOnSnapshotInSync<
   }, [firestore, observer]);
 }
 
+/**
+ * @description data type options used for {@link useFirebaseFirestoreMethods} method
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseFirebaseFirestoreMethods
+ * @extends {DefaultReactFirebaseHooksOptions}
+ * @extends {DefaultOptionsOnlyFirestore}
+ */
 export interface DefaultUseFirebaseFirestoreMethods
-  extends DefaultReactFirebaseHooksOptions {
-  firestore?: Firestore;
-}
+  extends DefaultReactFirebaseHooksOptions,
+    DefaultOptionsOnlyFirestore {}
 
+/**
+ * @description easily get methods which depends on firebase firestore instance.
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseFirestoreMethods<
   Options extends
     DefaultUseFirebaseFirestoreMethods = DefaultUseFirebaseFirestoreMethods,

@@ -8,20 +8,39 @@ import {
   getDatabase,
 } from "firebase/database";
 
+import { useMemo } from "react";
 import {
   type DefaultReactFirebaseHooksOptions,
   useFirebaseApp,
 } from "./Context";
 import type { ConnectDatabaseEmulatorOptions } from "./types";
 
+/**
+ * @description get firebase database instance easily in your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}  {Database}
+ */
 export function useFirebaseDatabase<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,
 >(options?: Options): Database {
   const app = useFirebaseApp(options?.context);
-  return getDatabase(app);
+  return useMemo(() => getDatabase(app), [app]);
 }
 
+/**
+ * @description get methods which depends on firebase database instance easily in your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseDatabaseMethods<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,

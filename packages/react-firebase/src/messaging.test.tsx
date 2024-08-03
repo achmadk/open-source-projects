@@ -8,7 +8,7 @@ import { UnitTestProvider } from "./UnitTestProvider";
 import {
   useFirebaseMessaging,
   useFirebaseMessagingMethods,
-  useFirebaseMessagingOnMessage,
+  useOnMessage,
 } from "./messaging";
 
 describe.skip("test messaging.ts file", () => {
@@ -47,22 +47,20 @@ describe.skip("test messaging.ts file", () => {
     });
   });
 
-  describe("test useFirebaseMessagingOnMessage", () => {
+  describe("test useOnMessage", () => {
     test("rendered successfully", () => {
       try {
         const { result } = renderHook(
           () =>
-            useFirebaseMessagingOnMessage({
-              nextOrObserver: {
-                next(value) {
-                  console.log(value);
-                },
-                error(err) {
-                  console.log(err);
-                },
-                complete() {
-                  console.log("completed");
-                },
+            useOnMessage({
+              next(value) {
+                console.log(value);
+              },
+              error(err) {
+                console.log(err);
+              },
+              complete() {
+                console.log("completed");
               },
             }),
           {
@@ -83,17 +81,15 @@ describe.skip("test messaging.ts file", () => {
         const CustomContext = createContext<FirebaseApp>(undefined!);
         const { result } = renderHook(
           () =>
-            useFirebaseMessagingOnMessage({
-              nextOrObserver: {
-                next(value) {
-                  console.log(value);
-                },
-                error(err) {
-                  console.log(err);
-                },
-                complete() {
-                  console.log("completed");
-                },
+            useOnMessage({
+              next(value) {
+                console.log(value);
+              },
+              error(err) {
+                console.log(err);
+              },
+              complete() {
+                console.log("completed");
               },
             }),
           {

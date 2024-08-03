@@ -7,8 +7,6 @@ import viteConfig from "./vite.config";
 
 import "dotenv/config";
 
-console.log(process.env.RECAPTCHA_SITE_KEY);
-
 export default mergeConfig(
   viteConfig,
   defineConfig({
@@ -24,8 +22,12 @@ export default mergeConfig(
           ...coverageConfigDefaults.exclude,
           "src/main.tsx",
           "src/server.ts",
+          "src/nextjs.ts",
           "src/**/index.ts",
+          "src/types/*.ts",
           "src/**/*-server.ts",
+          "src/**/*-next.ts",
+          "src/**/*-next.tsx",
           "src/ServerContext.tsx",
           "src/UnitTestProvider.tsx",
         ],

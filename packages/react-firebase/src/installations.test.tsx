@@ -43,10 +43,8 @@ describe("test installations.ts file", () => {
     test("rendered successfully", () => {
       const { result } = renderHook(
         () =>
-          useOnIdChange({
-            callback(id) {
-              console.log(id);
-            },
+          useOnIdChange((id) => {
+            console.log(id);
           }),
         {
           wrapper: ({ children }) => (
@@ -62,10 +60,8 @@ describe("test installations.ts file", () => {
       const CustomContext = createContext<FirebaseApp>(undefined!);
       const { result } = renderHook(
         () =>
-          useOnIdChange({
-            callback(id) {
-              console.log(id);
-            },
+          useOnIdChange((id) => {
+            console.log(id);
           }),
         {
           wrapper: ({ children }) => (

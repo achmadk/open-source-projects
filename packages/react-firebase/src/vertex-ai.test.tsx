@@ -77,7 +77,7 @@ describe("test performance.ts file", () => {
       }
     });
 
-    test("successfully call trace method", async () => {
+    test("successfully call getGenerativeModel method", async () => {
       try {
         const { result } = renderHook(() => useFirebaseVertexAIMethods(), {
           wrapper: ({ children }) => (

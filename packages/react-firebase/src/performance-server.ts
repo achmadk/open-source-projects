@@ -12,13 +12,14 @@ import {
   type DefaultReactFirebaseServerHooksOptions,
   useFirebaseServerApp,
 } from "./ServerContext";
+import type { DefaultOptionsOnlyPerformance } from "./types";
 
 export function useFirebasePerformance<
   Options extends
     DefaultReactFirebaseServerHooksOptions = DefaultReactFirebaseServerHooksOptions,
 >(options?: Options): FirebasePerformance {
   const app = useFirebaseServerApp(options?.context);
-  return getPerformance(app);
+  return useMemo(() => getPerformance(app), [app]);
 }
 
 export interface DefaultUseInitializePerformanceOptions
@@ -34,17 +35,33 @@ export function useInitializePerformance<
   return useMemo(() => initializePerformance(app, opts?.options), [app, opts]);
 }
 
+/**
+ * @description data type options for {@link useFirebasePerformanceMethods} hooks
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseFirebasePerformanceMethodsOptions
+ * @extends {DefaultReactFirebaseServerHooksOptions}
+ * @extends {DefaultOptionsOnlyPerformance}
+ */
 export interface DefaultUseFirebasePerformanceMethodsOptions
-  extends DefaultReactFirebaseServerHooksOptions {
-  performance?: FirebasePerformance;
-}
+  extends DefaultReactFirebaseServerHooksOptions,
+    DefaultOptionsOnlyPerformance {}
 
+/**
+ * @description get methods which depends on firebase performance instance
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebasePerformanceMethods<
   Options extends
     DefaultUseFirebasePerformanceMethodsOptions = DefaultUseFirebasePerformanceMethodsOptions,
 >(options?: Options) {
-  const performanceFallback = useFirebasePerformance(options);
-  const performance = options?.performance ?? performanceFallback;
+  const performance = options?.performance ?? useFirebasePerformance(options);
 
   const trace = (name: string): PerformanceTrace =>
     firebaseTrace(performance, name);

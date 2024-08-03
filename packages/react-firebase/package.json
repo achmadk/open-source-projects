@@ -58,15 +58,95 @@
       "require": "./dist/messaging.cjs",
       "types": "./dist/messaging.d.ts"
     },
+    "./remote-config": {
+      "import": "./dist/remoteConfig.js",
+      "require": "./dist/remoteConfig.cjs",
+      "types": "./dist/remote-config.d.ts"
+    },
     "./performance": {
       "import": "./dist/performance.js",
       "require": "./dist/performance.cjs",
       "types": "./dist/performance.d.ts"
     },
+    "./storage": {
+      "import": "./dist/storage.js",
+      "require": "./dist/storage.cjs",
+      "types": "./dist/storage.d.ts"
+    },
     "./vertex-ai": {
       "import": "./dist/vertexAI.js",
       "require": "./dist/vertexAI.cjs",
       "types": "./dist/vertex-ai.d.ts"
+    },
+    "./nextjs": {
+      "import": "./dist/nextjsIndex.js",
+      "require": "./dist/nextjsIndex.cjs",
+      "types": "./dist/nextjs.d.ts"
+    },
+    "./nextjs/analytics": {
+      "import": "./dist/nextjsAnalytics.js",
+      "require": "./dist/nextjsAnalytics.cjs",
+      "types": "./dist/analytics-next.d.ts"
+    },
+    "./nextjs/app": {
+      "import": "./dist/nextjsApp.js",
+      "require": "./dist/nextjsApp.cjs",
+      "types": "./dist/Context-next.d.ts"
+    },
+    "./nextjs/app-check": {
+      "import": "./dist/nextjsAppCheck.js",
+      "require": "./dist/nextjsAppCheck.cjs",
+      "types": "./dist/app-check-next.d.ts"
+    },
+    "./nextjs/auth": {
+      "import": "./dist/nextjsAuth.js",
+      "require": "./dist/nextjsAuth.cjs",
+      "types": "./dist/auth-next.d.ts"
+    },
+    "./nextjs/database": {
+      "import": "./dist/nextjsDatabase.js",
+      "require": "./dist/nextjsDatabase.cjs",
+      "types": "./dist/database-next.d.ts"
+    },
+    "./nextjs/firestore": {
+      "import": "./dist/nextjsFirestore.js",
+      "require": "./dist/nextjsFirestore.cjs",
+      "types": "./dist/firestore-next.d.ts"
+    },
+    "./nextjs/functions": {
+      "import": "./dist/nextjsFunctions.js",
+      "require": "./dist/nextjsFunctions.cjs",
+      "types": "./dist/functions-next.d.ts"
+    },
+    "./nextjs/installations": {
+      "import": "./dist/nextjsInstallations.js",
+      "require": "./dist/nextjsInstallations.cjs",
+      "types": "./dist/installations-next.d.ts"
+    },
+    "./nextjs/messaging": {
+      "import": "./dist/nextjsMessaging.js",
+      "require": "./dist/nextjsMessaging.cjs",
+      "types": "./dist/messaging-next.d.ts"
+    },
+    "./nextjs/remote-config": {
+      "import": "./dist/nextjsRemoteConfig.js",
+      "require": "./dist/nextjsRemoteConfig.cjs",
+      "types": "./dist/remote-config-next.d.ts"
+    },
+    "./nextjs/performance": {
+      "import": "./dist/nextjsPerformance.js",
+      "require": "./dist/nextjsPerformance.cjs",
+      "types": "./dist/performance-next.d.ts"
+    },
+    "./nextjs/storage": {
+      "import": "./dist/nextjsStorage.js",
+      "require": "./dist/nextjsStorage.cjs",
+      "types": "./dist/storage-next.d.ts"
+    },
+    "./nextjs/vertex-ai": {
+      "import": "./dist/nextjsVertexAI.js",
+      "require": "./dist/nextjsVertexAI.cjs",
+      "types": "./dist/vertex-ai-next.d.ts"
     },
     "./server": {
       "import": "./dist/serverIndex.js",
@@ -136,7 +216,7 @@
     "preview": "vite preview"
   },
   "peerDependencies": {
-    "firebase": "^10.12.4",
+    "firebase": "^10.12.5",
     "react": "^18.3.1"
   },
   "size-limit": [

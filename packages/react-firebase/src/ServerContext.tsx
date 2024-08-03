@@ -39,7 +39,7 @@ export const FirebaseServerProvider = <
   children,
   options,
   appSettings = {},
-  context: Context = FirebaseServerContext,
+  context = FirebaseServerContext,
 }: Props): ReactElement<Props> => {
   const app = useMemo(
     () => initializeServerApp(options, appSettings),
@@ -57,7 +57,7 @@ export const FirebaseServerProvider = <
     return () => deleteApp() as unknown as void;
   }, []);
 
-  return <Context.Provider value={app}>{children}</Context.Provider>;
+  return <context.Provider value={app}>{children}</context.Provider>;
 };
 
 export const { Consumer: FirebaseServerConsumer } = FirebaseServerContext;

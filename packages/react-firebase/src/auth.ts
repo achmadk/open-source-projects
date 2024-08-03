@@ -48,53 +48,182 @@ import {
 import type {
   DefaultConfirmPasswordResetPayload,
   DefaultConnectAuthEmulatorOptions,
+  DefaultOptionsOnlyAuth,
   DefaultSendPasswordResetEmailPayload,
   DefaultSendSignInLinkToEmailPayload,
 } from "./types";
 
+/**
+ * @description payload for {@link firebaseCreateUserWithEmailAndPassword} and {@link firebaseSignInWithEmailAndPassword} method.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultSignInWithEmailAndPasswordPayload
+ */
 export interface DefaultSignInWithEmailAndPasswordPayload {
+  /**
+   * @description second parameter of either {@link firebaseCreateUserWithEmailAndPassword} or {@link firebaseSignInWithEmailAndPassword} method.
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {string}
+   * @memberof DefaultSignInWithEmailAndPasswordPayload
+   */
   email: string;
+
+  /**
+   * @description third parameter of either {@link firebaseCreateUserWithEmailAndPassword} or {@link firebaseSignInWithEmailAndPassword} method.
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {string}
+   * @memberof DefaultSignInWithEmailAndPasswordPayload
+   */
   password: string;
 }
 
+/**
+ * @description payload for {@link firebaseSignInWithEmailLink} method
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultSignInWithEmailLinkPayload
+ */
 export interface DefaultSignInWithEmailLinkPayload {
-  email: string;
   /**
+   * @description second parameter of {@link firebaseSignInWithEmailLink} method
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {string}
+   * @memberof DefaultSignInWithEmailLinkPayload
+   */
+  email: string;
+
+  /**
+   * @description third parameter of {@link firebaseSignInWithEmailLink} method
    * @default undefined
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {string}
+   * @memberof DefaultSignInWithEmailLinkPayload
    */
   emailLink?: string;
 }
 
+/**
+ * @description payload for {@link firebaseSignInWithPhoneNumber} method.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultSignInWithPhoneNumberPayload
+ */
 export interface DefaultSignInWithPhoneNumberPayload {
+  /**
+   * @description second parameter of {@link firebaseSignInWithPhoneNumber} method.
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {string}
+   * @memberof DefaultSignInWithPhoneNumberPayload
+   */
   phoneNumber: string;
+
+  /**
+   * @description third parameter of {@link firebaseSignInWithPhoneNumber} method.
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {ApplicationVerifier}
+   * @memberof DefaultSignInWithPhoneNumberPayload
+   */
   appVerifier: ApplicationVerifier;
 }
 
+/**
+ * @description payload for {@link firebaseSignInWithPopup} and {@link firebaseSignInWithRedirect} method
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultSignInWithPopupPayload
+ */
 export interface DefaultSignInWithPopupPayload {
+  /**
+   * @description second parameter of {@link firebaseSignInWithPopup} method
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {AuthProvider}
+   * @memberof DefaultSignInWithPopupPayload
+   */
   provider: AuthProvider;
+
+  /**
+   * @description third parameter of {@link firebaseSignInWithPopup} method
+   * @default undefined
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {PopupRedirectResolver}
+   * @memberof DefaultSignInWithPopupPayload
+   */
   resolver?: PopupRedirectResolver;
 }
 
+/**
+ * @description payload for {@link firebaseSignInWithRedirect} method
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultSignInWithRedirectPayload
+ * @extends {DefaultSignInWithPopupPayload}
+ */
 export interface DefaultSignInWithRedirectPayload
   extends DefaultSignInWithPopupPayload {}
 
+/**
+ * @description get firebase auth instance for your react app
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}  {Auth}
+ */
 export function useFirebaseAuth<
   Options extends
     DefaultReactFirebaseHooksOptions = DefaultReactFirebaseHooksOptions,
->(options?: Options) {
+>(options?: Options): Auth {
   const app = useFirebaseApp(options?.context);
-  return getAuth(app);
+  return useMemo(() => getAuth(app), [app]);
 }
 
+/**
+ * @description type data used in {@link useInitializeAuth} method
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultUseInitializeAuthOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ */
 export interface DefaultUseInitializeAuthOptions
   extends DefaultReactFirebaseHooksOptions {
+  /**
+   * @description second parameter of {@link initializeAuth} method
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @type {Dependencies}
+   * @memberof DefaultUseInitializeAuthOptions
+   */
   dependencies?: Dependencies;
 }
 
+/**
+ * @description create your own firebase auth instance with {@link initializeAuth} under the hood.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useInitializeAuth<
   Options extends
     DefaultUseInitializeAuthOptions = DefaultUseInitializeAuthOptions,
->(options?: Options) {
+>(options?: Options): Auth {
   const app = useFirebaseApp(options?.context);
   return useMemo(
     () => initializeAuth(app, options?.dependencies),
@@ -102,19 +231,43 @@ export function useInitializeAuth<
   );
 }
 
+/**
+ * @description type data options for {@link useBeforeAuthStateChanged} hooks
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultUseBeforeAuthStateChangedOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ * @extends {DefaultOptionsOnlyAuth}
+ */
 export interface DefaultUseBeforeAuthStateChangedOptions
-  extends DefaultReactFirebaseHooksOptions {
-  callback: (user: User | null) => void | Promise<void>;
+  extends DefaultReactFirebaseHooksOptions,
+    DefaultOptionsOnlyAuth {
+  /**
+   * @description third parameter of {@link beforeAuthStateChanged} method
+   * @default undefined
+   * @author Achmad Kurnianto
+   * @date 01/08/2024
+   * @memberof DefaultUseBeforeAuthStateChangedOptions
+   */
   onAbort?: () => void;
-  auth?: Auth;
 }
 
+/**
+ * @description apply {@link beforeAuthStateChanged} method easily in your react app
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {((user: User | null) => void | Promise<void>)} callback second parameter of {@link beforeAuthStateChanged} method
+ * @param {Options} [options]
+ */
 export function useBeforeAuthStateChanged<
   Options extends
     DefaultUseBeforeAuthStateChangedOptions = DefaultUseBeforeAuthStateChangedOptions,
->(options: Options) {
-  const { callback, onAbort = undefined, ...firebaseAuthOptions } = options;
-  const authFallback = useFirebaseAuth(firebaseAuthOptions);
+>(callback: (user: User | null) => void | Promise<void>, options?: Options) {
+  const onAbort = options?.onAbort ?? undefined;
+  const authFallback = useFirebaseAuth(options);
   const auth = options?.auth ?? authFallback;
 
   useEffect(() => {
@@ -124,18 +277,33 @@ export function useBeforeAuthStateChanged<
   }, [auth, callback, onAbort]);
 }
 
+/**
+ * @description type data options for {@link useOnAuthStateChanged} and {@link useOnIdTokenChanged} hooks
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultUseOnAuthStateChangedOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ * @extends {DefaultOptionsOnlyAuth}
+ */
 export interface DefaultUseOnAuthStateChangedOptions
-  extends DefaultReactFirebaseHooksOptions {
-  userObserver: NextOrObserver<User>;
-  auth?: Auth;
-}
+  extends DefaultReactFirebaseHooksOptions,
+    DefaultOptionsOnlyAuth {}
 
+/**
+ * @description easily use {@link onAuthStateChanged} method inside your react app
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {NextOrObserver<User>} userObserver second parameter of {@link onAuthStateChanged} method.
+ * @param {Options} [options]
+ */
 export function useOnAuthStateChanged<
   Options extends
     DefaultUseOnAuthStateChangedOptions = DefaultUseOnAuthStateChangedOptions,
->(options: Options) {
-  const { userObserver, ...firebaseAuthOptions } = options;
-  const authFallback = useFirebaseAuth(firebaseAuthOptions);
+>(userObserver: NextOrObserver<User>, options?: Options) {
+  const authFallback = useFirebaseAuth(options);
   const auth = options?.auth ?? authFallback;
 
   useEffect(() => {
@@ -145,15 +313,31 @@ export function useOnAuthStateChanged<
   }, [auth, userObserver]);
 }
 
-export type DefaultUseOnIdTokenChangedOptions =
-  DefaultUseOnAuthStateChangedOptions;
+/**
+ * @description data type options for {@link useOnIdTokenChanged} hooks.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultUseOnIdTokenChangedOptions
+ * @extends {DefaultUseOnAuthStateChangedOptions}
+ */
+export interface DefaultUseOnIdTokenChangedOptions
+  extends DefaultUseOnAuthStateChangedOptions {}
 
+/**
+ * @description easily use {@link onIdTokenChanged} method into your react app.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {NextOrObserver<User>} userObserver second parameter of {@link onIdTokenChanged} method
+ * @param {Options} [options]
+ */
 export function useOnIdTokenChanged<
   Options extends
     DefaultUseOnIdTokenChangedOptions = DefaultUseOnIdTokenChangedOptions,
->(options: Options) {
-  const { userObserver, ...firebaseAuthOptions } = options;
-  const authFallback = useFirebaseAuth(firebaseAuthOptions);
+>(userObserver: NextOrObserver<User>, options?: Options) {
+  const authFallback = useFirebaseAuth(options);
   const auth = options?.auth ?? authFallback;
 
   useEffect(() => {
@@ -163,17 +347,34 @@ export function useOnIdTokenChanged<
   }, [auth, userObserver]);
 }
 
+/**
+ * @description data type options for {@link useFirebaseAuthMethods} hooks
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @interface DefaultUseFirebaseAuthMethodsOptions
+ * @extends {DefaultReactFirebaseHooksOptions}
+ * @extends {DefaultOptionsOnlyAuth}
+ */
 export interface DefaultUseFirebaseAuthMethodsOptions
-  extends DefaultReactFirebaseHooksOptions {
-  auth?: Auth;
-}
+  extends DefaultReactFirebaseHooksOptions,
+    DefaultOptionsOnlyAuth {}
 
+/**
+ * @description easily get methods which depends on firebase auth instance.
+ * @author Achmad Kurnianto
+ * @date 01/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [opts]
+ * @returns {*}
+ */
 export function useFirebaseAuthMethods<
   Options extends
     DefaultUseFirebaseAuthMethodsOptions = DefaultUseFirebaseAuthMethodsOptions,
->(options?: Options) {
-  const authFallback = useFirebaseAuth(options);
-  const auth = options?.auth ?? authFallback;
+>(opts?: Options) {
+  const authFallback = useFirebaseAuth(opts);
+  const auth = opts?.auth ?? authFallback;
 
   const applyActionCode = async (verificationCode: string) =>
     await firebaseApplyActionCode(auth, verificationCode);

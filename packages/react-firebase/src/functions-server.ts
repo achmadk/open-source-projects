@@ -5,6 +5,7 @@ import {
   getFunctions,
 } from "firebase/functions";
 
+import { useMemo } from "react";
 import {
   type DefaultReactFirebaseServerHooksOptions,
   useFirebaseServerApp,
@@ -15,19 +16,55 @@ import type {
   DefaultHttpsCallableOptions,
 } from "./types";
 
+/**
+ * @description data type options for {@link useFirebaseFunctions} hooks
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseFirebaseFunctionsOptions
+ * @extends {DefaultReactFirebaseServerHooksOptions}
+ */
 export interface DefaultUseFirebaseFunctionsOptions
   extends DefaultReactFirebaseServerHooksOptions {
+  /**
+   * @description second parameter of {@link getFunctions} method
+   * @author Achmad Kurnianto
+   * @date 02/08/2024
+   * @type {string}
+   * @memberof DefaultUseFirebaseFunctionsOptions
+   */
   regionOrCustomDomain?: string;
 }
 
+/**
+ * @description easily get your firebase functions instance for your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseFunctions<
   Options extends
     DefaultUseFirebaseFunctionsOptions = DefaultUseFirebaseFunctionsOptions,
 >(options?: Options) {
   const app = useFirebaseServerApp(options?.context);
-  return getFunctions(app, options?.regionOrCustomDomain);
+  return useMemo(
+    () => getFunctions(app, options?.regionOrCustomDomain),
+    [app, options],
+  );
 }
 
+/**
+ * @description get methods which depends on firebase functions instance to your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseFunctionsMethods<
   Options extends
     DefaultUseFirebaseFunctionsOptions = DefaultUseFirebaseFunctionsOptions,

@@ -6,33 +6,54 @@ import {
   getInstallations,
   onIdChange,
 } from "firebase/installations";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import {
   type DefaultReactFirebaseServerHooksOptions,
   useFirebaseServerApp,
 } from "./ServerContext";
 
+/**
+ * @description easily get firebase installation instance to your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} [options]
+ * @returns {*}
+ */
 export function useFirebaseInstallations<
   Options extends
     DefaultReactFirebaseServerHooksOptions = DefaultReactFirebaseServerHooksOptions,
 >(options?: Options) {
   const app = useFirebaseServerApp(options?.context);
-  return getInstallations(app);
+  return useMemo(() => getInstallations(app), [app]);
 }
 
+/**
+ * @description data type options for {@link useOnIdChange} hooks.
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @interface DefaultUseOnIdChangeOptions
+ * @extends {DefaultReactFirebaseServerHooksOptions}
+ */
 export interface DefaultUseOnIdChangeOptions
-  extends DefaultReactFirebaseServerHooksOptions {
-  callback: IdChangeCallbackFn;
-}
+  extends DefaultReactFirebaseServerHooksOptions {}
 
+/**
+ * @description easily implement {@link onIdChange} method into your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {IdChangeCallbackFn} callback second parameter of {@link onIdChange} method
+ * @param {Options} [options]
+ */
 export function useOnIdChange<
   Options extends DefaultUseOnIdChangeOptions = DefaultUseOnIdChangeOptions,
->(options: Options) {
-  const { callback, ...useFirebaseInstallationsOptions } = options;
-  const installations = useFirebaseInstallations(
-    useFirebaseInstallationsOptions,
-  );
+>(callback: IdChangeCallbackFn, options?: Options) {
+  const installations = useFirebaseInstallations(options);
 
   useEffect(() => {
     if (installations) {
@@ -41,6 +62,15 @@ export function useOnIdChange<
   }, [installations, callback]);
 }
 
+/**
+ * @description get methods which depends on firebase functions installation instance to your react app
+ * @author Achmad Kurnianto
+ * @date 02/08/2024
+ * @export
+ * @template Options
+ * @param {Options} options
+ * @returns {*}
+ */
 export function useFirebaseInstallationsMethods<
   Options extends
     DefaultReactFirebaseServerHooksOptions = DefaultReactFirebaseServerHooksOptions,
