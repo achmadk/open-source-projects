@@ -19,6 +19,10 @@
     {
       "name": "📦 @achmadk/react-firebase",
       "path": "packages/react-firebase"
+    },
+    {
+      "name": "📦 @achmadk/react-loading-overlay",
+      "path": "packages/react-loading-overlay"
     }
   ],
   "settings": {}

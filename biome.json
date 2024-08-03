@@ -4,6 +4,7 @@
     "ignore": [
       "test/**",
       "packages/**/dist/**",
+      "packages/**/coverage/**",
       "packages/auto-bind/**",
       "packages/native-base/**",
       "packages/react-native-easy-grid/**",

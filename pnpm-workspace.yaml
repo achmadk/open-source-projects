@@ -3,3 +3,4 @@ packages:
  - "packages/inversify-props"
  - "packages/inversify-hooks"
  - "packages/react-firebase"
+ - "packages/react-loading-overlay"
