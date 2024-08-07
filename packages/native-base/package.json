@@ -86,7 +86,7 @@
 		"prettier": "^3.2.5",
 		"pretty-quick": "^4.0.0",
 		"react": "18.2.0",
-		"react-native": "^0.74.4",
+		"react-native": "^0.74.5",
 		"react-test-renderer": "18.2.0"
 	},
 	"gitHead": "5bbeacc403ba97622703699132c55d8359344004",
