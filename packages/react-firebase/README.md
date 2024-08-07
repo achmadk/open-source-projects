@@ -98,10 +98,10 @@ const firebaseConfig = {} // copy your firebase config here
 | latest release | 7 years ago (not maintained anymore) | 2 years ago | already release |
 | firebase support version | <10 | >=10 | >=10
 | support nextjs out of the box | partial | partial | full support, with `@achmadk/react-firebase/nextjs` |
-| provide HoC | `true` | `false` | `false` |
+| provide HoC | `true` | `false` | `true` in `@achmadk/react-firebase/legacy` (`WIP`) |
 | provide hooks | `false` | `true` | `true` |
 | provide context | `false` | `false` | `true` |
-| support login to social medias out of the box | `false` | `true` | WIP |
+| support login to social medias out of the box | `false` | `true` | `WIP` |
 | TypeScript support | `false` | `true` | `true` |
 | tree-shaking support | `false` | `true` | `true` |
 | firebase instance supports | only `database` | all except `analytics`, `app-check`, `app`, `installations`, `performance`, `remote-config`, and  `vertex-ai` | all |
@@ -109,17 +109,17 @@ const firebaseConfig = {} // copy your firebase config here
 ## Documentations
 This library contains JSDoc comments for modules and type definitions. You can hover it with your IDE.
 
-You can have a look at those files:
-- [App](/docs/app.md)
-- [Analytics](/docs/analytics.md)
-- [App Check](/docs/app-check.md)
-- [Auth](/docs/auth.md)
-- [Database](/docs/database.md)
-- [Firestore](/docs/firestore.md)
-- [Functions](/docs/functions.md)
-- [Installations](/docs/installations.md)
-- [Messaging](/docs/messaging.md)
-- [Performance](/docs/performance.md)
-- [Remote Config](/docs/remote-config.md)
-- [Storage](/docs/storage.md)
-- [Vertex AI](/docs/vertex-ai.md)
+You can also have a look at those files:
+- [App](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/app.md)
+- [Analytics](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/analytics.md)
+- [App Check](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/app-check.md)
+- [Auth](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/auth.md)
+- [Database](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/database.md)
+- [Firestore](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/firestore.md)
+- [Functions](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/functions.md)
+- [Installations](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/installations.md)
+- [Messaging](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/messaging.md)
+- [Performance](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/performance.md)
+- [Remote Config](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/remote-config.md)
+- [Storage](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/storage.md)
+- [Vertex AI](https://github.com/achmadk/open-source-projects/blob/main/packages/react-firebase/docs/vertex-ai.md)
