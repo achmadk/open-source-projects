@@ -14,7 +14,7 @@
     "test:unit:inversify-props": "lerna exec pnpm run test --scope \"@achmadk/inversify-props\"",
     "test:unit:inversify-hooks": "lerna exec pnpm run test --scope \"@achmadk/inversify-hooks\"",
     "test:unit:others": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks}\" pnpm run test",
-    "test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks",
+    "test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks && pnpm run test:unit:others",
     "prepare": "husky"
   },
   "keywords": [],
@@ -35,9 +35,9 @@
     "rollup-preserve-directives": "^1.1.1",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
-    "vite-plugin-dts": "^4.0.1",
+    "vite-plugin-dts": "^3.9.1",
     "vite-plugin-externalize-deps": "^0.8.0",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^5.0.0"
   },
   "lint-staged": {
     "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}": [
