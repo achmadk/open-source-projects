@@ -48,9 +48,12 @@ jobs:
       - name: Prepare env variables for testing
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          INPUT_ENVKEY_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-          INPUT_ENVKEY_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          ENVKEY_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+          ENVKEY_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
           directory: ./packages/react-firebase
+
+      - name: Check .env file exist
+        run: ls -la ./packages/react-firebase && cat ./packages/react-firebase/.env
 
       - name: Test
         run: pnpm run test
