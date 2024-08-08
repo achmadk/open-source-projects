@@ -14,7 +14,9 @@
     "test:unit:inversify-props": "lerna exec pnpm run test --scope \"@achmadk/inversify-props\"",
     "test:unit:inversify-hooks": "lerna exec pnpm run test --scope \"@achmadk/inversify-hooks\"",
     "test:unit:others": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks}\" pnpm run test",
+    "test:unit:others:ci": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks,react-firebase}\" pnpm run test",
     "test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks && pnpm run test:unit:others",
+    "test:ci": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks && pnpm run test:unit:others:ci",
     "prepare": "husky"
   },
   "keywords": [],
