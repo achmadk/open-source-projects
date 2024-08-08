@@ -48,8 +48,8 @@ jobs:
       - name: Prepare env variables for testing
         uses: SpicyPizza/create-envfile@v2.0
         with:
-          envkey_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
-          envkey_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
+          INPUT_ENVKEY_FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+          INPUT_ENVKEY_RECAPTCHA_SITE_KEY: ${{ secrets.RECAPTCHA_SITE_KEY }}
           directory: ./packages/react-firebase
 
       - name: Test
