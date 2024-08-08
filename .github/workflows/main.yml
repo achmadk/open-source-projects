@@ -49,6 +49,12 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Prepare env variables for testing
+        shell: bash
+        run: |
+          echo "FIREBASE_CONFIG=$(${{ secrets.FIREBASE_CONFIG }})" >> ./packages/react-firebase/.env
+          echo "RECAPTCHA_SITE_KEY=$(${{ secrets.RECAPTCHA_SITE_KEY }})" >> ./packages/react-firebase/.env
+
       - name: Test
         run: pnpm run test
 
