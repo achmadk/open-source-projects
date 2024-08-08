@@ -15,12 +15,11 @@
   },
   "files": ["dist"],
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "scripts": {
     "start": "dts watch",
     "build": "vite build",
-    "pretest": "pnpm run lint",
     "test": "dts test",
     "lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
     "prepublishOnly": "pnpm run build",
