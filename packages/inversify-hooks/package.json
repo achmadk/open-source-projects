@@ -7,6 +7,7 @@
   "types": "dist/index.d.ts",
   "files": ["dist"],
   "sideEffects": false,
+  "homepage": "https://github.com/achmadk/open-source-projects/tree/main/packages/inversify-hooks#readme",
   "exports": {
     ".": {
       "node": "./dist/index.umd.cjs",

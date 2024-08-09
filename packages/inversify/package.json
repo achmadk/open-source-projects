@@ -4,6 +4,7 @@
   "type": "module",
   "main": "./dist/index.umd.cjs",
   "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/achmadk/open-source-projects/tree/main/packages/inversify#readme",
   "sideEffects": false,
   "exports": {
     ".": {
@@ -53,7 +54,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/achmadk/open-source-project.git",
+    "url": "https://github.com/achmadk/open-source-projects.git",
     "directory": "packages/inversify"
   },
   "publishConfig": {

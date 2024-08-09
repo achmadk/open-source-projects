@@ -2,6 +2,8 @@
   "name": "@achmadk/react-firebase",
   "version": "1.0.1",
   "type": "module",
+  "homepage": "https://github.com/achmadk/open-source-projects/tree/main/packages/react-firebase#readme",
+  "license": "Apache-2.0",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
@@ -246,6 +248,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/achmadk/open-source-projects.git",
-    "directory": "./packages/react-firebase"
+    "directory": "packages/react-firebase"
   }
 }

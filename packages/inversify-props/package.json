@@ -40,7 +40,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/achmadk/open-source-projects.git",
-    "directory": "./packages/inversify-props"
+    "directory": "packages/inversify-props"
   },
   "module": "./dist/index.js",
   "size-limit": [
@@ -53,6 +53,7 @@
       "limit": "2 KB"
     }
   ],
+  "homepage": "https://github.com/achmadk/open-source-projects/tree/main/packages/inversify-props#readme",
   "devDependencies": {
     "@abraham/reflection": "0.8.0",
     "@achmadk/inversify": "workspace:../inversify",
