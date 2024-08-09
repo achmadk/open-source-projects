@@ -27,23 +27,14 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
+  "dependencies": {
+    "@scarf/scarf": "1.3.0"
+  },
   "peerDependencies": {
     "@abraham/reflection": "0.12.0",
     "@achmadk/inversify": "workspace:../inversify",
     "@achmadk/inversify-props": "workspace:../inversify-props",
     "react": "17.x || 18.x"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint --fix"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "endOfLine": "auto"
   },
   "name": "@achmadk/inversify-hooks",
   "author": "Achmad Kurnianto",
@@ -51,6 +42,9 @@
     "type": "git",
     "url": "git+https://github.com/achmadk/open-source-projects.git",
     "directory": "packages/inversify-hooks"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "module": "dist/index.js",
   "size-limit": [
@@ -74,25 +68,10 @@
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "^16.0.0",
     "@types/react": "18.3.3",
-    "@typescript-eslint/eslint-plugin": "7.15.0",
-    "@typescript-eslint/parser": "7.15.0",
-    "babel-eslint": "10.1.0",
     "dts-cli": "2.0.5",
-    "eslint": "8.23.1",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-config-react-app": "7.0.1",
-    "eslint-plugin-flowtype": "8.0.3",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsx-a11y": "6.9.0",
-    "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-react": "7.34.3",
-    "eslint-plugin-react-hooks": "4.6.2",
-    "husky": "^9.1.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "size-limit": "^11.1.4",
-    "ts-jest": "29.1.5",
-    "tslib": "^2.6.3"
+    "size-limit": "^11.1.4"
   },
   "keywords": [
     "inversify",

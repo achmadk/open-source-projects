@@ -26,6 +26,9 @@
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
+  "dependencies": {
+    "@scarf/scarf": "1.3.0"
+  },
   "peerDependencies": {
     "@abraham/reflection": "0.12.0"
   },
@@ -52,6 +55,9 @@
     "type": "git",
     "url": "https://github.com/achmadk/open-source-project.git",
     "directory": "packages/inversify"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@abraham/reflection": "0.12.0",
