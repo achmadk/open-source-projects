@@ -52,12 +52,16 @@ export function useInject<T>(id: string | symbol): T[] {
   return [getContainer().get<T>(id)];
 }
 
+export type ContainerContextType<C extends Container = Container> = Context<C>;
+
 export const ContainerContext = createContext(container);
+
+export const { Consumer: ContainerConsumer } = ContainerContext;
 
 export interface ContainerProviderProps {
   children: ReactNode;
   value: Container;
-  context?: Context<Container>;
+  context?: ContainerContextType;
 }
 
 export const ContainerProvider = <
@@ -65,7 +69,7 @@ export const ContainerProvider = <
 >({
   children,
   value,
-  context: Context = ContainerContext,
+  context = ContainerContext,
 }: PropType) => {
   useEffect(() => {
     return () => {
@@ -73,13 +77,13 @@ export const ContainerProvider = <
     };
   }, [value.unbindAll]);
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  return <context.Provider value={value}>{children}</context.Provider>;
 };
 
 export function useContainer<C extends Container = Container>(
   context = ContainerContext,
 ) {
-  return useContext<C>(context as unknown as Context<C>);
+  return useContext<C>(context as unknown as ContainerContextType<C>);
 }
 
 export function useContainerGet<T = unknown, C extends Container = Container>(
