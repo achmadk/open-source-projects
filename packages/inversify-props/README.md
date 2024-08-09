@@ -1,8 +1,8 @@
-# Inversify Props (`@achmadk/inversify-props`)
+# `@achmadk/inversify-props`
 
-This package is a wrapper of [Inversify (ES Module Support)](https://github.com/achmadk/inversify-esm) to simplify how inject your dependencies with property decorators in the components, made with TypeScript and compatible with Vue, React and other component libraries.
+This package is a wrapper of [`@achmadk/inversify` (ES Module Support)](https://github.com/achmadk/open-source-projects/tree/main/packages/inversify) to simplify how inject your dependencies with property decorators in the components, made with TypeScript and compatible with Vue, React and other component libraries.
 
-Do you use Hooks? You can try the experimental package [@achmadk/inversify-hooks] with ES Module support (https://github.com/achmadk/inversify-hooks-esm)
+Do you use React Hooks? You can try the package [@achmadk/inversify-hooks](https://github.com/achmadk/open-source-projects/tree/main/packages/inversify-hooks) with ES Module support.
 
 ![logo](https://i.imgur.com/syVbzU6.gif)
 
@@ -13,91 +13,92 @@ Install peer dependencies of this package, `@achmadk/inversify` and `@abraham/re
 $ npm install @achmadk/inversify-props @achmadk/inversify @abraham/reflection --save
 ```
 
-The inversify-props has built-in typescript definitions without install @types/*.
+The `@achmadk/inversify-props` has built-in typescript definitions without install @types/*.
 
 ## How to use
 
-```ts
-import { container, inject } from '@achmadk/inversify-props';
-
-container.addSingleton<IService1>(Service1);
-container.addSingleton<IService2>(Service2);
-container.addSingleton(Service3);
-
-export default class extends Component {
-  @inject() service1: IService1;
-  @inject() _service2: IService2;
-  @inject() Service3: IService3;
-}
-```
-
-## How to use this library outside of a component
+1. Create a sample service and controller, for example `UserService` and `UserController`.
 
 ```ts
-import { cid, container, inject } from '@achmadk/inversify-props';
-
-container.addSingleton<IService1>(Service1, 'MyService1');
-
-// You can inject in other services as a Prop
-export class MyOtherService {
-  @inject() private service1: IService1;
+// ./src/services/user.ts
+export interface User {
+  id: string
+  name: string
+  address: string
 }
 
-// Also in the constructor as a param
-export class MyOtherService {
-  constructor(@inject() private exampleService: IExampleService) {}
+export interface IServiceUser {
+  getUsers(): Promise<User[]>
 }
 
-// Or in any function as a variable
-export function myHelper() {
-  const service1 = container.get<IService1>(cid.IService1);
-}
+export const SERVICE_USER = 'SERVICE_USER'
 
-// camelCase, PascalCase and _ are allowed
-export class MyOtherService {
-  @inject() private service1: IService1;
-  @inject() private _service1: IService1;
-  @inject() private Service1: IService1;
-  @inject() private _Service1: IService1;
-}
-```
-
-## You can also use any ID that you prefer if you don't want to use auto generated ids
-
-```ts
-import 'reflect-metadata'; // Import only once
-import { container, inject } from 'inversify-props';
-
-container.addSingleton<IService1>(Service1, 'MyService1');
-
-export default class extends Component {
-  @inject('MyService1') service1: IService1;
-}
-```
-
-## This library provides a container to make your experience easier, but you can create your own container.
-
-```ts
-import { Container, inject, setContainer } from '@achmadk/inversify-props';
-
-setContainer(new Container());
-container.addSingleton<IService1>(Service1, 'MyService1');
-
-export default class extends Component {
-  @inject('MyService1') service1: IService1;
-}
-```
-
-> :warning: **Important!** inversify-props requires TypeScript >= 2.0 and the `experimentalDecorators`, `emitDecoratorMetadata`
-> compilation options in your `tsconfig.json` file.
-
-```json
-{
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+export class ServiceUser implements IServiceUser {
+  async getUsers() {
+    const users: User[] = []
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(users)
+      }, 3000)
+    })
   }
 }
+// ./src/services/index.ts
+export * from './user'
+
+// ./src/controllers/user.ts
+import { User, IServiceUser } from '../../services'
+
+export interface IControllerUser {
+  getUserLists(): Promise<User[] | null>
+}
+
+export const CONTROLLER_USER = 'CONTROLLER_USER'
+
+export class ControllerUser implements IControllerUser {
+  #serviceUser!: IServiceUser
+
+  constructor(serviceUser: IServiceUser) {
+    this.#serviceUser = serviceUser
+  }
+
+  async getUserLists() {
+    const users = await this.#serviceUser.getUsers()
+    if (users && Array.isArray(users)) {
+      return users
+    }
+    return null
+  }
+}
+
+
+// ./src/controllers/index.ts
+export * from './user'
+```
+
+2. Add all of your service and controllers into `container`.
+
+```ts
+// ./src/di/index.ts
+import { container as defaultContainer } from '@achmadk/inversify-props';
+
+import { IServiceUser, SERVICE_USER, ServiceUser } from '../../services';
+import { IControllerUser, CONTROLLER_USER, ControllerUser } from '../../controllers';
+
+function setContainer(container = defaultContainer) {
+  container
+    .bind<IServiceUser>(SERVICE_USER)
+    .to(ServiceUser)
+
+  container
+    .bind<IControllerUser>(CONTROLLER_USER)
+    .toDynamicValue(({ container: c }) =>
+      new ControllerUser(c.get(SERVICE_USER))
+    )
+  return container
+}
+
+export const container = setContainer()
 ```
 
 ## Why we made this package
@@ -159,43 +160,3 @@ As [inversify accepts](https://github.com/inversify/InversifyJS/blob/master/wiki
 - Singleton: The dependency will be created only once, one dependency - one object.
 - Transient: The dependency will be created each time is injected, one dependency - one object per injection.
 - Request: Special case of singleton, more info in [official docs](https://github.com/inversify/InversifyJS/blob/master/wiki/scope.md#about-inrequestscope).
-
-## How to use in your components
-
-Once your dependencies are registered in the container, is simple as create a property with the name and the interface.
-
-```ts
-export default class extends Component {
-  @inject() service1: IService1;
-}
-```
-
-> Note: Part of the magic is that the name of the property has to be the name of the interface, this is how we don't need to add the `id`.
-
-## Some examples
-
-- [Basic example with Vue](https://github.com/CKGrafico/inversify-props/tree/master/examples/vue)
-- [Basic example with LitElement](https://github.com/CKGrafico/inversify-props/tree/master/examples/lit-element)
-- [Used in my Boilerplates](https://boilerplates.js.org)
-
-## How to configure Uglify or Terser
-
-If you want to use Uglify or Terser to obfuscate the code, you will need to add this options to preserve the names of the classes (we need them to generate the ids `magically` 😉).
-
-```ts
-new UglifyJSPlugin({
-  uglifyOptions: {
-    keep_classnames: true,
-    keep_fnames: true
-  }
-});
-```
-
-```ts
-new TerserPlugin({
-  terserOptions: {
-    keep_classnames: true,
-    keep_fnames: true
-  }
-});
-```
