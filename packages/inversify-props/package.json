@@ -55,17 +55,7 @@
   ],
   "homepage": "https://github.com/achmadk/open-source-projects/tree/main/packages/inversify-props#readme",
   "devDependencies": {
-    "@abraham/reflection": "0.8.0",
-    "@achmadk/inversify": "workspace:../inversify",
-    "@size-limit/esbuild": "^11.1.4",
-    "@size-limit/esbuild-why": "^11.1.4",
-    "@size-limit/preset-small-lib": "^11.1.4",
-    "@size-limit/webpack": "11.1.4",
-    "@size-limit/webpack-why": "11.1.4",
-    "@skypack/package-check": "0.2.2",
-    "size-limit": "^11.1.4",
-    "tsdx": "^0.14.1",
-    "typescript": "^4.4.2"
+    "@achmadk/inversify": "workspace:../inversify"
   },
   "keywords": [
     "inversify",
