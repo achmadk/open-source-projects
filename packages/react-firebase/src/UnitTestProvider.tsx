@@ -11,7 +11,7 @@ export const UnitTestProvider = <
   Props extends UnitTestProviderProps = UnitTestProviderProps,
 >({
   children,
-  options = firebaseConfig as FirebaseOptions,
+  options = JSON.parse(firebaseConfig) as FirebaseOptions,
   context,
 }: Props) => {
   return (

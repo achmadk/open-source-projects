@@ -3,6 +3,7 @@ export * from "./app-check";
 export * from "./auth";
 
 export * from "./database";
+export * from "./data-connect";
 
 export * from "./firestore";
 export * from "./functions";
