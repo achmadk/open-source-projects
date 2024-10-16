@@ -23,30 +23,24 @@ export const INVALID_MIDDLEWARE_RETURN =
   "Invalid return type in middleware. Middleware must return!";
 export const INVALID_FUNCTION_BINDING =
   "Value provided to function binding must be a function!";
-export const LAZY_IN_SYNC = (
-  key: unknown,
-) => `You are attempting to construct '${keyToString(key)}' in a synchronous way
- but it has asynchronous dependencies.`;
+export const LAZY_IN_SYNC = <T = unknown>(key: T) =>
+  `You are attempting to construct ${keyToString(key)} in a synchronous way but it has asynchronous dependencies.`;
 
 export const INVALID_TO_SELF_VALUE =
-  "The toSelf function can only be applied when a constructor is " +
-  "used as service identifier";
+  "The toSelf function can only be applied when a constructor is used as service identifier";
 
 export const INVALID_DECORATOR_OPERATION =
-  "The @inject @multiInject @tagged and @named decorators " +
-  "must be applied to the parameters of a class constructor or a class property.";
+  "The @inject @multiInject @tagged and @named decorators must be applied to the parameters of a class constructor or a class property.";
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const ARGUMENTS_LENGTH_MISMATCH = (...values: any[]) =>
   `The number of constructor arguments in the derived class ${values[0]} must be >= than the number of constructor arguments of its base class.`;
 
 export const CONTAINER_OPTIONS_MUST_BE_AN_OBJECT =
-  "Invalid Container constructor argument. Container options " +
-  "must be an object.";
+  "Invalid Container constructor argument. Container options must be an object.";
 
 export const CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE =
-  "Invalid Container option. Default scope must " +
-  "be a string ('singleton' or 'transient').";
+  "Invalid Container option. Default scope must be a string ('singleton' or 'transient').";
 
 export const CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE =
   "Invalid Container option. Auto bind injectable must be a boolean";
@@ -72,14 +66,13 @@ export const CIRCULAR_DEPENDENCY_IN_FACTORY = (
   factoryType: string,
   serviceIdentifier: string,
 ) =>
-  `It looks like there is a circular dependency in one of the '${factoryType}' bindings. Please investigate bindings with` +
-  `service identifier '${serviceIdentifier}'.`;
+  `It looks like there is a circular dependency in one of the ${factoryType} bindings. Please investigate bindings with service identifier '${serviceIdentifier}'.`;
 
 export const STACK_OVERFLOW = "Maximum call stack size exceeded";
 
-function keyToString(key: unknown): string {
+function keyToString<T = unknown>(key: T): string {
   if (typeof key === "function") {
-    return `[function/class ${key.name || "<anonymous>"}]`;
+    return `[function/class ${key?.name ?? "<anonymous>"}]`;
   }
   if (typeof key === "symbol") {
     return key.toString();

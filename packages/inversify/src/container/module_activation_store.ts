@@ -58,14 +58,10 @@ export class ModuleActivationStore implements ModuleActivationStoreInterface {
   private _getModuleActivationHandlers(
     moduleId: number,
   ): ModuleActivationHandlers {
-    let moduleActivationHandlers: ModuleActivationHandlers | undefined =
-      this._map.get(moduleId);
+    const moduleActivationHandlers: ModuleActivationHandlers =
+      this._map.get(moduleId) ?? this._getEmptyHandlersStore();
 
-    if (moduleActivationHandlers === undefined) {
-      moduleActivationHandlers = this._getEmptyHandlersStore();
-      this._map.set(moduleId, moduleActivationHandlers);
-    }
-
+    this._map.set(moduleId, moduleActivationHandlers);
     return moduleActivationHandlers;
   }
 

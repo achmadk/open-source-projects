@@ -143,11 +143,9 @@ function _validateActiveBindingCount(
       throw new Error(msg);
     }
 
-    // @ts-ignore
     case BindingCount.OnlyOneBindingAvailable:
       return bindings;
 
-    // eslint-disable no-fallthrough
     // case BindingCount.MultipleBindingsAvailable:
     default:
       if (!target.isArray()) {
@@ -173,8 +171,7 @@ function _createSubRequests(
   parentRequest: Request | null,
   target: ITarget,
 ) {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  let activeBindings: Binding<any>[];
+  let activeBindings: Binding<unknown>[];
   let childRequest: Request;
 
   if (parentRequest === null) {
@@ -204,7 +201,6 @@ function _createSubRequests(
       parentRequest,
       target,
     );
-    // @ts-ignore
     childRequest = parentRequest.addChildRequest(
       target.serviceIdentifier,
       activeBindings,
@@ -236,7 +232,7 @@ function _createSubRequests(
     ) {
       const dependencies = getDependencies(
         metadataReader,
-        binding.implementationType,
+        binding.implementationType as NewableFunction,
       );
 
       if (!context.container.options.skipBaseClassChecks) {
@@ -245,12 +241,12 @@ function _createSubRequests(
         // and one of the derived classes (children) has no dependencies
         const baseClassDependencyCount = getBaseClassDependencyCount(
           metadataReader,
-          binding.implementationType,
+          binding.implementationType as NewableFunction,
         );
 
         if (dependencies.length < baseClassDependencyCount) {
           const error = ARGUMENTS_LENGTH_MISMATCH(
-            getFunctionName(binding.implementationType),
+            getFunctionName(binding.implementationType as NewableFunction),
           );
           throw new Error(error);
         }
@@ -276,12 +272,10 @@ function getBindings<T>(
   serviceIdentifier: ServiceIdentifier<T>,
 ): Binding<T>[] {
   let bindings: Binding<T>[] = [];
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const bindingDictionary: Lookup<Binding<any>> =
-    getBindingDictionary(container);
+  const bindingDictionary = getBindingDictionary(container);
 
   if (bindingDictionary.hasKey(serviceIdentifier)) {
-    bindings = bindingDictionary.get(serviceIdentifier);
+    bindings = bindingDictionary.get(serviceIdentifier) as Binding<T>[];
   } else if (container.parent !== null) {
     // recursively try to get bindings from parent container
     bindings = getBindings<T>(container.parent, serviceIdentifier);
@@ -322,10 +316,8 @@ export function plan(
     );
     return context;
   } catch (error) {
-    if (error instanceof Error && isStackOverflowExeption(error)) {
-      if (context.plan) {
-        circularDependencyToException(context.plan.rootRequest);
-      }
+    if (isStackOverflowExeption(error)) {
+      circularDependencyToException(context.plan.rootRequest);
     }
     throw error;
   }
@@ -333,11 +325,9 @@ export function plan(
 
 export function createMockRequest(
   container: ContainerInterface,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  serviceIdentifier: ServiceIdentifier<any>,
+  serviceIdentifier: ServiceIdentifier,
   key: string | number | symbol,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  value: any,
+  value: unknown,
 ): Request {
   const target = new Target(
     TargetTypeEnum.Variable,

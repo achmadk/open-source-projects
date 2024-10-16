@@ -11,12 +11,12 @@ import { getServiceIdentifierAsString } from "./serialization";
 
 export const multiBindToService =
   (container: ContainerInterface) =>
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  (service: ServiceIdentifier<any>) =>
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  (...types: ServiceIdentifier<any>[]) =>
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    types.forEach((t) => container.bind(t).toService(service));
+  (service: ServiceIdentifier) =>
+  (...types: ServiceIdentifier[]) => {
+    for (const t of types) {
+      container.bind(t).toService(service);
+    }
+  };
 
 export const ensureFullyBound = <T = unknown>(binding: Binding<T>): void => {
   let boundValue: unknown = null;

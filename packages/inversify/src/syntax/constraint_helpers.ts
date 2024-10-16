@@ -7,10 +7,10 @@ export const traverseAncerstors = (
   constraint: ConstraintFunction,
 ): boolean => {
   const parent = request?.parentRequest ?? null;
-  if (parent !== null) {
-    return constraint(parent) ? true : traverseAncerstors(parent, constraint);
+  if (parent === null) {
+    return false;
   }
-  return false;
+  return constraint(parent) ? true : traverseAncerstors(parent, constraint);
 };
 
 /**
@@ -19,8 +19,7 @@ export const traverseAncerstors = (
  * @param key
  */
 export const taggedConstraint =
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  (key: string | number | symbol) => (value: any) => {
+  (key: string | number | symbol) => (value: unknown) => {
     const constraint: ConstraintFunction = (request?: Request | null) =>
       request?.target?.matchesTag(key)(value) ?? false;
 
@@ -32,15 +31,13 @@ export const taggedConstraint =
 export const namedConstraint = taggedConstraint(NAMED_TAG);
 
 export const typeConstraint =
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  (type: Function | string) => (request?: Request | null) => {
+  (type: NewableFunction | string) => (request?: Request | null) => {
     // Using index 0 because constraints are applied
     // to one binding at a time (see Planner class)
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    let binding: Binding<any> | null | undefined = null;
+    let binding: Binding<unknown> | null = null;
 
     if (request !== null) {
-      binding = request?.bindings[0];
+      binding = request?.bindings[0] as Binding<unknown>;
       if (typeof type === "string") {
         const serviceIdentifier = binding?.serviceIdentifier;
         return serviceIdentifier === type;

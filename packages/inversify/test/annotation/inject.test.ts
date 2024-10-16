@@ -1,25 +1,14 @@
+import { describe, it, expect } from 'vitest'
+
 import { getMetadata } from '@abraham/reflection';
 
-import { decorate } from '../../src/annotation/decorator_utils';
+import { _decorate, _param, decorate } from '../../src/annotation/decorator_utils';
 import { inject } from '../../src/annotation/inject';
 import { LazyServiceIdentifier } from '../../src/annotation/lazy_service_identifier';
 import { multiInject } from '../../src/annotation/multi_inject';
 import * as ERROR_MSGS from '../../src/constants/error_msgs';
 import * as METADATA_KEY from '../../src/constants/metadata_keys';
 import type * as interfaces from '../../src/interfaces';
-
-declare function __decorate(
-  decorators: ClassDecorator[],
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  target: any,
-  key?: string | symbol,
-  descriptor?: PropertyDescriptor
-): void;
-
-declare function __param(
-  paramIndex: number,
-  decorator: ParameterDecorator
-): ClassDecorator;
 
 // biome-ignore lint/suspicious/noEmptyInterface: <explanation>
 interface Katana {}
@@ -113,10 +102,10 @@ describe('@inject', () => {
   it('Should throw when applied multiple times', () => {
     // biome-ignore lint/complexity/useArrowFunction: <explanation>
     const useDecoratorMoreThanOnce = function () {
-      __decorate(
+      _decorate(
         [
-          __param(0, inject('Katana') as ParameterDecorator),
-          __param(0, inject('Shurien') as ParameterDecorator),
+          _param(0, inject('Katana') as ParameterDecorator),
+          _param(0, inject('Shurien') as ParameterDecorator),
         ],
         InvalidDecoratorUsageWarrior
       );
@@ -129,8 +118,8 @@ describe('@inject', () => {
   it('Should throw when not applied to a constructor', () => {
     // biome-ignore lint/complexity/useArrowFunction: <explanation>
     const useDecoratorOnMethodThatIsNotAConstructor = function () {
-      __decorate(
-        [__param(0, inject('Katana') as ParameterDecorator)],
+      _decorate(
+        [_param(0, inject('Katana') as ParameterDecorator)],
         InvalidDecoratorUsageWarrior.prototype,
         'test',
         Object.getOwnPropertyDescriptor(
@@ -148,9 +137,9 @@ describe('@inject', () => {
     // this can happen when there is circular dependency between symbols
     // biome-ignore lint/complexity/useArrowFunction: <explanation>
         const useDecoratorWithUndefined = function () {
-      __decorate(
+      _decorate(
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        [__param(0, inject(undefined as any) as ParameterDecorator)],
+        [_param(0, inject(undefined as any) as ParameterDecorator)],
         InvalidDecoratorUsageWarrior
       );
     };

@@ -79,7 +79,6 @@ const _getResolvedFromBinding = <T = unknown>(
   request: Request,
   binding: Binding<T>,
 ): T | Promise<T> => {
-  let result: T | Promise<T> | undefined;
   const childRequests = request.childRequests;
 
   ensureFullyBound(binding);
@@ -87,24 +86,19 @@ const _getResolvedFromBinding = <T = unknown>(
   switch (binding.type) {
     case BindingTypeEnum.ConstantValue:
     case BindingTypeEnum.Function:
-      result = binding.cache as T | Promise<T>;
-      break;
+      return binding.cache as T | Promise<T>;
     case BindingTypeEnum.Constructor:
-      result = binding.implementationType as T;
-      break;
+      return binding.implementationType as T;
     case BindingTypeEnum.Instance:
-      result = resolveInstance<T>(
+      return resolveInstance<T>(
         binding,
         binding.implementationType as Newable<T>,
         childRequests,
         _resolveRequest<T>(requestScope),
       );
-      break;
     default:
-      result = _resolveFactoryFromBinding(binding, request.parentContext);
+      return _resolveFactoryFromBinding(binding, request.parentContext);
   }
-
-  return result as T | Promise<T>;
 };
 
 const _resolveInScope = <T>(
@@ -127,15 +121,13 @@ const _resolveBinding = <T>(
   binding: Binding<T>,
 ): T | Promise<T> => {
   return _resolveInScope<T>(requestScope, binding, () => {
-    let result = _getResolvedFromBinding(requestScope, request, binding);
+    const result = _getResolvedFromBinding(requestScope, request, binding);
     if (isPromise(result)) {
-      result = result.then((resolved) =>
+      return result.then((resolved) =>
         _onActivation(request, binding, resolved),
       );
-    } else {
-      result = _onActivation<T>(request, binding, result);
     }
-    return result;
+    return _onActivation<T>(request, binding, result);
   });
 };
 
@@ -192,16 +184,11 @@ const _bindingActivation = <T>(
   binding: Binding<T>,
   previousResult: T,
 ): T | Promise<T> => {
-  let result: T | Promise<T>;
-
   // use activation handler if available
   if (typeof binding.onActivation === "function") {
-    result = binding.onActivation(context, previousResult);
-  } else {
-    result = previousResult;
+    return binding.onActivation(context, previousResult);
   }
-
-  return result;
+  return previousResult;
 };
 
 const _activateContainer = <T>(

@@ -8,18 +8,15 @@ export class QueryableString implements IQueryableString {
   }
 
   public startsWith(searchString: string): boolean {
-    return this.str.indexOf(searchString) === 0;
+    return this.str.startsWith(searchString);
   }
 
   public endsWith(searchString: string): boolean {
-    let reverseString = "";
-    const reverseSearchString = searchString.split("").reverse().join("");
-    reverseString = this.str.split("").reverse().join("");
-    return this.startsWith.call({ str: reverseString }, reverseSearchString);
+    return this.str.endsWith(searchString);
   }
 
   public contains(searchString: string): boolean {
-    return this.str.indexOf(searchString) !== -1;
+    return this.str.includes(searchString);
   }
 
   public equals(compareString: string): boolean {

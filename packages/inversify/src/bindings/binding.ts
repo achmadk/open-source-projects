@@ -88,8 +88,8 @@ export class Binding<T> implements BindingInterface<T> {
     this.serviceIdentifier = serviceIdentifier;
     this.scope = scope;
     this.type = BindingTypeEnum.Invalid;
-    // @ts-ignore
-    this.constraint = (_request: Request | null) => true;
+    this.constraint = ((_request: Request | null) =>
+      true) as ConstraintFunction;
     this.implementationType = null;
     this.cache = null;
     this.factory = null;

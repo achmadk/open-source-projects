@@ -9,15 +9,11 @@ import type {
 
 export class MetadataReader implements MetadataReaderInterface {
   public getConstructorMetadata(
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
-    constructorFunc: Function,
+    constructorFunc: NewableFunction,
   ): ConstructorMetadata {
-    // TypeScript compiler generated annotations
-    // biome-ignore lint/complexity/noBannedTypes: <explanation>
-    const compilerGeneratedMetadata = getMetadata<Function[] | undefined>(
-      PARAM_TYPES,
-      constructorFunc,
-    );
+    const compilerGeneratedMetadata = getMetadata<
+      NewableFunction[] | undefined
+    >(PARAM_TYPES, constructorFunc);
 
     // User generated constructor annotations
     const userGeneratedMetadata = getMetadata<MetadataMap>(
@@ -31,11 +27,10 @@ export class MetadataReader implements MetadataReaderInterface {
     };
   }
 
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  public getPropertiesMetadata(constructorFunc: Function): MetadataMap {
+  public getPropertiesMetadata(constructorFunc: NewableFunction): MetadataMap {
     // User generated properties annotations
     const userGeneratedMetadata =
-      getMetadata<MetadataMap>(TAGGED_PROP, constructorFunc) ||
+      getMetadata<MetadataMap>(TAGGED_PROP, constructorFunc) ??
       ([] as unknown as MetadataMap);
     return userGeneratedMetadata;
   }

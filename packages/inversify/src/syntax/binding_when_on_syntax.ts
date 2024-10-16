@@ -35,13 +35,13 @@ export class BindingWhenOnSyntax<T>
     return this._bindingWhenSyntax.whenTargetIsDefault();
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public whenTargetTagged(tag: string, value: any): IBindingOnSyntax<T> {
+  public whenTargetTagged(tag: string, value: unknown): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenTargetTagged(tag, value);
   }
 
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  public whenInjectedInto(parent: Function | string): IBindingOnSyntax<T> {
+  public whenInjectedInto(
+    parent: NewableFunction | string,
+  ): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenInjectedInto(parent);
   }
 
@@ -49,18 +49,19 @@ export class BindingWhenOnSyntax<T>
     return this._bindingWhenSyntax.whenParentNamed(name);
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public whenParentTagged(tag: string, value: any): IBindingOnSyntax<T> {
+  public whenParentTagged(tag: string, value: unknown): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenParentTagged(tag, value);
   }
 
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  public whenAnyAncestorIs(ancestor: Function | string): IBindingOnSyntax<T> {
+  public whenAnyAncestorIs(
+    ancestor: NewableFunction | string,
+  ): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenAnyAncestorIs(ancestor);
   }
 
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  public whenNoAncestorIs(ancestor: Function | string): IBindingOnSyntax<T> {
+  public whenNoAncestorIs(
+    ancestor: NewableFunction | string,
+  ): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenNoAncestorIs(ancestor);
   }
 
@@ -68,8 +69,10 @@ export class BindingWhenOnSyntax<T>
     return this._bindingWhenSyntax.whenAnyAncestorNamed(name);
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public whenAnyAncestorTagged(tag: string, value: any): IBindingOnSyntax<T> {
+  public whenAnyAncestorTagged(
+    tag: string,
+    value: unknown,
+  ): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenAnyAncestorTagged(tag, value);
   }
 
@@ -77,8 +80,10 @@ export class BindingWhenOnSyntax<T>
     return this._bindingWhenSyntax.whenNoAncestorNamed(name);
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public whenNoAncestorTagged(tag: string, value: any): IBindingOnSyntax<T> {
+  public whenNoAncestorTagged(
+    tag: string,
+    value: unknown,
+  ): IBindingOnSyntax<T> {
     return this._bindingWhenSyntax.whenNoAncestorTagged(tag, value);
   }
 

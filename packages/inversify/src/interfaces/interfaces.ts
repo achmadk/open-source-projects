@@ -58,6 +58,8 @@ export interface TargetTypeEnumInterface {
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export type Newable<T> = new (...args: any[]) => T;
 
+export type Instance<T> = T & Record<string, () => void>;
+
 export interface Abstract<T> {
   prototype: T;
 }
@@ -72,14 +74,16 @@ export interface Clonable<T> {
   clone(): T;
 }
 
-export type BindingActivation<T> = (
+export type BindingActivation<T = unknown> = (
   context: Context,
   injectable: T,
 ) => T | Promise<T>;
 
-export type BindingDeactivation<T> = (injectable: T) => void | Promise<void>;
+export type BindingDeactivation<T = unknown> = (
+  injectable: T,
+) => void | Promise<void>;
 
-export interface Binding<T> extends Clonable<Binding<T>> {
+export interface Binding<T = unknown> extends Clonable<Binding<T>> {
   id: number;
   moduleId: ContainerModuleBase["id"];
   activated: boolean;
@@ -149,8 +153,7 @@ export interface NextArgs<T = unknown> {
   value?: unknown;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export type Next = (args: NextArgs) => any | any[];
+export type Next = (args: NextArgs) => unknown | unknown[];
 
 export type Middleware = (next: Next) => Next;
 
@@ -240,23 +243,18 @@ export interface ContainerInterface {
   options: ContainerOptions;
   bind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
   rebind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  unbind(serviceIdentifier: ServiceIdentifier<any>): void;
+  unbind(serviceIdentifier: ServiceIdentifier): void;
   unbindAll(): void;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  isBound(serviceIdentifier: ServiceIdentifier<any>): boolean;
+  isBound(serviceIdentifier: ServiceIdentifier): boolean;
   isCurrentBound<T>(serviceIdentifier: ServiceIdentifier<T>): boolean;
   isBoundNamed(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier,
     named: string | number | symbol,
   ): boolean;
   isBoundTagged(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier,
     key: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): boolean;
   get<T>(serviceIdentifier: ServiceIdentifier<T>): T;
   getNamed<T>(
@@ -266,15 +264,13 @@ export interface ContainerInterface {
   getTagged<T>(
     serviceIdentifier: ServiceIdentifier<T>,
     key: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): T;
   getAll<T>(serviceIdentifier: ServiceIdentifier<T>): T[];
   getAllTagged<T>(
     serviceIdentifier: ServiceIdentifier<T>,
     key: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): T[];
   getAllNamed<T>(
     serviceIdentifier: ServiceIdentifier<T>,
@@ -497,7 +493,6 @@ export interface MetadataMap {
 }
 
 export interface ConstructorMetadata {
-  // biome-ignore lint/complexity/noBannedTypes: <explanation>
-  compilerGeneratedMetadata: Function[] | undefined;
+  compilerGeneratedMetadata: NewableFunction[] | undefined;
   userGeneratedMetadata: MetadataMap;
 }

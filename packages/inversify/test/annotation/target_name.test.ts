@@ -1,9 +1,12 @@
+import { describe, it, expect } from 'vitest'
+
 import { getMetadata } from '@abraham/reflection';
 
 import { decorate } from '../../src/annotation/decorator_utils';
 import { injectable } from '../../src/annotation/injectable';
 import { targetName } from '../../src/annotation/target_name';
 import * as METADATA_KEY from '../../src/constants/metadata_keys';
+// @ts-ignore
 import * as Stubs from '../utils/stubs';
 
 describe('@targetName', () => {

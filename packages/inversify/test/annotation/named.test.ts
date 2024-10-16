@@ -1,21 +1,11 @@
+import { describe, it, expect } from 'vitest'
 import { getMetadata } from '@abraham/reflection';
 
-import { decorate } from '../../src/annotation/decorator_utils';
+import { _decorate, _param, decorate } from '../../src/annotation/decorator_utils';
 import { named } from '../../src/annotation/named';
 import * as ERROR_MSGS from '../../src/constants/error_msgs';
 import * as METADATA_KEY from '../../src/constants/metadata_keys';
 import * as interfaces from '../../src/interfaces';
-
-declare function __decorate(
-  decorators: ClassDecorator[],
-  target: any,
-  key?: any,
-  desc?: any
-): void;
-declare function __param(
-  paramIndex: number,
-  decorator: ParameterDecorator
-): ClassDecorator;
 
 interface Weapon {}
 
@@ -101,10 +91,10 @@ describe('@named', () => {
 
   it('Should throw when applied multiple times', () => {
     const useDecoratorMoreThanOnce = function () {
-      __decorate(
+      _decorate(
         [
-          __param(0, named('a') as ParameterDecorator),
-          __param(0, named('b') as ParameterDecorator),
+          _param(0, named('a') as ParameterDecorator),
+          _param(0, named('b') as ParameterDecorator),
         ],
         InvalidDecoratorUsageWarrior
       );
@@ -116,8 +106,8 @@ describe('@named', () => {
 
   it('Should throw when not applied to a constructor', () => {
     const useDecoratorOnMethodThatIsNotAConstructor = function () {
-      __decorate(
-        [__param(0, named('a') as ParameterDecorator)],
+      _decorate(
+        [_param(0, named('a') as ParameterDecorator)],
         InvalidDecoratorUsageWarrior.prototype,
         'test',
         Object.getOwnPropertyDescriptor(

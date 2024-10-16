@@ -1,3 +1,5 @@
+import { describe, it, expect } from "vitest"
+
 import * as ERROR_MSGS from '../src/constants/error_msgs';
 import {
   type Bind,
@@ -98,7 +100,6 @@ describe('InversifyJS', () => {
     class Ninja {
       private _shuriken!: Shuriken;
       @inject(Shuriken)
-      // @ts-ignore
       public set Shuriken(shuriken: Shuriken) {
         this._shuriken = shuriken;
       }
@@ -218,7 +219,7 @@ describe('InversifyJS', () => {
       private _katana: Katana;
       private _shuriken: Shuriken;
 
-      public constructor(katana: Katana, shuriken: Shuriken) {
+      public constructor(@inject(Katana) katana: Katana, @inject(Shuriken) shuriken: Shuriken) {
         this._katana = katana;
         this._shuriken = shuriken;
       }
@@ -1089,7 +1090,7 @@ describe('InversifyJS', () => {
     expect(ninja.sneak()).toEqual('hit!');
   });
 
-  it('Should support the injection of providers', (done) => {
+  it('Should support the injection of providers', () => new Promise<void>((done) => {
     type KatanaProvider = () => Promise<Katana>;
 
     interface Ninja {
@@ -1145,7 +1146,7 @@ describe('InversifyJS', () => {
       .catch(() => {
         /* do nothing */
       });
-  });
+  }));
 
   describe('Injection of multiple values with string as keys', () => {
     it('Should support the injection of multiple values', () => {
@@ -1458,7 +1459,7 @@ describe('InversifyJS', () => {
         private _katana: Katana;
         private _shuriken: Shuriken;
 
-        public constructor(katana: Katana, shuriken: Shuriken) {
+        public constructor(@inject(Katana) katana: Katana, @inject(Shuriken) shuriken: Shuriken) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
@@ -1517,7 +1518,7 @@ describe('InversifyJS', () => {
         private _katana: Katana;
         private _shuriken: Shuriken;
 
-        public constructor(katana: Katana, shuriken: Shuriken) {
+        public constructor(@inject(Katana) katana: Katana, @inject(Shuriken) shuriken: Shuriken) {
           this._katana = katana;
           this._shuriken = shuriken;
         }
