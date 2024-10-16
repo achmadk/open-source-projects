@@ -3,6 +3,7 @@
   "files": {
     "ignore": ["dist/**", "test/**"]
   },
+  "extends": ["../../biome.json"],
   "javascript": {
     "parser": {
       "unsafeParameterDecoratorsEnabled": true

@@ -61,6 +61,9 @@ export const { Consumer: ContainerConsumer } = ContainerContext;
 export interface ContainerProviderProps {
   children: ReactNode;
   value: Container;
+  /**
+   * @default ContainerContext
+   */
   context?: ContainerContextType;
 }
 
@@ -71,11 +74,12 @@ export const ContainerProvider = <
   value,
   context = ContainerContext,
 }: PropType) => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     return () => {
       value.unbindAll();
     };
-  }, [value.unbindAll]);
+  }, []);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 };
