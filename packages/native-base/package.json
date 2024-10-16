@@ -65,7 +65,7 @@
 	"peerDependencies": {
 		"@react-native-picker/picker": "^2.5.1",
 		"react": ">=16.4.1",
-		"react-native": ">=0.74.4"
+		"react-native": ">=0.75.4"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.23.9",
@@ -81,12 +81,10 @@
 		"eslint-plugin-react-native": "^4.1.0",
 		"eslint-watch": "^8.0.0",
 		"flow-bin": "0.228.0",
-		"husky": "^9.1.4",
 		"jest": "^29.7.0",
 		"prettier": "^3.2.5",
 		"pretty-quick": "^4.0.0",
 		"react": "18.2.0",
-		"react-native": "^0.74.5",
 		"react-test-renderer": "18.2.0"
 	},
 	"gitHead": "5bbeacc403ba97622703699132c55d8359344004",
@@ -96,11 +94,6 @@
 	"main": "./dist/index.umd.js",
 	"react-native": "./dist/index.js",
 	"typings": "./index.d.ts",
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm run lint && pretty-quick --staged --pattern \"src/**/*.{js, json}\""
-		}
-	},
 	"readmeFilename": "README.md",
 	"repository": {
 		"type": "git",

@@ -16,7 +16,7 @@
 	"peerDependencies": {
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-native": "^0.74.5"
+		"react-native": "^0.75.4"
 	},
 	"dependencies": {
 		"@achmadk/auto-bind": "workspace:../auto-bind",
@@ -30,13 +30,10 @@
 		"@types/react-dom": "^18.2.19",
 		"@typescript-eslint/eslint-plugin": "^6.21.0",
 		"@typescript-eslint/parser": "^6.21.0",
-		"@vitejs/plugin-react-swc": "^3.5.0",
 		"eslint": "^8.56.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.5",
 		"react": "^18.2.0",
-		"react-native": "^0.74.5",
-		"typescript": "^5.2.2",
-		"vite": "^5.4.0"
+		"typescript": "^5.6.2"
 	}
 }
