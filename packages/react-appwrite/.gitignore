@@ -1,0 +1,9 @@
+*.log
+.DS_Store
+node_modules
+.cache
+dist
+.parcel-cache
+*.tar
+*.tar.gz
+example/.env
