@@ -1,5 +1,5 @@
-import { getGenerativeModel } from "firebase/vertexai-preview";
-import type { ModelParams, RequestOptions } from "firebase/vertexai-preview";
+import { getGenerativeModel } from "firebase/vertexai";
+import type { ModelParams, RequestOptions } from "firebase/vertexai";
 
 export interface DefaultGetGenerativeModelInput {
   /**
