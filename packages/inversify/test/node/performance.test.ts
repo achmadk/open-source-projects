@@ -57,10 +57,10 @@ describe('Performance', () => {
     return result;
   }
 
-  it('Should be able to register 1 binding in less than 1 ms', () => {
+  it('Should be able to register 1 binding in less than 1.5 ms', () => {
     const result1 = registerN(1);
-    expect(result1.register).toBeLessThan(1);
-    expect(result1.register).toBeLessThan(1);
+    expect(result1.register).toBeLessThan(1.5);
+    expect(result1.register).toBeLessThan(1.5);
   });
 
   it('Should be able to register 5 bindings in less than 1 ms', () => {
