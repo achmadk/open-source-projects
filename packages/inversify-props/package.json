@@ -23,7 +23,8 @@
     "lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
     "prepublishOnly": "pnpm run build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "changelog:generate": "commit-and-tag-version -t @achmadk/inversify-props\\@"
   },
   "dependencies": {
     "@scarf/scarf": "1.3.0"

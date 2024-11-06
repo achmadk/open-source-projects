@@ -17,7 +17,8 @@
     "test:unit:others:ci": "lerna exec --ignore \"@achmadk/{inversify,inversify-props,inversify-hooks,react-firebase}\" pnpm run test",
     "test": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks && pnpm run test:unit:others",
     "test:ci": "pnpm run test:unit:inversify && pnpm run test:unit:inversify-props && pnpm run test:unit:inversify-hooks && pnpm run test:unit:others:ci",
-    "prepare": "husky"
+    "prepare": "husky",
+    "changelog:generate": "pnpm lerna exec pnpm run changelog:generate"
   },
   "keywords": [],
   "author": "Achmad Kurnianto",
@@ -26,6 +27,7 @@
     "@abraham/reflection": "0.12.0",
     "@biomejs/biome": "^1.9.4",
     "@vitejs/plugin-react-swc": "^3.7.1",
+    "commit-and-tag-version": "^12.5.0",
     "dotenv": "^16.4.5",
     "dts-cli": "2.0.5",
     "esbuild-plugin-tsc": "^0.4.0",

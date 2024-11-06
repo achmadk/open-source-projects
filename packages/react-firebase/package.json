@@ -231,7 +231,8 @@
     "build": "tsc && vite build",
     "test": "vitest run --coverage",
     "lint": "biome check --organize-imports-enabled=false --no-errors-on-unmatched --skip-errors --write --unsafe",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "changelog:generate": "commit-and-tag-version -t @achmadk/react-firebase\\@"
   },
   "dependencies": {
     "@scarf/scarf": "1.3.0"
