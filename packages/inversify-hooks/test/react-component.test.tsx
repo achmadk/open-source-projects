@@ -1,9 +1,9 @@
 /** @vitest-environment jsdom */
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect } from 'vitest';
 
 import { render } from '@testing-library/react';
 
-import { ContainerProvider, container, useContainerGet } from '../src';
+import { ContainerProvider, container, useContainerGet } from '..';
 
 interface IDummy {
   example(): string;
@@ -53,7 +53,7 @@ describe('test in react component', () => {
         <SampleComponent />
       </ContainerProvider>
     );
-    const h2Element = domContainer.querySelector('h2')!
+    const h2Element = domContainer.querySelector('h2')!;
     expect(h2Element.textContent).toBe('Check: example_dummy');
   });
 });

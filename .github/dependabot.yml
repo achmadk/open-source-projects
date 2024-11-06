@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for (dev)dependencies inside root package.json file
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for (dev)dependencies inside library examples package.json file
+  - package-ecosystem: "npm"
+    directories:
+      - "/packages/react-loading-overlay/examples/sample-vite"
+    schedule:
+      interval: "weekly"

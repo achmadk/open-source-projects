@@ -25,7 +25,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
     this._binding = binding;
   }
 
-  // @ts-ignore
   public to(
     // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
     constructor: new (...args: never[]) => T,
@@ -41,7 +40,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
       throw new Error(`${INVALID_TO_SELF_VALUE}`);
     }
     const self = this._binding.serviceIdentifier;
-    // @ts-ignore
     return this.to(self);
   }
 
@@ -51,7 +49,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
     this._binding.dynamicValue = null;
     this._binding.implementationType = null;
     this._binding.scope = BindingScopeEnum.Singleton;
-    // @ts-ignore
     return new BindingWhenOnSyntax<T>(this._binding);
   }
 
@@ -62,7 +59,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
     this._binding.cache = null;
     this._binding.dynamicValue = func;
     this._binding.implementationType = null;
-    // @ts-ignore
     return new BindingInWhenOnSyntax<T>(this._binding);
   }
 
@@ -71,7 +67,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
     this._binding.type = BindingTypeEnum.Constructor;
     this._binding.implementationType = constructor as unknown as T;
     this._binding.scope = BindingScopeEnum.Singleton;
-    // @ts-ignore
     return new BindingWhenOnSyntax<T>(this._binding);
   }
 
@@ -79,7 +74,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
     this._binding.type = BindingTypeEnum.Factory;
     this._binding.factory = factory;
     this._binding.scope = BindingScopeEnum.Singleton;
-    // @ts-ignore
     return new BindingWhenOnSyntax<T>(this._binding);
   }
 
@@ -103,11 +97,9 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
       return autofactory;
     };
     this._binding.scope = BindingScopeEnum.Singleton;
-    // @ts-ignore
     return new BindingWhenOnSyntax<T>(this._binding);
   }
 
-  // @ts-ignore
   public toAutoNamedFactory<T2>(
     serviceIdentifier: ServiceIdentifier<T2>,
   ): BindingWhenOnSyntax<T> {
@@ -124,7 +116,6 @@ export class BindingToSyntax<T> implements IBindingToSyntax<T> {
   ): IBindingWhenOnSyntax<T> {
     this._binding.type = BindingTypeEnum.Provider;
     this._binding.provider = provider;
-    // @ts-ignore
     return new BindingWhenOnSyntax<T>(this._binding);
   }
 

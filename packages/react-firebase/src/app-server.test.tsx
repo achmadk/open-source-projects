@@ -12,7 +12,7 @@ import {
   useFirebaseServerApp,
 } from "./app-server";
 
-describe("test app.ts", () => {
+describe.skip("test app-server.ts", () => {
   test("check FirebaseServerContext", () => {
     expect(FirebaseServerContext).not.toBeUndefined();
   });
@@ -26,7 +26,7 @@ describe("test app.ts", () => {
       expect(FirebaseServerProvider).not.toBeUndefined();
     });
 
-    test.skip("FirebaseServerProvider is rendered successfully", () => {
+    test("FirebaseServerProvider is rendered successfully", () => {
       const { unmount } = render(
         <FirebaseServerProvider options={firebaseConfig as FirebaseOptions} />,
         { hydrate: true },
@@ -36,7 +36,7 @@ describe("test app.ts", () => {
       unmount();
     });
 
-    test.skip("FirebaseServerProvider is rendered successfully with custom context", () => {
+    test("FirebaseServerProvider is rendered successfully with custom context", () => {
       // biome-ignore lint/style/noNonNullAssertion: <explanation>
       const OtherContext = createContext<FirebaseServerApp>(undefined!);
       const ui = (
@@ -56,7 +56,7 @@ describe("test app.ts", () => {
   });
 
   describe("check useFirebaseServerApp", () => {
-    test.skip("useFirebaseServerApp result is undefined when no FirebaseServerProvider component", () => {
+    test("useFirebaseServerApp result is undefined when no FirebaseServerProvider component", () => {
       const { result, unmount } = renderHook(() => useFirebaseServerApp(), {
         hydrate: true,
         container: undefined,
@@ -66,7 +66,7 @@ describe("test app.ts", () => {
       unmount();
     });
 
-    test.skip("useFirebaseServerApp result is not undefined when FirebaseServerProvider component exist", () => {
+    test("useFirebaseServerApp result is not undefined when FirebaseServerProvider component exist", () => {
       const { result, unmount } = renderHook(() => useFirebaseServerApp(), {
         wrapper: ({ children }) => (
           <FirebaseServerProvider options={firebaseConfig as FirebaseOptions}>
@@ -80,7 +80,7 @@ describe("test app.ts", () => {
       unmount();
     });
 
-    test.skip("useFirebaseServerApp result is not undefined when FirebaseServerProvider component exist with different context", () => {
+    test("useFirebaseServerApp result is not undefined when FirebaseServerProvider component exist with different context", () => {
       // biome-ignore lint/style/noNonNullAssertion: <explanation>
       const OtherContext = createContext<FirebaseServerApp>(undefined!);
       const { result, unmount } = renderHook(

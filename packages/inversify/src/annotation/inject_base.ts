@@ -7,9 +7,8 @@ export function injectBase(metadataKey: string) {
   return <T = unknown>(serviceIdentifier: ServiceIdentifierOrFunc<T>) => {
     return (
       target: DecoratorTarget,
-      targetKey: string | symbol,
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      indexOrPropertyDescriptor?: number | TypedPropertyDescriptor<any>,
+      targetKey?: string | symbol,
+      indexOrPropertyDescriptor?: number | TypedPropertyDescriptor<T>,
     ) => {
       if (serviceIdentifier === undefined) {
         const className =

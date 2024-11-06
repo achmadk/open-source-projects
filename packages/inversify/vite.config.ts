@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 
+import esbuildPluginTsc from "esbuild-plugin-tsc";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import { externalizeDeps } from "vite-plugin-externalize-deps";
@@ -14,5 +15,19 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-  plugins: [dts(), tsconfig({ ignoreConfigErrors: true }), externalizeDeps()],
+  optimizeDeps: {
+    esbuildOptions: {
+      plugins: [esbuildPluginTsc()],
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true,
+        },
+      },
+    },
+  },
+  plugins: [
+    dts({ rollupTypes: true }),
+    tsconfig({ ignoreConfigErrors: true }),
+    externalizeDeps(),
+  ],
 });

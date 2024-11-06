@@ -1,7 +1,9 @@
 import { STACK_OVERFLOW } from "../constants/error_msgs";
 
-export function isStackOverflowExeption(error: Error) {
-  return error instanceof RangeError || error.message === STACK_OVERFLOW;
+export function isStackOverflowExeption(error: unknown): error is RangeError {
+  return (
+    error instanceof RangeError || (error as Error).message === STACK_OVERFLOW
+  );
 }
 
 export const tryAndThrowErrorIfStackOverflow = <T>(
@@ -11,9 +13,9 @@ export const tryAndThrowErrorIfStackOverflow = <T>(
   try {
     return fn();
   } catch (error: unknown) {
-    if (isStackOverflowExeption(error as Error)) {
+    if (isStackOverflowExeption(error)) {
       // biome-ignore lint/suspicious/noCatchAssign: <explanation>
-      error = errorCallback(); // eslint-disable-line
+      error = errorCallback();
     }
     throw error;
   }

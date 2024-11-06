@@ -5,6 +5,7 @@ export * from "./app-check-server";
 export * from "./auth-server";
 
 export * from "./database-server";
+export * from "./data-connect-server";
 
 export * from "./firestore-server";
 export * from "./functions-server";

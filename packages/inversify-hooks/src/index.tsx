@@ -61,7 +61,15 @@ export const { Consumer: ContainerConsumer } = ContainerContext;
 export interface ContainerProviderProps {
   children: ReactNode;
   value: Container;
+  /**
+   * @default ContainerContext
+   */
   context?: ContainerContextType;
+
+  /**
+   * @default false
+   */
+  unbindContainerWhenUnmount?: boolean;
 }
 
 export const ContainerProvider = <
@@ -70,12 +78,16 @@ export const ContainerProvider = <
   children,
   value,
   context = ContainerContext,
+  unbindContainerWhenUnmount = false,
 }: PropType) => {
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     return () => {
-      value.unbindAll();
+      if (unbindContainerWhenUnmount) {
+        value.unbindAll();
+      }
     };
-  }, [value.unbindAll]);
+  }, [unbindContainerWhenUnmount]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 };

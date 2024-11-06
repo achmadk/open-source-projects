@@ -1,3 +1,5 @@
+import { describe, it, expect } from "vitest"
+
 import { Binding } from '../../src/bindings/binding';
 import { BindingScopeEnum } from '../../src/constants/literal_types';
 import * as Stubs from '../utils/stubs';

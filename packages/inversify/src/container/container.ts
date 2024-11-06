@@ -57,8 +57,7 @@ export class Container implements ContainerInterface {
   public parent: ContainerInterface | null;
   public readonly options: ContainerOptions;
   private _middleware: Next | null;
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  private _bindingDictionary: Lookup<BindingInterface<any>>;
+  private _bindingDictionary: Lookup<BindingInterface<unknown>>;
   private _activations: Lookup<BindingActivation<unknown>>;
   private _deactivations: Lookup<BindingDeactivation<unknown>>;
   private _snapshots: ContainerSnapshotInterface[];
@@ -81,26 +80,25 @@ export class Container implements ContainerInterface {
           BindingInterface<unknown>
         >,
     );
-    // @ts-ignore
-    const bindingDictionary: Lookup<BindingInterface<unknown>> =
-      getBindingDictionary(container);
+    const bindingDictionary = getBindingDictionary(container);
 
     function copyDictionary(
       origin: Lookup<BindingInterface<unknown>>,
       destination: Lookup<BindingInterface<unknown>>,
     ) {
       origin.traverse((_key, value) => {
-        // biome-ignore lint/complexity/noForEach: <explanation>
-        value.forEach((binding) => {
+        for (const binding of value) {
           destination.add(binding.serviceIdentifier, binding.clone());
-        });
+        }
       });
     }
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    targetContainers.forEach((targetBindingDictionary) => {
-      copyDictionary(targetBindingDictionary, bindingDictionary);
-    });
+    for (const targetBindingDictionary of targetContainers) {
+      copyDictionary(
+        targetBindingDictionary,
+        bindingDictionary as Lookup<Binding<unknown>>,
+      );
+    }
 
     return container;
   }
@@ -111,9 +109,8 @@ export class Container implements ContainerInterface {
       throw new Error(`${CONTAINER_OPTIONS_MUST_BE_AN_OBJECT}`);
     }
 
-    if (options.defaultScope === undefined) {
-      options.defaultScope = BindingScopeEnum.Transient;
-    } else if (
+    options.defaultScope ??= BindingScopeEnum.Transient;
+    if (
       options.defaultScope !== BindingScopeEnum.Singleton &&
       options.defaultScope !== BindingScopeEnum.Transient &&
       options.defaultScope !== BindingScopeEnum.Request
@@ -121,15 +118,13 @@ export class Container implements ContainerInterface {
       throw new Error(`${CONTAINER_OPTIONS_INVALID_DEFAULT_SCOPE}`);
     }
 
-    if (options.autoBindInjectable === undefined) {
-      options.autoBindInjectable = false;
-    } else if (typeof options.autoBindInjectable !== "boolean") {
+    options.autoBindInjectable ??= false;
+    if (typeof options.autoBindInjectable !== "boolean") {
       throw new Error(`${CONTAINER_OPTIONS_INVALID_AUTO_BIND_INJECTABLE}`);
     }
 
-    if (options.skipBaseClassChecks === undefined) {
-      options.skipBaseClassChecks = false;
-    } else if (typeof options.skipBaseClassChecks !== "boolean") {
+    options.skipBaseClassChecks ??= false;
+    if (typeof options.skipBaseClassChecks !== "boolean") {
       throw new Error(`${CONTAINER_OPTIONS_INVALID_SKIP_BASE_CHECK}`);
     }
 
@@ -157,6 +152,7 @@ export class Container implements ContainerInterface {
       const containerModuleHelpers = getHelpers(currentModule.id);
 
       currentModule.registry(
+        // @ts-ignore
         containerModuleHelpers.bindFunction,
         containerModuleHelpers.unbindFunction,
         containerModuleHelpers.isboundFunction,
@@ -175,6 +171,7 @@ export class Container implements ContainerInterface {
       const containerModuleHelpers = getHelpers(currentModule.id);
 
       await currentModule.registry(
+        // @ts-ignore
         containerModuleHelpers.bindFunction,
         containerModuleHelpers.unbindFunction,
         containerModuleHelpers.isboundFunction,
@@ -187,31 +184,32 @@ export class Container implements ContainerInterface {
   }
 
   public unload(...modules: ContainerModuleInterface[]): void {
-    const conditionFactory =
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        (expected: any) =>
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        (item: BindingInterface<any>): boolean =>
-          item.moduleId === expected;
+    for (const module of modules) {
+      const deactivations = this._removeModuleBindings(module.id);
+      this._deactivateSingletons(deactivations);
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    modules.forEach((module) => {
-      const condition = conditionFactory(module.id);
-      this._bindingDictionary.removeByCondition(condition);
-    });
+      this._removeModuleHandlers(module.id);
+    }
+  }
+
+  public async unloadAsync(
+    ...modules: ContainerModuleInterface[]
+  ): Promise<void> {
+    for (const module of modules) {
+      const deactivations = this._removeModuleBindings(module.id);
+      await this._deactivateSingletonsAsync(deactivations);
+
+      this._removeModuleHandlers(module.id);
+    }
   }
 
   // Registers a type binding
   public bind<T>(
     serviceIdentifier: ServiceIdentifier<T>,
   ): BindingToSyntaxInterface<T> {
-    const scope = this.options.defaultScope ?? BindingScopeEnum.Transient;
-    const binding = new Binding<T>(
-      serviceIdentifier,
-      scope,
-    ) as BindingInterface<unknown>;
-    this._bindingDictionary.add(serviceIdentifier, binding);
-    // @ts-ignore
+    const scope = this.options?.defaultScope ?? BindingScopeEnum.Transient;
+    const binding = new Binding<T>(serviceIdentifier, scope);
+    this._bindingDictionary.add(serviceIdentifier, binding as Binding<unknown>);
     return new BindingToSyntax<T>(binding);
   }
 
@@ -227,7 +225,7 @@ export class Container implements ContainerInterface {
   ): Promise<BindingToSyntax<T>> {
     await this.unbindAsync(serviceIdentifier);
     // @ts-ignore
-    return this.bind(serviceIdentifier);
+    return this.bind<T>(serviceIdentifier);
   }
 
   // Removes a type binding from the registry by its key
@@ -294,9 +292,10 @@ export class Container implements ContainerInterface {
     );
   }
 
-  // Allows to check if there are bindings available for serviceIdentifier
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  public isBound(serviceIdentifier: ServiceIdentifier<any>): boolean {
+  /**
+   * @description Allows to check if there are bindings available for serviceIdentifier
+   */
+  public isBound(serviceIdentifier: ServiceIdentifier<unknown>): boolean {
     let bound = this._bindingDictionary.hasKey(serviceIdentifier);
     if (!bound && this.parent) {
       bound = this.parent.isBound(serviceIdentifier);
@@ -304,28 +303,33 @@ export class Container implements ContainerInterface {
     return bound;
   }
 
+  /**
+   * @description check binding dependency only in current container
+   */
+  public isCurrentBound<T>(serviceIdentifier: ServiceIdentifier<T>): boolean {
+    return this._bindingDictionary.hasKey(serviceIdentifier);
+  }
+
   public isBoundNamed(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier,
     named: string | number | symbol,
   ): boolean {
     return this.isBoundTagged(serviceIdentifier, NAMED_TAG, named);
   }
 
-  // Check if a binding with a complex constraint is available without throwing a error. Ancestors are also verified.
+  /**
+   * @description Check if a binding with a complex constraint is available without throwing a error. Ancestors are also verified.
+   */
   public isBoundTagged(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier,
     key: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): boolean {
     let bound = false;
 
     // verify if there are bindings available for serviceIdentifier on current binding dictionary
     if (this._bindingDictionary.hasKey(serviceIdentifier)) {
       const bindings = this._bindingDictionary.get(serviceIdentifier);
-      // @ts-ignore
       const request = createMockRequest(this, serviceIdentifier, key, value);
       bound = bindings.some((b) => b.constraint(request));
     }
@@ -366,10 +370,8 @@ export class Container implements ContainerInterface {
     this._moduleActivationStore = snapshot.moduleActivationStore;
   }
 
-  // @ts-ignore
   public createChild(containerOptions?: ContainerOptions): Container {
     const child = new Container(containerOptions ?? this.options);
-    // @ts-ignore
     child.parent = this;
     return child;
   }
@@ -383,19 +385,16 @@ export class Container implements ContainerInterface {
     this._metadataReader = metadataReader;
   }
 
-  // Resolves a dependency by its runtime identifier
-  // The runtime identifier must be associated with only one binding
-  // use getAll when the runtime identifier is associated with multiple bindings
+  /**
+   * @description
+   * Resolves a dependency by its runtime identifier
+   * The runtime identifier must be associated with only one binding
+   * use {@link getAll} when the runtime identifier is associated with multiple bindings
+   */
   public get<T>(serviceIdentifier: ServiceIdentifier<T>): T {
     const getArgs = this._getNotAllArgs(serviceIdentifier, false);
 
     return this._getButThrowIfAsync<T>(getArgs) as T;
-    // return this._get<T>(
-    //   false,
-    //   false,
-    //   TargetTypeEnum.Variable,
-    //   serviceIdentifier
-    // ) as T;
   }
 
   public async getAsync<T>(
@@ -409,8 +408,7 @@ export class Container implements ContainerInterface {
   public getTagged<T>(
     serviceIdentifier: ServiceIdentifier<T>,
     key: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): T {
     const getArgs = this._getNotAllArgs(serviceIdentifier, false, key, value);
     return this._getButThrowIfAsync<T>(getArgs) as T;
@@ -501,20 +499,18 @@ export class Container implements ContainerInterface {
     return resolved;
   }
 
-  private _preDestroy(
+  private _preDestroy<T>(
     // biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
     constructor: NewableFunction,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    instance: any,
+    instance: T,
   ): Promise<void> | void {
     if (hasMetadata(PRE_DESTROY, constructor)) {
       const data: Metadata = getMetadata(PRE_DESTROY, constructor) as Metadata;
-
-      return instance[data.value as string]();
+      // @ts-ignore
+      return (instance as InstanceType<T>)[data.value as string]?.();
     }
   }
 
-  // @ts-ignore
   private _removeModuleHandlers(moduleId: number): void {
     const moduleActivationsHandlers =
       this._moduleActivationStore.remove(moduleId);
@@ -527,7 +523,6 @@ export class Container implements ContainerInterface {
     );
   }
 
-  // @ts-ignore
   private _removeModuleBindings(moduleId: number): BindingInterface<unknown>[] {
     return this._bindingDictionary.removeByCondition(
       (binding) => binding.moduleId === moduleId,
@@ -576,9 +571,10 @@ export class Container implements ContainerInterface {
           constructor,
         );
       }
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    } catch (ex: any) {
-      throw new Error(ON_DEACTIVATION_ERROR(constructor.name, ex.message));
+    } catch (ex) {
+      if (ex instanceof Error) {
+        throw new Error(ON_DEACTIVATION_ERROR(constructor.name, ex.message));
+      }
     }
   }
 
@@ -589,9 +585,10 @@ export class Container implements ContainerInterface {
   ): Promise<void> {
     try {
       await asyncResult;
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    } catch (ex: any) {
-      throw new Error(ON_DEACTIVATION_ERROR(constructor.name, ex.message));
+    } catch (ex) {
+      if (ex instanceof Error) {
+        throw new Error(ON_DEACTIVATION_ERROR(constructor.name, ex.message));
+      }
     }
   }
 
@@ -628,43 +625,40 @@ export class Container implements ContainerInterface {
 
   private _getContainerModuleHelpersFactory() {
     const setModuleId = (
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      bindingToSyntax: any,
+      bindingToSyntax: BindingToSyntaxInterface<unknown>,
       moduleId: ContainerModuleBase["id"],
     ) => {
-      bindingToSyntax._binding.moduleId = moduleId;
+      (
+        bindingToSyntax as unknown as {
+          _binding: { moduleId: ContainerModuleBase["id"] };
+        }
+      )._binding.moduleId = moduleId;
     };
 
     const getBindFunction =
       (moduleId: ContainerModuleBase["id"]) =>
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      (serviceIdentifier: ServiceIdentifier<any>) => {
+      (serviceIdentifier: ServiceIdentifier) => {
         const bindingToSyntax = this.bind(serviceIdentifier);
         setModuleId(bindingToSyntax, moduleId);
         return bindingToSyntax;
       };
 
-    const getUnbindFunction =
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      () => (serviceIdentifier: ServiceIdentifier<any>) => {
-        return this.unbind(serviceIdentifier);
-      };
+    const getUnbindFunction = () => (serviceIdentifier: ServiceIdentifier) => {
+      return this.unbind(serviceIdentifier);
+    };
 
     const getUnbindAsyncFunction =
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      () => (serviceIdentifier: ServiceIdentifier<any>) => {
+      () => (serviceIdentifier: ServiceIdentifier) => {
         return this.unbindAsync(serviceIdentifier);
       };
 
     const getIsboundFunction =
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      (_moduleId: number) => (serviceIdentifier: ServiceIdentifier<any>) => {
+      (_moduleId: number) => (serviceIdentifier: ServiceIdentifier) => {
         return this.isBound(serviceIdentifier);
       };
 
     const getRebindFunction =
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-      (moduleId: number) => (serviceIdentifier: ServiceIdentifier<any>) => {
+      (moduleId: number) => (serviceIdentifier: ServiceIdentifier) => {
         const bindingToSyntax = this.rebind(serviceIdentifier);
         setModuleId(bindingToSyntax, moduleId);
         return bindingToSyntax;
@@ -673,10 +667,8 @@ export class Container implements ContainerInterface {
     const getOnActivationFunction =
       (moduleId: ContainerModuleBase["id"]) =>
       (
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        serviceIdentifier: ServiceIdentifier<any>,
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        onActivation: BindingActivation<any>,
+        serviceIdentifier: ServiceIdentifier,
+        onActivation: BindingActivation,
       ) => {
         this._moduleActivationStore.addActivation(
           moduleId,
@@ -689,10 +681,8 @@ export class Container implements ContainerInterface {
     const getOnDeactivationFunction =
       (moduleId: ContainerModuleBase["id"]) =>
       (
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        serviceIdentifier: ServiceIdentifier<any>,
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-        onDeactivation: BindingDeactivation<any>,
+        serviceIdentifier: ServiceIdentifier,
+        onDeactivation: BindingDeactivation,
       ) => {
         this._moduleActivationStore.addDeactivation(
           moduleId,
@@ -702,7 +692,7 @@ export class Container implements ContainerInterface {
         this.onDeactivation(serviceIdentifier, onDeactivation);
       };
 
-    return (mId: number) => ({
+    return (mId: ContainerModuleBase["id"]) => ({
       bindFunction: getBindFunction(mId),
       isboundFunction: getIsboundFunction(mId),
       onActivationFunction: getOnActivationFunction(mId),
@@ -731,7 +721,7 @@ export class Container implements ContainerInterface {
       if (middlewareResult === undefined || middlewareResult === null) {
         throw new Error(INVALID_MIDDLEWARE_RETURN);
       }
-      return middlewareResult;
+      return middlewareResult as ContainerResolution<T>;
     }
 
     return this._planAndResolve<T>()(planAndResolveArgs);
@@ -784,7 +774,6 @@ export class Container implements ContainerInterface {
       // create a plan
       let context = plan(
         this._metadataReader,
-        // @ts-ignore
         this,
         args.isMultiInject,
         args.targetType,
@@ -819,8 +808,7 @@ export class Container implements ContainerInterface {
     return this._deactivate(binding, binding.cache);
   }
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  private _deactivateSingletons(bindings: Binding<any>[]): void {
+  private _deactivateSingletons(bindings: Binding<unknown>[]): void {
     for (const binding of bindings) {
       const result = this._deactivateIfSingleton(binding);
 
@@ -831,8 +819,7 @@ export class Container implements ContainerInterface {
   }
 
   private async _deactivateSingletonsAsync(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    bindings: Binding<any>[],
+    bindings: Binding<unknown>[],
   ): Promise<void> {
     await Promise.all(bindings.map((b) => this._deactivateIfSingleton(b)));
   }
@@ -871,8 +858,7 @@ export class Container implements ContainerInterface {
   }
 
   private _removeServiceFromDictionary(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier,
   ): void {
     try {
       this._bindingDictionary.remove(serviceIdentifier);

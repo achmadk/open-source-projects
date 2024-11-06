@@ -39,10 +39,8 @@ export class Request implements IRequest {
   }
 
   public addChildRequest(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    serviceIdentifier: ServiceIdentifier<any>,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    bindings: Binding<any> | Binding<any>[],
+    serviceIdentifier: ServiceIdentifier,
+    bindings: Binding<unknown> | Binding<unknown>[],
     target: Target,
   ): IRequest {
     const child = new Request(

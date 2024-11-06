@@ -7,20 +7,17 @@ import type {
   Target,
 } from "../interfaces";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function getServiceIdentifierAsString<T = any>(
-  serviceIdentifier: ServiceIdentifier<T>,
+export function getServiceIdentifierAsString(
+  serviceIdentifier: ServiceIdentifier,
 ): string {
   if (typeof serviceIdentifier === "function") {
-    const _serviceIdentifier = serviceIdentifier;
-    return _serviceIdentifier.name;
+    return serviceIdentifier.name;
   }
   if (typeof serviceIdentifier === "symbol") {
     return serviceIdentifier.toString();
   }
   // string
-  const _serviceIdentifier = serviceIdentifier;
-  return _serviceIdentifier?.toString() ?? (_serviceIdentifier as string);
+  return serviceIdentifier?.toString() ?? serviceIdentifier;
 }
 
 export function listRegisteredBindingsForServiceIdentifier(
@@ -37,15 +34,15 @@ export function listRegisteredBindingsForServiceIdentifier(
   if (registeredBindings.length !== 0) {
     registeredBindingsList = "\nRegistered bindings:";
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    registeredBindings.forEach((binding: Binding<any>) => {
+    for (const binding of registeredBindings) {
       // Use "Object as name of constant value injections"
       let name = "Object";
 
       // Use function name if available
       if (binding.implementationType !== null) {
-        name = getFunctionName(binding.implementationType);
+        name = getFunctionName(
+          binding.implementationType as { name: string | null },
+        );
       }
 
       registeredBindingsList = `${registeredBindingsList}\n ${name}`;
@@ -53,16 +50,15 @@ export function listRegisteredBindingsForServiceIdentifier(
       if (binding.constraint.metaData) {
         registeredBindingsList = `${registeredBindingsList} - ${binding.constraint.metaData}`;
       }
-    });
+    }
   }
 
   return registeredBindingsList;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-function alreadyDependencyChain<T = any>(
+function alreadyDependencyChain(
   request: Request,
-  serviceIdentifier: ServiceIdentifier<T>,
+  serviceIdentifier: ServiceIdentifier,
 ): boolean {
   if (request.parentRequest === null) {
     return false;
@@ -90,14 +86,13 @@ function dependencyChainToString(request: Request) {
 }
 
 export function circularDependencyToException(request: Request) {
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  request.childRequests.forEach((childRequest) => {
+  for (const childRequest of request.childRequests) {
     if (alreadyDependencyChain(childRequest, childRequest.serviceIdentifier)) {
       const services = dependencyChainToString(childRequest);
       throw new Error(`${CIRCULAR_DEPENDENCY} ${services}`);
     }
     circularDependencyToException(childRequest);
-  });
+  }
 }
 
 export function listMetadataForTarget(
@@ -115,10 +110,9 @@ export function listMetadataForTarget(
     }
 
     if (otherTags !== null) {
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      otherTags.forEach((tag) => {
+      for (const tag of otherTags) {
         m += `${tag.toString()}\n`;
-      });
+      }
     }
 
     return ` ${serviceIdentifierString}\n ${serviceIdentifierString} - ${m}`;
@@ -126,8 +120,7 @@ export function listMetadataForTarget(
   return ` ${serviceIdentifierString}`;
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export function getFunctionName(v: any): string {
+export function getFunctionName(v: { name: string | null }): string {
   if (v.name) {
     return v.name;
   }
@@ -136,6 +129,7 @@ export function getFunctionName(v: any): string {
   return match ? match[1] : `Anonymous function: ${name}`;
 }
 
-export function getSymbolDescription(symbol: symbol) {
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
+export function getSymbolDescription(symbol: Symbol) {
   return symbol.toString().slice(7, -1);
 }

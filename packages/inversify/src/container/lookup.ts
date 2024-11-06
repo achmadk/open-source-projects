@@ -115,8 +115,9 @@ export class Lookup<T> implements LookupInterface<T> {
     const copy = new Lookup<T>();
 
     this._map.forEach((value, key) => {
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      value.forEach((b) => copy.add(key, isClonable<T>(b) ? b.clone() : b));
+      for (const b of value) {
+        copy.add(key, isClonable<T>(b) ? b.clone() : b);
+      }
     });
 
     return copy;

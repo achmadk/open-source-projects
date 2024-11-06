@@ -52,7 +52,7 @@ export const POST_CONSTRUCT = "post_construct";
 // used to identify preDestroy functions
 export const PRE_DESTROY = "pre_destroy";
 
-function getNonCustomTagKeys(): string[] {
+function getNonCustomTagKeys() {
   return [
     INJECT_TAG,
     MULTI_INJECT_TAG,
@@ -60,7 +60,7 @@ function getNonCustomTagKeys(): string[] {
     UNMANAGED_TAG,
     NAMED_TAG,
     OPTIONAL_TAG,
-  ];
+  ] as const;
 }
 
-export const NON_CUSTOM_TAG_KEYS: string[] = getNonCustomTagKeys();
+export const NON_CUSTOM_TAG_KEYS = getNonCustomTagKeys();

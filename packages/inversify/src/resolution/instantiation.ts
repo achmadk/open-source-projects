@@ -63,8 +63,6 @@ function _createInstance<T>(
   childRequests: Request[],
   resolveRequest: ResolveRequestHandler,
 ): T | Promise<T> {
-  let result: T | Promise<T>;
-
   if (childRequests.length > 0) {
     const resolved = _resolveRequests(childRequests, resolveRequest);
     const createInstanceWithInjectionsArg: CreateInstanceWithInjectionArg<T> = {
@@ -72,23 +70,16 @@ function _createInstance<T>(
       constr,
     };
     if (resolved.isAsync) {
-      result = createInstanceWithInjectionsAsync(
-        createInstanceWithInjectionsArg,
-      );
-    } else {
-      result = createInstanceWithInjections(createInstanceWithInjectionsArg);
+      return createInstanceWithInjectionsAsync(createInstanceWithInjectionsArg);
     }
-  } else {
-    result = new constr();
+    return createInstanceWithInjections(createInstanceWithInjectionsArg);
   }
-
-  return result;
+  return new constr();
 }
 
 function createInstanceWithInjections<T>(
   args: CreateInstanceWithInjectionArg<T>,
 ): T {
-  // @ts-ignore
   const instance = new args.constr(...(args.constructorInjections as never[]));
   args.propertyRequests.forEach((r: Request, index: number) => {
     const property = r.target.identifier;
@@ -145,15 +136,16 @@ function _postConstruct<T>(
   instance: T,
 ): void | Promise<void> {
   if (hasMetadata(POST_CONSTRUCT, constr)) {
-    // @ts-ignore
-    const data: Metadata = getMetadata(POST_CONSTRUCT, constr);
+    // biome-ignore lint/style/noNonNullAssertion: <explanation>
+    const data: Metadata = getMetadata(POST_CONSTRUCT, constr)!;
     try {
       return (instance as T & Record<string, () => void>)[
         data.value as string
       ]?.();
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    } catch (e: any) {
-      throw new Error(POST_CONSTRUCT_ERROR(constr.name, e.message));
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(POST_CONSTRUCT_ERROR(constr.name, e.message));
+      }
     }
   }
 }

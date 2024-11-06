@@ -261,6 +261,6 @@ describe('Inject Helper', () => {
 
       expect(dependency2.example()).toBe('example');
       resetContainer();
-    }, { skip: true });
+    });
   });
 });

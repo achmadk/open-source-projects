@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react'
 
-import { container, ContainerProvider, resetContainer, useContainerGet } from '../src';
+import { container, ContainerProvider, resetContainer, useContainerGet } from '..';
 import { useState } from 'react';
 
 describe('blah', () => {

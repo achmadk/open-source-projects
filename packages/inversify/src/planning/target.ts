@@ -22,6 +22,7 @@ export class Target implements ITarget {
   public serviceIdentifier: ServiceIdentifier;
   public name: IQueryableString;
   public identifier: string | symbol;
+  public key!: string | symbol;
   public metadata: Metadata[];
 
   public constructor(
@@ -90,7 +91,9 @@ export class Target implements ITarget {
 
   public getNamedTag(): IMetadata<string> | null {
     if (this.isNamed()) {
-      return this.metadata.filter((m) => m.key === NAMED_TAG)[0];
+      return this.metadata.filter(
+        (m) => m.key === NAMED_TAG,
+      )[0] as IMetadata<string>;
     }
     return null;
   }

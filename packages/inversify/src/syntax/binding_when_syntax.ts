@@ -35,7 +35,6 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
   }
 
   public whenTargetIsDefault(): IBindingOnSyntax<T> {
-    // @ts-ignore
     this._binding.constraint = (request: Request | null) => {
       const targetIsDefault =
         request?.target !== null &&
@@ -45,50 +44,38 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
       return targetIsDefault;
     };
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenTargetTagged(
     tag: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): IBindingOnSyntax<T> {
     this._binding.constraint = taggedConstraint(tag)(value);
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenInjectedInto(
     parent: NewableFunction | string,
   ): IBindingOnSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
-      request !== null && typeConstraint(parent)(request?.parentRequest);
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+      request !== null && typeConstraint(parent)(request.parentRequest);
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenParentNamed(name: string | number | symbol): IBindingOnSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
-      request !== null && namedConstraint(name)(request?.parentRequest);
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+      request !== null && namedConstraint(name)(request.parentRequest);
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenParentTagged(
     tag: string | number | symbol,
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    value: any,
+    value: unknown,
   ): IBindingOnSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
-      request !== null && taggedConstraint(tag)(value)(request?.parentRequest);
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+      request !== null && taggedConstraint(tag)(value)(request.parentRequest);
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenAnyAncestorIs(
@@ -96,9 +83,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
   ): IBindingOnSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
       request !== null && traverseAncerstors(request, typeConstraint(ancestor));
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenNoAncestorIs(
@@ -107,9 +92,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
       request !== null &&
       !traverseAncerstors(request, typeConstraint(ancestor));
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenAnyAncestorNamed(
@@ -118,9 +101,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
       request !== null && traverseAncerstors(request, namedConstraint(name));
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenNoAncestorNamed(
@@ -129,9 +110,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
     this._binding.constraint = (request: Request | null) =>
       request !== null && !traverseAncerstors(request, namedConstraint(name));
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenAnyAncestorTagged(
@@ -142,9 +121,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
       request !== null &&
       traverseAncerstors(request, taggedConstraint(tag)(value));
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenNoAncestorTagged(
@@ -155,9 +132,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
       request !== null &&
       !traverseAncerstors(request, taggedConstraint(tag)(value));
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenAnyAncestorMatches(
@@ -167,9 +142,7 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
       request !== null &&
       traverseAncerstors(request, constraint as ConstraintFunction);
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 
   public whenNoAncestorMatches(
@@ -179,8 +152,6 @@ export class BindingWhenSyntax<T> implements IBindingWhenSyntax<T> {
       request !== null &&
       !traverseAncerstors(request, constraint as ConstraintFunction);
 
-    return new BindingOnSyntax<T>(
-      this._binding,
-    ) as unknown as IBindingOnSyntax<T>;
+    return new BindingOnSyntax<T>(this._binding);
   }
 }

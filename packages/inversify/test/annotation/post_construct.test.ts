@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { getMetadata } from '@abraham/reflection';
 
 import { postConstruct } from '../../src/annotation/post_construct';

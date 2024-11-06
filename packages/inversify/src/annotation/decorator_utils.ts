@@ -1,5 +1,6 @@
 import {
   type MemberDecorator,
+  type PropertyKey,
   defineMetadata,
   getMetadata,
   hasOwnMetadata,
@@ -110,16 +111,12 @@ function _tagParameterOrProperty(
   }
 
   // get metadata for the decorated parameter by its index
-  let paramOrPropertyMetadata: Metadata[] | undefined =
-    paramsOrPropertiesMetadata?.[key] ?? undefined;
+  const paramOrPropertyMetadata: Metadata[] =
+    paramsOrPropertiesMetadata?.[key] ?? [];
 
-  if (paramOrPropertyMetadata === undefined) {
-    paramOrPropertyMetadata = [];
-  } else {
-    for (const m of paramOrPropertyMetadata) {
-      if (metadatas.some((md) => md.key === m.key)) {
-        throw new Error(`${DUPLICATED_METADATA} ${m.key.toString()}`);
-      }
+  for (const m of paramOrPropertyMetadata) {
+    if (metadatas.some((md) => md.key === m.key)) {
+      throw new Error(`${DUPLICATED_METADATA} ${m.key.toString()}`);
     }
   }
 
@@ -143,16 +140,27 @@ export function createTaggedDecorator(metadata: MetadataOrMetadataArray) {
   };
 }
 
-function _decorate(
-  decorators: (DecoratorTarget | ParameterDecorator | MethodDecorator)[],
-  target: NewableFunction,
+export function _decorate(
+  decorators: (
+    | DecoratorTarget
+    | ParameterDecorator
+    | MethodDecorator
+    | MemberDecorator
+  )[],
+  target: NewableFunction | object,
+  propertyKey?: PropertyKey,
+  attributes?: PropertyDescriptor,
 ): void {
-  reflectionDecorate(decorators as ClassDecorator[], target);
+  reflectionDecorate(
+    decorators as MemberDecorator[],
+    target,
+    propertyKey,
+    attributes,
+  );
 }
 
-function _param(paramIndex: number, decorator: ParameterDecorator) {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  return (target: any, key: string) => {
+export function _param(paramIndex: number, decorator: ParameterDecorator) {
+  return (target: string, key: string) => {
     decorator(target, key, paramIndex);
   };
 }
@@ -171,23 +179,24 @@ function _param(paramIndex: number, decorator: ParameterDecorator) {
  * decorate(tagged("bar"), FooBar, 1);
  */
 export function decorate(
-  decorator:
-    | ClassDecorator
-    | ParameterDecorator
-    | MethodDecorator
-    | MemberDecorator,
+  decorator: ClassDecorator | ParameterDecorator | MethodDecorator,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   target: any,
-  parameterIndex?: number | string,
+  parameterIndexOrProperty?: number | string,
 ): void {
-  if (typeof parameterIndex === "number") {
+  if (typeof parameterIndexOrProperty === "number") {
     _decorate(
-      [_param(parameterIndex, decorator as ParameterDecorator)],
+      [_param(parameterIndexOrProperty, decorator as ParameterDecorator)],
       target,
     );
-  } else if (typeof parameterIndex === "string") {
-    reflectionDecorate([decorator as MemberDecorator], target, parameterIndex);
+  } else if (typeof parameterIndexOrProperty === "string") {
+    reflectionDecorate(
+      // @ts-expect-error
+      [decorator as MethodDecorator],
+      target,
+      parameterIndexOrProperty,
+    );
   } else {
-    _decorate([decorator as ClassDecorator], target);
+    _decorate([decorator], target);
   }
 }

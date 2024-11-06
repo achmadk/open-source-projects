@@ -4,7 +4,7 @@ import {
   type VertexAIOptions,
   getGenerativeModel as firebaseGetGenerativeModel,
   getVertexAI,
-} from "firebase/vertexai-preview";
+} from "firebase/vertexai";
 
 import { useMemo } from "react";
 import {

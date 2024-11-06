@@ -85,7 +85,7 @@ function getConstructorArgsAsTarget(
   constructorName: string,
   serviceIdentifiers: ServiceIdentifier[],
   constructorArgsMetadata: MetadataMap,
-) {
+): ITarget | null {
   // Create map from array of metadata for faster access to metadata
   const targetMetadata = constructorArgsMetadata[index.toString()] ?? [];
   const metadata = formatTargetMetadata(targetMetadata);
@@ -93,13 +93,12 @@ function getConstructorArgsAsTarget(
 
   // Take types to be injected from user-generated metadata
   // if not available use compiler-generated metadata
-  let serviceIdentifier = serviceIdentifiers[index];
-  const injectIdentifier = metadata.inject ?? metadata.multiInject;
-  serviceIdentifier = injectIdentifier ? injectIdentifier : serviceIdentifier;
+  let serviceIdentifier = (metadata.inject ??
+    metadata.multiInject ??
+    serviceIdentifiers[index]) as ServiceIdentifier;
 
   // we unwrap LazyServiceIdentifier wrappers to allow circular dependencies on symbols
   if (serviceIdentifier instanceof LazyServiceIdentifier) {
-    // @ts-ignore
     serviceIdentifier = serviceIdentifier.unwrap();
   }
 
@@ -118,7 +117,7 @@ function getConstructorArgsAsTarget(
 
     const target = new Target(
       TargetTypeEnum.ConstructorArgument,
-      metadata.targetName,
+      metadata.targetName as string | symbol,
       serviceIdentifier,
     );
     target.metadata = targetMetadata;
@@ -134,7 +133,7 @@ function getConstructorArgsAsTargets(
   serviceIdentifiers: ServiceIdentifier[],
   constructorArgsMetadata: MetadataMap,
   iterations: number,
-) {
+): ITarget[] {
   const targets: ITarget[] = [];
   for (let i = 0; i < iterations; i++) {
     const index = i;
@@ -154,10 +153,8 @@ function getConstructorArgsAsTargets(
 }
 
 function _getServiceIdentifierForProperty(
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  inject: any,
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  multiInject: any,
+  inject: string | symbol | unknown,
+  multiInject: object | unknown,
   propertyName: string | symbol,
   className: string,
 ) {
@@ -204,8 +201,8 @@ function getClassPropsAsTargets(
     // The property target
     const target = new Target(
       TargetTypeEnum.ClassProperty,
-      identifier,
-      serviceIdentifier,
+      identifier as string | symbol,
+      serviceIdentifier as ServiceIdentifier,
     );
     target.metadata = targetMetadata;
     targets.push(target);
@@ -247,8 +244,7 @@ export function getBaseClassDependencyCount(
     );
 
     // get unmanaged metadata
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    const metadata: any[] = targets.map((t: ITarget) =>
+    const metadata = targets.map((t: ITarget) =>
       t.metadata.filter((m: Metadata) => m.key === UNMANAGED_TAG),
     );
 
@@ -265,14 +261,14 @@ export function getBaseClassDependencyCount(
   return 0;
 }
 
-function formatTargetMetadata(targetMetadata: Metadata[]) {
+function formatTargetMetadata<S = ServiceIdentifier>(
+  targetMetadata: Metadata<S>[],
+) {
   // Create map from array of metadata for faster access to metadata
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const targetMetadataMap: any = {};
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  targetMetadata.forEach((m: Metadata) => {
+  const targetMetadataMap: Record<string, S> = {};
+  for (const m of targetMetadata) {
     targetMetadataMap[m.key.toString()] = m.value;
-  });
+  }
 
   // user generated metadata
   return {
