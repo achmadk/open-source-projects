@@ -26,7 +26,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.json" }),
+    dts({ rollupTypes: true }),
     tsconfig({ ignoreConfigErrors: true }),
     externalizeDeps(),
   ],

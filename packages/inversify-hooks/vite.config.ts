@@ -28,7 +28,7 @@ export default defineConfig({
   },
   plugins: [
     react({ tsDecorators: true }),
-    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.json" }),
+    dts({ rollupTypes: true }),
     tsconfig({ ignoreConfigErrors: true }),
     externalizeDeps(),
   ],
