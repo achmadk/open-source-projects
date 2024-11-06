@@ -28,7 +28,7 @@ export default defineConfig({
   plugins: [
     preserveDirective() as Plugin,
     react(),
-    dts(),
+    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.app.json" }),
     tsconfig(),
     externalizeDeps(),
   ],

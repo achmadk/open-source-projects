@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
 
+import react from "@vitejs/plugin-react-swc";
+import esbuildPluginTsc from "esbuild-plugin-tsc";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import { externalizeDeps } from "vite-plugin-externalize-deps";
 import tsconfig from "vite-tsconfig-paths";
-import react from "@vitejs/plugin-react-swc";
-import esbuildPluginTsc from "esbuild-plugin-tsc";
 
 export default defineConfig({
   build: {
@@ -28,7 +28,7 @@ export default defineConfig({
   },
   plugins: [
     react({ tsDecorators: true }),
-    dts({ rollupTypes: true }),
+    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.json" }),
     tsconfig({ ignoreConfigErrors: true }),
     externalizeDeps(),
   ],

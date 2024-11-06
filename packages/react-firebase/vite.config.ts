@@ -61,5 +61,10 @@ export default defineConfig({
         `${entryName}.${format === "cjs" ? "cjs" : "js"}`,
     },
   },
-  plugins: [preserveDirective() as Plugin, react(), dts(), externalizeDeps()],
+  plugins: [
+    preserveDirective() as Plugin,
+    react(),
+    dts({ rollupTypes: true, tsconfigPath: "./tsconfig.app.json" }),
+    externalizeDeps(),
+  ],
 });
