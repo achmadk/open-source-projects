@@ -69,7 +69,7 @@ export interface ContainerProviderProps {
   /**
    * @default false
    */
-  unbindContainerWhenUnmount?: boolean
+  unbindContainerWhenUnmount?: boolean;
 }
 
 export const ContainerProvider = <
@@ -78,7 +78,7 @@ export const ContainerProvider = <
   children,
   value,
   context = ContainerContext,
-  unbindContainerWhenUnmount = false
+  unbindContainerWhenUnmount = false,
 }: PropType) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
