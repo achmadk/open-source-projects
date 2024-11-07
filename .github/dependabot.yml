@@ -9,6 +9,8 @@ updates:
   # Maintain dependencies for (dev)dependencies inside root package.json file
   - package-ecosystem: "npm"
     directory: "/"
+    ignore:
+      - dependency-name: "eslint"
     schedule:
       interval: "weekly"
 
