@@ -16,7 +16,7 @@ importers:
         version: 1.9.4
       '@vitejs/plugin-react-swc':
         specifier: ^3.7.1
-        version: 3.7.1(@swc/helpers@0.5.5)(vite@5.4.11(@types/node@22.9.0)(terser@5.31.4))
+        version: 3.7.2(@swc/helpers@0.5.5)(vite@5.4.11(@types/node@22.9.0)(terser@5.31.4))
       commit-and-tag-version:
         specifier: ^12.5.0
         version: 12.5.0
@@ -2897,10 +2897,10 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
-  '@vitejs/plugin-react-swc@3.7.1':
-    resolution: {integrity: sha512-vgWOY0i1EROUK0Ctg1hwhtC3SdcDjZcdit4Ups4aPkDcB1jYhmo+RMYWY87cmXMhvtD5uf8lV89j2w16vkdSVg==}
+  '@vitejs/plugin-react-swc@3.7.2':
+    resolution: {integrity: sha512-y0byko2b2tSVVf5Gpng1eEhX1OvPC7x8yns1Fx8jDzlJp4LS6CMkCPfLw47cjyoMrshQDoQw4qcgjsU9VvlCew==}
     peerDependencies:
-      vite: ^4 || ^5
+      vite: ^4 || ^5 || ^6
 
   '@vitest/coverage-v8@2.1.4':
     resolution: {integrity: sha512-FPKQuJfR6VTfcNMcGpqInmtJuVXFSCd9HQltYncfR01AzXhLucMEtQ5SinPdZxsT5x/5BK7I5qFJ5/ApGCmyTQ==}
@@ -11764,7 +11764,7 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react-swc@3.7.1(@swc/helpers@0.5.5)(vite@5.4.11(@types/node@22.9.0)(terser@5.31.4))':
+  '@vitejs/plugin-react-swc@3.7.2(@swc/helpers@0.5.5)(vite@5.4.11(@types/node@22.9.0)(terser@5.31.4))':
     dependencies:
       '@swc/core': 1.7.35(@swc/helpers@0.5.5)
       vite: 5.4.11(@types/node@22.9.0)(terser@5.31.4)
